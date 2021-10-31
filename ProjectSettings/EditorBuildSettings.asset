@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/ml-prompter/Scenes/Windows_Start.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/ml-prompter/Scenes/Window_Main.unity
+    path: Assets/ml-prompter/Scenes/Windows_Main.unity
     guid: 430c9fe07c4df6d48b51c4375a6ca91f
   - enabled: 1
     path: Assets/ml-prompter/Scenes/MagicLeap_Main.unity

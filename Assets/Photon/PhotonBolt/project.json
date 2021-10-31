@@ -6,7 +6,7 @@
       "$type": "Photon.Bolt.Compiler.StateDefinition, bolt.compiler",
       "Properties": [
         {
-          "Name": "NewProperty",
+          "Name": "InputButtonID",
           "Enabled": true,
           "Expanded": true,
           "ReplicationMode": 1,
