@@ -6,6 +6,22 @@ using UdpKit;
 
 public class ServerMenu : GlobalEventListener 
 {
+
+    private string NextSceneName
+    {
+        get
+        {
+            string sceneName = "";
+            #if PLATFORM_STANDALONE_WIN
+            sceneName = "Windows_Main";
+            #elif PLATFORM_LUMIN
+            sceneName = "MagicLeap_Main";
+            #endif
+            return sceneName;
+        }
+    }
+
+
     private void Start()
     {
         #if PLATFORM_STANDALONE_WIN
@@ -40,7 +56,7 @@ public class ServerMenu : GlobalEventListener
 
             BoltMatchmaking.CreateSession(
                 sessionID: matchName,
-                sceneToLoad: "Windows_Main"
+                sceneToLoad: NextSceneName
             );
         }
     }
