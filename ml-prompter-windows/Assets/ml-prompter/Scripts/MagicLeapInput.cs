@@ -17,9 +17,15 @@ namespace ml_prompter
 
         void Update()
         {
+            
+            // テスト用.
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 clientEventSender.SendInputEvent(1);
+            }
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                clientEventSender.SendInputEvent(2);
             }
 
         }
