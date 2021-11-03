@@ -15,16 +15,13 @@ namespace ml_prompter.Pc
 
         private void Start()
         {
+            Screen.fullScreen = true;
             BoltLauncher.StartServer();
         }
 
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Application.Quit();
-            }
         }
 
 
