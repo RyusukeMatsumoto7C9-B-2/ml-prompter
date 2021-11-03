@@ -4,38 +4,15 @@ using Photon.Bolt;
 using Photon.Bolt.Matchmaking;
 using UdpKit;
 
-public class ServerMenu : GlobalEventListener 
+public class WindowsStart : GlobalEventListener
 {
 
-    private string NextSceneName
-    {
-        get
-        {
-            string sceneName = "";
-            #if PLATFORM_STANDALONE_WIN
-            sceneName = "Windows_Main";
-            #elif PLATFORM_LUMIN
-            sceneName = "MagicLeap_Main";
-            #endif
-            return sceneName;
-        }
-    }
+    private string NextSceneName => "Windows_Main";
 
 
     private void Start()
     {
-        #if PLATFORM_STANDALONE_WIN
-        Screen.SetResolution(800, 600, false);
-
-        // START SERVER
         BoltLauncher.StartServer();
-        #elif PLATFORM_LUMIN
-        // START CLIENT
-        BoltLauncher.StartClient();
-
-        #endif
-        
-        
     }
 
 
