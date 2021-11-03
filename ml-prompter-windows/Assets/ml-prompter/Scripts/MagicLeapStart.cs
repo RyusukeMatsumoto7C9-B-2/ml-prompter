@@ -10,20 +10,13 @@ using UdpKit;
 public class MagicLeapStart : GlobalEventListener 
 {
 
-    private string NextSceneName => "MagicLeap_Main";
+    private string NextSceneName => "Main";
 
 
     private void Start()
     {
-#if PLATFORM_STANDALONE_WIN
-        Screen.SetResolution(800, 600, false);
-
-        // START SERVER
-        BoltLauncher.StartServer();
-#elif PLATFORM_LUMIN
         // START CLIENT
         BoltLauncher.StartClient();
-#endif
     }
 
 

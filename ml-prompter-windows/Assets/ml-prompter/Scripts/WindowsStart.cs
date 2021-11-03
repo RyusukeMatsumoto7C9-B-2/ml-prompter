@@ -7,7 +7,7 @@ using UdpKit;
 public class WindowsStart : GlobalEventListener
 {
 
-    private string NextSceneName => "Windows_Main";
+    private string NextSceneName => "Main";
 
 
     private void Start()
