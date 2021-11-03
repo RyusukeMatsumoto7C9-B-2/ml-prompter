@@ -2,7 +2,7 @@ using Photon.Bolt;
 
 
 
-namespace ml_prompter
+namespace ml_prompter.Network
 {
     public class ClientEventSender : GlobalEventListener
     {

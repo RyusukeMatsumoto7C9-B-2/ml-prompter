@@ -1,7 +1,9 @@
 using UnityEngine;
 
+using ml_prompter.Network;
 
-namespace ml_prompter
+
+namespace ml_prompter.Ml
 {
     /// <summary>
     /// MagicLeap側の入力処理.
