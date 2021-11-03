@@ -15,7 +15,7 @@ namespace ml_prompter.Pc
 
         private void Start()
         {
-            Screen.fullScreen = true;
+            Screen.SetResolution(1920, 1080, true);
             BoltLauncher.StartServer();
         }
 
