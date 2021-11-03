@@ -1,7 +1,7 @@
 using UnityEngine;
 using Photon.Bolt;
 
-namespace ml_prompter
+namespace ml_prompter.Network
 {
     /// <summary>
     /// サーバー側のクライアントからのイベント受信時処理.

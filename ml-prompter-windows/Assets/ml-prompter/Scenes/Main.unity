@@ -215,7 +215,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1802719262}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bfae7d340315a549a92d6e68bdfa9c2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b10575bf12f50847b85c90ecf814570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   magicLeapSceneObject: {fileID: 2440634728216048698, guid: cd46ee4e33e5d4245a58cb12f9e309f2, type: 3}

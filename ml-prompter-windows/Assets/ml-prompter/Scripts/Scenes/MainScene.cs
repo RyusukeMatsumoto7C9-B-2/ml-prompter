@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace ml_prompter
+namespace ml_prompter.Scenes
 {
     /// <summary>
     /// Mainシーン.
