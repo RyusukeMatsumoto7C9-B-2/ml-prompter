@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.XR.MagicLeap;
 
 using ml_prompter.Network;
 
@@ -10,29 +12,54 @@ namespace ml_prompter.Ml
     /// </summary>
     public class MagicLeapInput : MonoBehaviour
     {
-        [SerializeField] private ClientEventSender clientEventSender;
+        #if PLATFORM_LUMIN
+        [SerializeField] 
+        private ClientEventSender clientEventSender;
         
-        void Start()
+        private MLInput.Controller controller;
+        
+        
+        private IEnumerator Start()
         {
-            
-        }
+            yield return new WaitUntil(() => MLInput.IsStarted);
 
-        void Update()
-        {
-            
-            // テスト用.
-            if (Input.GetKeyDown(KeyCode.Space))
+            MLInput.OnTriggerDown += (id, value) =>
             {
                 clientEventSender.SendInputEvent(1);
-            }
-            else if (Input.GetKeyDown(KeyCode.A))
+                
+            };
+
+            MLInput.OnControllerButtonDown += (id, button) =>
             {
-                clientEventSender.SendInputEvent(2);
+                switch (button)
+                {
+                    case MLInput.Controller.Button.Bumper:
+                        clientEventSender.SendInputEvent(2);
+                        break;
+
+                    case MLInput.Controller.Button.HomeTap:
+                        Application.Quit();
+                        break;
+                }
+            };
+        }
+
+        
+        private void Update()
+        {
+            // テスト用.
+            if (Input.GetKeyDown(KeyCode.Space) || 1f <= controller.TriggerValue)
+            {
+            }
+            else if (Input.GetKeyDown(KeyCode.A) || controller.IsBumperDown)
+            {
             }
 
         }
+        
+        
+        #endif
     }
-
 }
 
     
