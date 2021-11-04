@@ -11,11 +11,26 @@ namespace ml_prompter.Pc
     /// </summary>
     public class WindowsInput : MonoBehaviour
     {
+        // TODO : テスト用.
+        private WindowsInputProxy ttt = new WindowsInputProxy();
+        
+        
         // Start is called before the first frame update
         void Start()
         {
-            
+            //StartCoroutine(A());
         }
+
+
+        private IEnumerator A()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(1);
+                ttt.MouseLeftButtonDown();
+            }
+        }
+        
 
         // Update is called once per frame
         void Update()
@@ -23,6 +38,15 @@ namespace ml_prompter.Pc
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.Quit();
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                ttt.MouseLeftButtonDown();
+            }
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                ttt.MouseRightButtonDown();
             }
         }
     }

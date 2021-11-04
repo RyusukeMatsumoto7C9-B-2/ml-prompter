@@ -1,3 +1,4 @@
+using ml_prompter.Pc;
 using UnityEngine;
 using Photon.Bolt;
 
@@ -9,6 +10,8 @@ namespace ml_prompter.Network
     [BoltGlobalBehaviour(BoltNetworkModes.Server)]
     public class ServerEventListener : GlobalEventListener
     {
+        private WindowsInputProxy windowsInputProxy = new WindowsInputProxy();
+    
         public override void Connected(BoltConnection connection)
         {
 
@@ -30,10 +33,12 @@ namespace ml_prompter.Network
 
                 case 1:
                     Debug.Log("ページ進める");
+                    windowsInputProxy.MouseLeftButtonDown();
                     break;
                 
                 case 2:
                     Debug.Log("ページ戻す");
+                    windowsInputProxy.MouseRightButtonDown();
                     break;
             }
         }
