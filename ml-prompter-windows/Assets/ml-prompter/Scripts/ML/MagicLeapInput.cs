@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
-using ml_prompter.Ml.SpeakerTools;
 using UnityEngine;
 using UnityEngine.XR.MagicLeap;
 
 using ml_prompter.Network;
-
+using ml_prompter.Ml.SpeakerTools;
 
 namespace ml_prompter.Ml
 {
@@ -21,15 +19,18 @@ namespace ml_prompter.Ml
         [SerializeField] 
         private SpeakerNote speakerNote;
         
-        private MLInput.Controller controller;
-        
         
         private IEnumerator Start()
         {
             yield return new WaitUntil(() => MLInput.IsStarted);
 
+            // コントローラのトリガー入力.
             MLInput.OnTriggerDown += OnTriggerDown;
+
+            // コントローラのボタン入力.
             MLInput.OnControllerButtonDown += OnButtonDown;
+
+            // タッチパッド入力.
             MLInput.OnControllerTouchpadGestureStart += OnTouchpadGestureStart;
         }
 
@@ -48,10 +49,7 @@ namespace ml_prompter.Ml
             speakerNote.StartTimer();
         }
 
-        
-        private void OnButtonDown(
-            byte controllerId,
-            MLInput.Controller.Button button)
+        private void OnButtonDown(byte controllerId, MLInput.Controller.Button button)
         {
             switch (button)
             {
@@ -89,7 +87,7 @@ namespace ml_prompter.Ml
                     break;
                 
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Up:
-                    Debug.Log("Up");
+                    Debug.Log("Up" );
                     break;
                 
                 case MLInput.Controller.TouchpadGesture.GestureDirection.In:
@@ -102,9 +100,7 @@ namespace ml_prompter.Ml
             }
         }
 
-
-#endif
+        #endif
     }
 }
 
-    
