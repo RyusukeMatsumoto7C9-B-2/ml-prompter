@@ -33,12 +33,12 @@ namespace ml_prompter.Network
 
                 case 1:
                     Debug.Log("ページ進める");
-                    windowsInputProxy.MouseLeftButtonDown();
+                    windowsInputProxy.RightArrowKey();
                     break;
                 
                 case 2:
                     Debug.Log("ページ戻す");
-                    windowsInputProxy.MouseRightButtonDown();
+                    windowsInputProxy.LeftArrowKey();
                     break;
             }
         }
