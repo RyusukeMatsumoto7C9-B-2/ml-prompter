@@ -3,20 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 namespace ml_prompter.Pc
 {
     /// <summary>
-    /// Windows用の入力クラス.
+    /// ちょっとした茶目っ気、MagicLeapのアイコンを上下に動かしたい.
     /// </summary>
-    public class WindowsInput : MonoBehaviour
+    public class MagicLeapIconMover : MonoBehaviour
     {
+
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                Application.Quit();
-            }
+            
         }
     }
 }
