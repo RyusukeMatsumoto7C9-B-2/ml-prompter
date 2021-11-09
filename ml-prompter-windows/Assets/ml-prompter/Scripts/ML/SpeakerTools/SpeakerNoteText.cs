@@ -19,20 +19,22 @@ namespace ml_prompter.Ml.SpeakerTools
         }
 
 
-        public void Next()
+        public string Next()
         {
-            if (currentIndex < values.Length)
+            if (currentIndex < values.Length - 1)
                 currentIndex++;
+            return GetCurrentText();
         }
 
 
-        public void Previous()
+        public string Previous()
         {
             if (0 < currentIndex)
                 currentIndex--;
+            return GetCurrentText();
         }
 
 
-        public string GetText() => values[currentIndex] ?? "";
+        public string GetCurrentText() => values[currentIndex] ?? "";
     }
 }

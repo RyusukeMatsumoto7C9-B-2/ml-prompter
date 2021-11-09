@@ -26,15 +26,18 @@ namespace ml_prompter.Ml.SpeakerTools
         
 
         private Vector3 lastPosition;
-        private Stopwatch stopwatch = new Stopwatch();
         private SpeakerNoteText note;
+        private SpeakerTimer timer;
         
         private void Start()
         {
             transform.position = mainCamera.TransformDirection(Vector3.forward) * distance;
             lastPosition = transform.position;
 
-            SetupNote();
+            note = new SpeakerNoteText();
+            speakerNoteText.text = note.GetCurrentText();
+            
+            timer = new SpeakerTimer();
         }
 
         
@@ -62,53 +65,23 @@ namespace ml_prompter.Ml.SpeakerTools
 
         private void UpdateTimer()
         {
-            var elapsed = stopwatch.Elapsed;
-            timerText.text = $"{elapsed.Minutes}:{elapsed.Seconds:00}:{elapsed.Milliseconds:00}";
+            timerText.text = timer.GetCurrentTime();
         }
+        
+        
+        public void NextPage() => speakerNoteText.text = note.Next();
 
 
-        /// <summary>
-        /// ローカルに保存してあるノートファイルを展開.
-        /// </summary>
-        private void SetupNote()
-        {
-            // テキストのロード.
-            note = new SpeakerNoteText();
-            speakerNoteText.text = note.GetText();
-        }
+        public void PreviousPage() => speakerNoteText.text = note.Previous();
 
 
-        public void NextPage()
-        {
-            note.Next();
-            speakerNoteText.text = note.GetText();
-        }
+        public void StartTimer() => timer.Start();
+
+        
+        public void StopTimer() => timer.Stop();
 
 
-        public void PreviousPage()
-        {
-            note.Previous();
-            speakerNoteText.text = note.GetText();
-        }
-
-
-        public void StartTimer()
-        {
-            if (stopwatch.IsRunning) return;
-            stopwatch.Start();
-        }
-
-
-        public void StopTimer()
-        {
-            stopwatch.Stop();
-        }
-
-
-        public void ResetTimer()
-        {
-            stopwatch.Reset();
-        }
+        public void ResetTimer() => timer.Reset();
     }
 }
 
