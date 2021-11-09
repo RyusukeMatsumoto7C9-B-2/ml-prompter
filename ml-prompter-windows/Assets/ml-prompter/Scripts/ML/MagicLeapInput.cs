@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.XR.MagicLeap;
 
 using ml_prompter.Network;
-
+using ml_prompter.Ml.SpeakerTools;
 
 namespace ml_prompter.Ml
 {
@@ -15,51 +15,94 @@ namespace ml_prompter.Ml
         #if PLATFORM_LUMIN
         [SerializeField] 
         private ClientEventSender clientEventSender;
-        
-        private MLInput.Controller controller;
+
+        [SerializeField] 
+        private SpeakerNote speakerNote;
         
         
         private IEnumerator Start()
         {
             yield return new WaitUntil(() => MLInput.IsStarted);
 
-            MLInput.OnTriggerDown += (id, value) =>
-            {
-                clientEventSender.SendInputEvent(1);
-                
-            };
+            // コントローラのトリガー入力.
+            MLInput.OnTriggerDown += OnTriggerDown;
 
-            MLInput.OnControllerButtonDown += (id, button) =>
-            {
-                switch (button)
-                {
-                    case MLInput.Controller.Button.Bumper:
-                        clientEventSender.SendInputEvent(2);
-                        break;
+            // コントローラのボタン入力.
+            MLInput.OnControllerButtonDown += OnButtonDown;
 
-                    case MLInput.Controller.Button.HomeTap:
-                        Application.Quit();
-                        break;
-                }
-            };
+            // タッチパッド入力.
+            MLInput.OnControllerTouchpadGestureStart += OnTouchpadGestureStart;
         }
 
-        
-        private void Update()
+
+        private void OnDestroy()
         {
-            // テスト用.
-            if (Input.GetKeyDown(KeyCode.Space) || 1f <= controller.TriggerValue)
-            {
-            }
-            else if (Input.GetKeyDown(KeyCode.A) || controller.IsBumperDown)
-            {
-            }
-
+            MLInput.OnTriggerDown -= OnTriggerDown;
+            MLInput.OnControllerButtonDown -= OnButtonDown;
+            MLInput.OnControllerTouchpadGestureStart -= OnTouchpadGestureStart;
         }
-        
-        
+
+
+        private void OnTriggerDown(byte id, float value)
+        {
+            speakerNote.ResetTimer();
+            speakerNote.StartTimer();
+        }
+
+        private void OnButtonDown(byte controllerId, MLInput.Controller.Button button)
+        {
+            switch (button)
+            {
+                case MLInput.Controller.Button.Bumper:
+                    speakerNote.StopTimer();
+                    break;
+
+                case MLInput.Controller.Button.HomeTap:
+                    Application.Quit();
+                    break;
+            }
+        }
+
+
+        private void OnTouchpadGestureStart(byte id, MLInput.Controller.TouchpadGesture gesture)
+        {
+            switch (gesture.Direction)
+            {
+                case MLInput.Controller.TouchpadGesture.GestureDirection.Left:
+                    Debug.Log("Left");
+                    clientEventSender.SendInputEvent(2);
+                    speakerNote.PreviousPage();
+                    break;
+                
+                case MLInput.Controller.TouchpadGesture.GestureDirection.Right:
+                    Debug.Log("Right");
+                    clientEventSender.SendInputEvent(1);
+                    speakerNote.NextPage();
+                    break;
+                
+                case MLInput.Controller.TouchpadGesture.GestureDirection.Clockwise:
+                    Debug.Log("Clockwise");
+                    break;
+                
+                case MLInput.Controller.TouchpadGesture.GestureDirection.Down:
+                    Debug.Log("Down");
+                    break;
+                
+                case MLInput.Controller.TouchpadGesture.GestureDirection.Up:
+                    Debug.Log("Up" );
+                    break;
+                
+                case MLInput.Controller.TouchpadGesture.GestureDirection.In:
+                    Debug.Log("In");
+                    break;
+                
+                case MLInput.Controller.TouchpadGesture.GestureDirection.Out:
+                    Debug.Log("Out");
+                    break;
+            }
+        }
+
         #endif
     }
 }
 
-    
