@@ -71,11 +71,13 @@ namespace ml_prompter.Ml
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Left:
                     Debug.Log("Left");
                     clientEventSender.SendInputEvent(2);
+                    speakerNote.PreviousPage();
                     break;
                 
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Right:
                     Debug.Log("Right");
                     clientEventSender.SendInputEvent(1);
+                    speakerNote.NextPage();
                     break;
                 
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Clockwise:
