@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using UnityEngine;
-using UnityEngine.XR.ARSubsystems;
 
 namespace ml_prompter.Ml.SpeakerTools
 {
@@ -12,12 +12,22 @@ namespace ml_prompter.Ml.SpeakerTools
         private string[] values;
         private int currentIndex = 0;
         
+        
         public SpeakerNoteText()
         {
-            string[] del = {"---"};
-            values = File.ReadAllText(NoteTextPath).Split(del, StringSplitOptions.None);
         }
 
+
+        public void Setup()
+        {
+            string[] del = {"---"};
+            using (var sr = new StreamReader(NoteTextPath, Encoding.UTF8))
+            {
+                values = sr.ReadToEnd().Split(del, StringSplitOptions.None);
+                sr.Close();
+            }
+        }
+        
 
         public string Next()
         {
