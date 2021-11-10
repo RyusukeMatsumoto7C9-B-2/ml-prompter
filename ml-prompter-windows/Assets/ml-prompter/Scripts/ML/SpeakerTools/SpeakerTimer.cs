@@ -10,9 +10,16 @@ namespace ml_prompter.Ml.SpeakerTools
     {
         private Stopwatch stopwatch = new Stopwatch();
 
+
+        public SpeakerTimer()
+        {
+        }
+
         
         public string GetCurrentTime()
         {
+            if (!stopwatch.IsRunning) return "0:00:00";
+
             var elapsed = stopwatch.Elapsed;
             return  $"{elapsed.Minutes}:{elapsed.Seconds:00}:{elapsed.Milliseconds:00}";
         }

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,22 +22,21 @@ namespace ml_prompter.Ml.SpeakerTools
         private Text timerText;
 
         [SerializeField] 
-        private Text speakerNoteText;
-        
-        
+        private TextMeshProUGUI noteText;
 
         private Vector3 lastPosition;
-        private SpeakerNoteText note;
-        private SpeakerTimer timer;
+        private SpeakerNoteText note = new SpeakerNoteText();
+        private SpeakerTimer timer = new SpeakerTimer();
+        
         
         private void Start()
         {
             transform.position = mainCamera.TransformDirection(Vector3.forward) * distance;
             lastPosition = transform.position;
 
-            note = new SpeakerNoteText();
-            speakerNoteText.text = note.GetCurrentText();
-            
+            note.Setup();
+            noteText.SetText(note.GetCurrentText());
+
             timer = new SpeakerTimer();
         }
 
@@ -67,12 +67,12 @@ namespace ml_prompter.Ml.SpeakerTools
         {
             timerText.text = timer.GetCurrentTime();
         }
-        
-        
-        public void NextPage() => speakerNoteText.text = note.Next();
 
 
-        public void PreviousPage() => speakerNoteText.text = note.Previous();
+        public void NextPage() => noteText.SetText(note.Next());
+
+
+        public void PreviousPage() => noteText.SetText(note.Previous());
 
 
         public void StartTimer() => timer.Start();
