@@ -24,6 +24,29 @@
       "Name": "InputEvent",
       "Guid": "55a70106-d098-4aa9-bd11-e1f29171e441",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "CaptureString",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeString, bolt.compiler",
+            "MaxLength": 1,
+            "Encoding": 1
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "Name": "ScreenCaptureEvent",
+      "Guid": "35053b32-02e6-419d-a844-89e6bff19e63",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"
