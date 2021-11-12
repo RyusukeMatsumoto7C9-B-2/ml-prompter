@@ -7,6 +7,7 @@ using ml_prompter.Pc;
 using System.Text;
 using System.IO;
 using System.IO.Compression;
+using UnityEngine.Experimental.Rendering;
 
 
 namespace ml_prompter.Network
@@ -16,11 +17,6 @@ namespace ml_prompter.Network
     /// </summary>
     public class ServerEventListener : GlobalEventListener
     {
-        [SerializeField] 
-        private MeshRenderer meshRenderer;
-
-        [SerializeField] private uDesktopDuplication.Texture tex;
-        [SerializeField] private MeshRenderer m;
         
         private WindowsInputProxy windowsInputProxy = new WindowsInputProxy();
     
@@ -58,32 +54,47 @@ namespace ml_prompter.Network
 
         
         #region --- あとで別クラスに分けるキャプチャデータ圧縮 ---
-        
+
+        [SerializeField] private Camera testCamera;
+        [SerializeField] private RenderTexture renderTexture;
+        [SerializeField] private MeshRenderer m;
+        [SerializeField] private MeshRenderer meshRenderer;
+
+
         public void Capture()
         {
-            // uDesktopDuplicationからデスクトップのキャプチャを取得する.
-            var capture = tex.monitor.texture;
-            var rawData = capture.GetRawTextureData<byte>();
+            // uDesktopDuplicationの描画内容をRenderTextureに焼きこむ.
+            // RenderTextureで撮影した内容をTexture2Dに変換.
+            var tex2D = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.ARGB32, false, false);
+            testCamera.targetTexture = renderTexture;
+            testCamera.Render();
+            RenderTexture.active = renderTexture;
+            tex2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0 );
+            tex2D.Apply();
+            var rawData = tex2D.EncodeToPNG();
+            
+            // RenderTextureは用済みなので解放.
+            renderTexture.Release();
 
             //var compressedData = Compress(rawData);
-            //string compressedStringData = ByteArrayToString(compressedData);
+            string compressedStringData = ByteArrayToString(rawData);
+            File.WriteAllText(Application.persistentDataPath + "/jejeje.txt", compressedStringData);
 
             // stringにしたデータを送信.
             
-            // 受診したstringデータ.
+            // 受信したstringデータ.
 
             //var decompressByteArray = Decompress(StringToByteArray(compressedStringData));
-            Texture2D texture = new Texture2D(2, 2);
-            //texture.LoadImage(rawData); // 一旦生のデータでテクスチャを生成できるのを確認する必要がある.
-            texture.LoadRawTextureData(rawData.ToArray());
-            texture.Apply();
+            var decompressByteArray = StringToByteArray(compressedStringData);
+            Texture2D texture = new Texture2D(2,2);
+            texture.LoadImage(decompressByteArray);
+
+
+            // 何らかのテクスチャに張り付ける.
             m.material.mainTexture = texture;
-            
-            /*
             Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
             GameObject go = GameObject.Find("Hoge");
             go.GetComponent<UnityEngine.UI.Image>().sprite = sprite;
-        */
         }
 
 
@@ -141,10 +152,11 @@ namespace ml_prompter.Network
         private byte[] StringToByteArray(string src)
         {
             var stringArray = src.Split(',');
-            var byteArray = new byte[stringArray.Length];
-            for (var i = 0; i < stringArray.Length; ++i)
+            // 最後尾にはEOFが付くためstringのLength - 1を利用する.
+            var byteArray = new byte[stringArray.Length - 1];
+            for (var i = 0; i < byteArray.Length; ++i)
             {
-                byteArray[i] = byteArray[i];
+                byteArray[i] = byte.Parse(stringArray[i]);
             }
 
             return byteArray;
