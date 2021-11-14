@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 380859407, guid: 137e28288f6bdfa43bef7e857dbe4cf8, type: 3}
+      propertyPath: screenCapture
+      value: 
+      objectReference: {fileID: 2058609814}
     - target: {fileID: 4670536362758062954, guid: 137e28288f6bdfa43bef7e857dbe4cf8, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -180,3 +184,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 137e28288f6bdfa43bef7e857dbe4cf8, type: 3}
+--- !u!114 &2058609814 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2058609812, guid: 137e28288f6bdfa43bef7e857dbe4cf8, type: 3}
+  m_PrefabInstance: {fileID: 986210841}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a297f7a8eacb0c42a9d3813b560f1de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
