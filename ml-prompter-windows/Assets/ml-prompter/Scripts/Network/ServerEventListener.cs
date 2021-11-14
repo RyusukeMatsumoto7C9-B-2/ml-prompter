@@ -17,9 +17,9 @@ namespace ml_prompter.Network
     /// </summary>
     public class ServerEventListener : GlobalEventListener
     {
-        
+
         private WindowsInputProxy windowsInputProxy = new WindowsInputProxy();
-    
+
         public override void Connected(BoltConnection connection)
         {
 
@@ -44,7 +44,7 @@ namespace ml_prompter.Network
                     windowsInputProxy.RightArrowKey();
                     Capture();
                     break;
-                
+
                 case 2:
                     Debug.Log("ページ戻す");
                     windowsInputProxy.LeftArrowKey();
@@ -52,13 +52,12 @@ namespace ml_prompter.Network
             }
         }
 
-        
+
         #region --- あとで別クラスに分けるキャプチャデータ圧縮 ---
 
         [SerializeField] private Camera testCamera;
         [SerializeField] private RenderTexture renderTexture;
         [SerializeField] private MeshRenderer m;
-        [SerializeField] private MeshRenderer meshRenderer;
 
 
         public void Capture()
@@ -69,10 +68,10 @@ namespace ml_prompter.Network
             testCamera.targetTexture = renderTexture;
             testCamera.Render();
             RenderTexture.active = renderTexture;
-            tex2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0 );
+            tex2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
             tex2D.Apply();
             var rawData = tex2D.EncodeToPNG();
-            
+
             // RenderTextureは用済みなので解放.
             renderTexture.Release();
 
@@ -81,12 +80,12 @@ namespace ml_prompter.Network
             File.WriteAllText(Application.persistentDataPath + "/jejeje.txt", compressedStringData);
 
             // stringにしたデータを送信.
-            
+
             // 受信したstringデータ.
 
             //var decompressByteArray = Decompress(StringToByteArray(compressedStringData));
             var decompressByteArray = StringToByteArray(compressedStringData);
-            Texture2D texture = new Texture2D(2,2);
+            Texture2D texture = new Texture2D(2, 2);
             texture.LoadImage(decompressByteArray);
 
 
@@ -98,7 +97,6 @@ namespace ml_prompter.Network
         }
 
 
-        
         /// <summary>
         /// 引数で渡したbyte配列を圧縮したbyte配列にして返す.
         /// </summary>
