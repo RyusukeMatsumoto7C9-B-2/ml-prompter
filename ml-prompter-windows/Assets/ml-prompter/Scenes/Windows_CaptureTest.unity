@@ -134,6 +134,30 @@ PrefabInstance:
       propertyPath: screenCapture
       value: 
       objectReference: {fileID: 2058609814}
+    - target: {fileID: 2270651327940943517, guid: 137e28288f6bdfa43bef7e857dbe4cf8, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2270651327940943517, guid: 137e28288f6bdfa43bef7e857dbe4cf8, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2270651327940943517, guid: 137e28288f6bdfa43bef7e857dbe4cf8, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2270651327940943517, guid: 137e28288f6bdfa43bef7e857dbe4cf8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2270651327940943517, guid: 137e28288f6bdfa43bef7e857dbe4cf8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2270651327940943517, guid: 137e28288f6bdfa43bef7e857dbe4cf8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4670536362758062954, guid: 137e28288f6bdfa43bef7e857dbe4cf8, type: 3}
       propertyPath: m_RootOrder
       value: 0

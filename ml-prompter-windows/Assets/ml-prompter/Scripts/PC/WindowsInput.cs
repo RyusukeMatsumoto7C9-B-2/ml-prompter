@@ -21,8 +21,12 @@ namespace ml_prompter.Pc
             {
                 Application.Quit();
             }
+
             if (Input.GetKeyDown(KeyCode.Space))
+            {
                 e.Capture();
+                
+            }
         }
     }
 }

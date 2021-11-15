@@ -1,8 +1,10 @@
-﻿namespace DefaultNamespace
+﻿using System.Text;
+using System.IO;
+using System.IO.Compression;
+
+
+namespace DefaultNamespace
 {
-    using System.Text;
-    using System.IO;
-    using System.IO.Compression;
 
     
     /// <summary>
@@ -23,7 +25,6 @@
         /// <summary>
         /// 圧縮データを文字列として復元します。
         /// </summary>
-        //public static string DecompressToStr(byte[] src) => Encoding.UTF8.GetString(Decompress(src));
         public static string DecompressToStr(string src)
         {
              return Encoding.UTF8.GetString(Decompress(StringToByteArray(src)));
@@ -39,7 +40,7 @@
         {
             using (var ms = new MemoryStream())
             {
-                using (var ds = new DeflateStream(ms, CompressionMode.Compress, true/*msは*/))
+                using (var ds = new DeflateStream(ms, CompressionMode.Compress, true))
                 {
                     ds.Write(src, 0, src.Length);
                 }
