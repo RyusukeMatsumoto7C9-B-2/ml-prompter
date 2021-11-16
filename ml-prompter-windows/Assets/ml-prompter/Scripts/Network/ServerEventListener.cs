@@ -8,9 +8,6 @@ using ml_prompter.Pc;
 // テスト.
 using System.Text;
 using System.IO;
-using System.IO.Compression;
-using DefaultNamespace;
-using UnityEngine.Experimental.Rendering;
 
 
 namespace ml_prompter.Network

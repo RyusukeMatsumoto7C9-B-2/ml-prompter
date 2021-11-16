@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.Compression;
 
 
-namespace DefaultNamespace
+namespace ml_prompter
 {
 
     

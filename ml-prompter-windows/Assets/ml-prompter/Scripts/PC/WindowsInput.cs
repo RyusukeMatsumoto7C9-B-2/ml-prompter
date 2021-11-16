@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using ml_prompter.Network;
 using UnityEngine;
 
+using ml_prompter.Network;
 
 
 namespace ml_prompter.Pc
@@ -25,7 +23,6 @@ namespace ml_prompter.Pc
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 e.Capture();
-                
             }
         }
     }
