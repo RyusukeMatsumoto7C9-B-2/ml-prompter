@@ -13,14 +13,19 @@ namespace ml_prompter.Scenes
         
         [SerializeField] 
         private GameObject windowsSceneObject;
-        
+
         private void Start()
         {
-            #if UNITY_STANDALONE_WIN
-            Instantiate(windowsSceneObject);
-            #elif PLATFORM_LUMIN
-            Instantiate(magicLeapSceneObject);
-            #endif
+            switch (Application.platform)
+            {
+                case RuntimePlatform.WindowsPlayer:
+                    Instantiate(windowsSceneObject);
+                    break;
+                
+                case RuntimePlatform.Lumin:
+                    Instantiate(magicLeapSceneObject);
+                    break;
+            }
         }
     }
 }
