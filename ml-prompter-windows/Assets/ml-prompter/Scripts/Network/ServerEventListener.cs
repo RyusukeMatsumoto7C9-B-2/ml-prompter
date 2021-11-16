@@ -24,6 +24,10 @@ namespace ml_prompter.Network
         [SerializeField] 
         private DesktopScreenCapture screenCapture;
 
+        // TODO : ここで使えるようにするのは適切かはいまいちわからない.
+        [SerializeField] 
+        private ServerEventSender sender;
+
         
         private WindowsInputProxy windowsInputProxy = new WindowsInputProxy();
 
@@ -90,8 +94,14 @@ namespace ml_prompter.Network
             }
 
             // stringにしたデータを送信.
-            StartCoroutine(SendCapture(compressStrings));
-
+            //StartCoroutine(SendCapture(compressStrings));
+            if (!sender.IsSendingScreenShotData)
+            {
+                sender.SendScreenShot(compressStrings.ToArray());
+            }
+            // TODO : ここから下は本実装の時は不要になる.
+            
+            
             // 受信、イベントを受け取るときは List にキャッシュし -e マーカーのついているデータが来るまで Listにデータを積む.
             string[] recieve = compressStrings.ToArray();
 
