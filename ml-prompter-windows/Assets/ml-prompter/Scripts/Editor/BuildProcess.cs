@@ -1,40 +1,47 @@
 using System.IO;
 using UnityEditor;
+using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 
 
-public class SwitchPlatform
+public class BuildProcess : IPreprocessBuildWithReport, IPostprocessBuildWithReport
 {
+    // 退避先のディレクトリ.
     private static string BuildTempFolderPath => Directory.GetParent(Application.dataPath) + @"\BuildTempFolder";
 
+    #region --- MagicLeap ---
+    // 退避するディレクトリ.
     private static string UDesktopDuplicationPluginFolder => @"\uDesktopDuplication\Plugins";
+    #endregion --- MagicLeap ---
 
     
-    // ビルド前ビルドに邪魔になるにディレクトリを退避する.
-    [MenuItem("Custom/SwitchToMagicLeap")]
-    public static void SwitchToMagicLeap()
+    public int callbackOrder { get; }
+
+    
+    
+    public void OnPreprocessBuild(BuildReport report)
     {
         CheckExistsBuildTempFolder();
         
         // ここで退避するプラグインを記述.
-        #if PLATFORM_LUMIN
+#if PLATFORM_LUMIN
         MoveDirectory(Application.dataPath + UDesktopDuplicationPluginFolder, BuildTempFolderPath + UDesktopDuplicationPluginFolder);
-        #endif
+#endif
     }
 
 
-    // ビルド後に退避したディレクトリをもとに戻す.
-    [MenuItem("Custom/SwitchToWindows")]
-    public static void SwitchToWindows()
+    public void OnPostprocessBuild(BuildReport report)
     {
         CheckExistsBuildTempFolder();
-        
-        #if PLATFORM_LUMIN
+
+        // 退避したフォルダを元に戻す.
+#if PLATFORM_LUMIN
         MoveDirectory( BuildTempFolderPath + UDesktopDuplicationPluginFolder, Application.dataPath + UDesktopDuplicationPluginFolder);
-        #endif
+#endif
     }
 
-
+    
     private static void MoveDirectory(string from, string to)
     {
         UnityEngine.Debug.Log($"Pluginsフォルダを移動します {from} -> {to}");
