@@ -25,6 +25,7 @@ public class BuildProcess : IPreprocessBuildWithReport, IPostprocessBuildWithRep
         CheckExistsBuildTempFolder();
         
         // ここで退避するプラグインを記述.
+
 #if PLATFORM_LUMIN
         MoveDirectory(Application.dataPath + UDesktopDuplicationPluginFolder, BuildTempFolderPath + UDesktopDuplicationPluginFolder);
 #endif

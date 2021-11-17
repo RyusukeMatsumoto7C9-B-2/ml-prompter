@@ -20,11 +20,6 @@ namespace ml_prompter.Pc
         }
 
 
-        private void Update()
-        {
-        }
-
-
         public override void BoltStartDone()
         {
             if (BoltNetwork.IsServer)
