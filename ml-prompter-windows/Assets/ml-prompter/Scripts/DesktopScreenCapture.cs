@@ -36,6 +36,7 @@ namespace ml_prompter
         }
 
         // TODO : こっちは今は使ってない.
+        /*
         public string CaptureToString()
         {
             // uDesktopDuplicationの描画内容をRenderTextureに焼きこむ.
@@ -50,28 +51,7 @@ namespace ml_prompter
 
             return ByteArrayToString(tex2D.EncodeToPNG());
         }
-
-
-        public Texture2D StringToTexture2D(string src)
-        {
-            var bytes = StringToByteArray(src);
-            Texture2D texture = new Texture2D(2, 2);
-            texture.LoadImage(bytes);
-
-            return texture;
-        }
-
-
-        private string ByteArrayToString(byte[] src)
-        {
-            StringBuilder sb = new StringBuilder(8128);
-            foreach (var data in src)
-            {
-                sb.Append($"{data:000},");
-            }
-
-            return sb.ToString();
-        }
+        */
 
 
         private string[] ByteArrayToStringArray(byte[] src)
