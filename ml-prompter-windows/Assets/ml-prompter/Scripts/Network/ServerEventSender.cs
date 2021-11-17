@@ -37,7 +37,7 @@ namespace ml_prompter.Network
                 var ev = ScreenCaptureEvent.Create();
                 ev.CaptureString = data;
                 ev.Send();
-                yield return new WaitForEndOfFrame();
+                yield return new WaitForSeconds(0.03f);
             }
             IsSendingScreenShotData = false;
         }
