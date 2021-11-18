@@ -15,13 +15,8 @@ namespace ml_prompter.Pc
 
         private void Start()
         {
-            Screen.SetResolution(1920, 1080, true);
+            Screen.SetResolution(1024, 760, false);
             BoltLauncher.StartServer();
-        }
-
-
-        private void Update()
-        {
         }
 
 
