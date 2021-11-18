@@ -16,16 +16,11 @@ namespace ml_prompter.Scenes
 
         private void Start()
         {
-            switch (Application.platform)
-            {
-                case RuntimePlatform.WindowsPlayer:
-                    Instantiate(windowsSceneObject);
-                    break;
-                
-                case RuntimePlatform.Lumin:
-                    Instantiate(magicLeapSceneObject);
-                    break;
-            }
+            #if PLATFORM_LUMIN
+            Instantiate(magicLeapSceneObject);
+            #else
+            Instantiate(windowsSceneObject);
+            #endif
         }
     }
 }

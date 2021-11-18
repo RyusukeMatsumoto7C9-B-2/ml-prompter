@@ -29,7 +29,7 @@
       "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
       "Properties": [
         {
-          "Name": "CaptureString",
+          "Name": "CaptureString1",
           "Enabled": true,
           "Expanded": true,
           "ReplicationMode": 1,
@@ -44,6 +44,8 @@
           }
         }
       ],
+      "EntitySenders": 3,
+      "GlobalSenders": 1,
       "Name": "ScreenCaptureEvent",
       "Guid": "35053b32-02e6-419d-a844-89e6bff19e63",
       "Groups": []
