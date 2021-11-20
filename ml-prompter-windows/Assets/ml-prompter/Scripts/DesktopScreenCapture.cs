@@ -64,27 +64,35 @@ namespace ml_prompter
                     var color = inputColors[(tex2D.width * y) + x];
                     for (int i = 0; i < split; i++)
                     {
-                        float col1 = i * (1f / split);
-                        float col2 = (i + 1f) * (1f / split);
-                        if (col1 <= color.r && color.r <= col2)
+                        if (y % 4 == 0)
                         {
-                            color.r = (col1 + col2) / 2f;
-                        }
+                            float col1 = i * (1f / split);
+                            float col2 = (i + 1f) * (1f / split);
+                            if (col1 <= color.r && color.r <= col2)
+                            {
+                                color.r = (col1 + col2) / 2f;
+                            }
 
-                        if (col1 <= color.g && color.g <= col2)
-                        {
-                            color.g = (col1 + col2) / 2f;
-                        }
+                            if (col1 <= color.g && color.g <= col2)
+                            {
+                                color.g = (col1 + col2) / 2f;
+                            }
 
-                        if (col1 <= color.b && color.b <= col2)
+                            if (col1 <= color.b && color.b <= col2)
+                            {
+                                color.b = (col1 + col2) / 2f;
+                            }
+
+                            float average = (color.r + color.g + color.b) / 3;
+                            byte value = (byte) (average < 0.5f ? 0 : 1);
+                            outputColors[(tex2D.width * y) + x] = new Color(value, value, value);
+                        }
+                        else
                         {
-                            color.b = (col1 + col2) / 2f;
+                            outputColors[(tex2D.width * y) + x] = new Color(0, 0,0);
                         }
                     }
 
-                    float average = (color.r + color.g + color.b) / 3;
-                    float value = average < 0.5f ? 0.5f : 1f;
-                    outputColors[(tex2D.width * y) + x] = new Color(value, value, value);
                 }
             }
 
