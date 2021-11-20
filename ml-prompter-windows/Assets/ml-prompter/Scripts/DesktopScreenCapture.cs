@@ -85,8 +85,6 @@ namespace ml_prompter
                     float average = (color.r + color.g + color.b) / 3;
                     float value = average < 0.5f ? 0.5f : 1f;
                     outputColors[(tex2D.width * y) + x] = new Color(value, value, value);
-                    //outputColors[(tex2D.width * y) + x] = new Color(average, average, average);
-                    //outputColors[(tex2D.width * y) + x] = color;
                 }
             }
 
@@ -115,7 +113,6 @@ namespace ml_prompter
                 }
             }
             result.Add(sb.ToString());
-            Debug.Log($"assyuku mae {sb.ToString()}");
             sb.Clear();
 
             return result.ToArray();
