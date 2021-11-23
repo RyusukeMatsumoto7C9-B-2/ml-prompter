@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +19,9 @@ namespace ml_prompter.Ml.SpeakerTools
 
         [SerializeField] 
         private Text timerText;
+
+        [SerializeField] 
+        private Text networkIndicator;
 
         [SerializeField] 
         private TextMeshProUGUI noteText;
@@ -53,6 +55,7 @@ namespace ml_prompter.Ml.SpeakerTools
 
             UpdatePosition();
         }
+        
 
         private void UpdatePosition()
         {
@@ -82,6 +85,12 @@ namespace ml_prompter.Ml.SpeakerTools
 
 
         public void ResetTimer() => timer.Reset();
+
+
+        public void Connected() => networkIndicator.text = "Connected";
+
+
+        public void Disconnect() => networkIndicator.text = "Disconnect";
     }
 }
 
