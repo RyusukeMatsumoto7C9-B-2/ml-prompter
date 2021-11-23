@@ -17,6 +17,9 @@ namespace ml_prompter.Ml
         private ClientEventSender clientEventSender;
 
         [SerializeField] 
+        private ClientEventListener clientEventListener;
+
+        [SerializeField] 
         private SpeakerNote speakerNote;
         
         
@@ -49,12 +52,16 @@ namespace ml_prompter.Ml
             speakerNote.StartTimer();
         }
 
+        
         private void OnButtonDown(byte controllerId, MLInput.Controller.Button button)
         {
             switch (button)
             {
                 case MLInput.Controller.Button.Bumper:
                     speakerNote.StopTimer();
+                    
+                    // TODO : テストとして切断を行っている.
+                    NetworkConnectionManager.Instance.Disconnection();
                     break;
 
                 case MLInput.Controller.Button.HomeTap:

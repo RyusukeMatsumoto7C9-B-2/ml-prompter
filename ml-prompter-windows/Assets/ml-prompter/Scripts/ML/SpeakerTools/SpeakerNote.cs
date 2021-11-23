@@ -1,4 +1,4 @@
-using System.Diagnostics;
+using ml_prompter.Network;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +22,9 @@ namespace ml_prompter.Ml.SpeakerTools
         private Text timerText;
 
         [SerializeField] 
+        private Text networkIndicator;
+
+        [SerializeField] 
         private TextMeshProUGUI noteText;
 
         private Vector3 lastPosition;
@@ -38,6 +41,9 @@ namespace ml_prompter.Ml.SpeakerTools
             noteText.SetText(note.GetCurrentText());
 
             timer = new SpeakerTimer();
+            
+            NetworkConnectionManager.Instance.RegisterConnectedListener(Connected);
+            NetworkConnectionManager.Instance.RegisterDisconnectedListener(Disconnect);
         }
 
         
@@ -53,6 +59,7 @@ namespace ml_prompter.Ml.SpeakerTools
 
             UpdatePosition();
         }
+        
 
         private void UpdatePosition()
         {
@@ -82,6 +89,12 @@ namespace ml_prompter.Ml.SpeakerTools
 
 
         public void ResetTimer() => timer.Reset();
+
+
+        public void Connected() => networkIndicator.text = "Connected";
+
+
+        public void Disconnect() => networkIndicator.text = "Disconnect";
     }
 }
 
