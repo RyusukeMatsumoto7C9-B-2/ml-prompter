@@ -5,8 +5,6 @@ using System.IO.Compression;
 
 namespace ml_prompter
 {
-
-    
     /// <summary>
     /// デスクトップキャプチャの圧縮/解凍を担当する.
     /// </summary>
@@ -17,18 +15,14 @@ namespace ml_prompter
         /// 文字列を圧縮した文字列として返却.
         /// </summary>
         public static string CompressFromString(string message)
-        {
-            return ByteArrayToString(Compress(Encoding.UTF8.GetBytes(message)));
-        }
-
+            => ByteArrayToString(Compress(Encoding.UTF8.GetBytes(message)));
+    
 
         /// <summary>
         /// 圧縮データを文字列として復元します。
         /// </summary>
         public static string DecompressToStr(string src)
-        {
-             return Encoding.UTF8.GetString(Decompress(StringToByteArray(src)));
-        }
+             => Encoding.UTF8.GetString(Decompress(StringToByteArray(src)));
 
         
         /// <summary>
@@ -89,7 +83,8 @@ namespace ml_prompter
         
         private static byte[] StringToByteArray(string src)
         {
-            var stringArray = src.Split(',');
+            var stringArray = src.Replace("-e", "").Split(',');
+            
             // 最後尾にはEOFが付くためstringのLength - 1を利用する.
             var byteArray = new byte[stringArray.Length - 1];
             for (var i = 0; i < byteArray.Length; ++i)
@@ -99,7 +94,5 @@ namespace ml_prompter
 
             return byteArray;
         }
-
-
     }
 }
