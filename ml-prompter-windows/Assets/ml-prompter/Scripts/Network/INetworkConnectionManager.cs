@@ -12,6 +12,7 @@ namespace ml_prompter.Network
         void StartServer();
         void ReJoinSession();
         void Disconnection();
+        void RegisterConnectedListener(UnityAction listener);
         void RegisterDisconnectedListener(UnityAction listener);
     }
 }

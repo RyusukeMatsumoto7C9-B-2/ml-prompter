@@ -11,22 +11,32 @@ namespace ml_prompter.Network
     public class NetworkConnectionManager : GlobalEventListener, INetworkConnectionManager
     {
         private static NetworkConnectionManager instance;
-        public static INetworkConnectionManager Instance => instance;
+        public static INetworkConnectionManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    var go = new GameObject("NetworkConnectionManager");
+                    instance = go.AddComponent<NetworkConnectionManager>();
+                }
+
+                return instance;
+            }
+        }
 
         private const string NextSceneName = "Main";
 
-        private UnityAction disconnectListener = null;
+        private UnityEvent connectedEvent = new UnityEvent();
+        private UnityEvent disconnectedEvent = new UnityEvent();
+        
         private BoltConnection currentConnection;
         private UdpSession currentSession;
 
 
         private void Start()
         {
-            if (instance == null)
-            {
-                instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
+            DontDestroyOnLoad(gameObject);
         }
         
 
@@ -35,12 +45,13 @@ namespace ml_prompter.Network
         public override void Connected(BoltConnection connection)
         {
             currentConnection = connection;
+            connectedEvent?.Invoke();
         }
 
 
         public override void Disconnected(BoltConnection connection)
         {
-            disconnectListener?.Invoke();
+            disconnectedEvent?.Invoke();
         }
 
         
@@ -90,9 +101,14 @@ namespace ml_prompter.Network
         }
 
 
+        public void RegisterConnectedListener(UnityAction listener)
+        {
+            connectedEvent?.AddListener(listener);
+        }
+
         public void RegisterDisconnectedListener(UnityAction listener)
         {
-            disconnectListener = listener;
+            disconnectedEvent?.AddListener(listener);
         }
 
 
@@ -104,7 +120,9 @@ namespace ml_prompter.Network
 
         public void Disconnection()
         {
-            currentConnection.Disconnect();
+            Debug.Log("切断");
+            
+            //currentConnection.Disconnect();
         }
         
     }
