@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Photon.Bolt;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Bolt;
+
+using ml_prompter.Ml.SpeakerTools;
 
 
 namespace ml_prompter.Network
@@ -15,6 +16,9 @@ namespace ml_prompter.Network
 
         [SerializeField] 
         private Image testImage;
+
+        [SerializeField] 
+        private SpeakerNote speakerNote;
         
         private List<string> screenCaptureStrings = new List<string>();
         private TextureCompressor textureCompressor = new TextureCompressor();
@@ -34,5 +38,6 @@ namespace ml_prompter.Network
                 screenCaptureStrings.Clear();
             }
         }
+        
     }
 }

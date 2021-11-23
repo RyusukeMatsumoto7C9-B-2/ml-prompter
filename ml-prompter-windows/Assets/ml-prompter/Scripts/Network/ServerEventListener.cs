@@ -1,14 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Bolt;
 
 using ml_prompter.Pc;
-
-// テスト.
-using System.Text;
-using System.IO;
-
 
 namespace ml_prompter.Network
 {
@@ -24,22 +18,9 @@ namespace ml_prompter.Network
         // TODO : ここで使えるようにするのは適切かはいまいちわからない.
         [SerializeField] 
         private ServerEventSender sender;
-
-        
         private WindowsInputProxy windowsInputProxy = new WindowsInputProxy();
 
-
-        public override void Connected(BoltConnection connection)
-        {
-
-        }
-
-
-        public override void Disconnected(BoltConnection connection)
-        {
-        }
-
-
+        
         public override void OnEvent(InputEvent ev)
         {
             switch (ev.InputID)
