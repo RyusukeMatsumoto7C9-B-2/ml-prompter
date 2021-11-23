@@ -1,5 +1,8 @@
 using UnityEngine;
 
+using ml_prompter.Network;
+
+
 namespace ml_prompter.Scenes
 {
     /// <summary>
@@ -21,7 +24,19 @@ namespace ml_prompter.Scenes
             #else
             Instantiate(windowsSceneObject);
             #endif
+            
+            NetworkConnectionManager.Instance.RegisterDisconnectedListener(DisconnectedListener);
         }
+
+
+        public void DisconnectedListener()
+        {
+            NetworkConnectionManager.Instance.ReJoinSession();
+        }
+        
+        
+        
+        
     }
 }
     
