@@ -1,3 +1,4 @@
+using ml_prompter.Network;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,6 +41,9 @@ namespace ml_prompter.Ml.SpeakerTools
             noteText.SetText(note.GetCurrentText());
 
             timer = new SpeakerTimer();
+            
+            NetworkConnectionManager.Instance.RegisterConnectedListener(Connected);
+            NetworkConnectionManager.Instance.RegisterDisconnectedListener(Disconnect);
         }
 
         
