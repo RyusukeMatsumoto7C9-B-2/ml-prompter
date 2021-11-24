@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Bolt;
+using System.Collections;
 
 using ml_prompter.Pc;
 
@@ -32,13 +33,13 @@ namespace ml_prompter.Network
                 case 1:
                     Debug.Log("ページ進める");
                     windowsInputProxy.RightArrowKey();
-                    Capture();
+                    StartCoroutine(ExecuteCapture());
                     break;
 
                 case 2:
                     Debug.Log("ページ戻す");
                     windowsInputProxy.LeftArrowKey();
-                    Capture();
+                    StartCoroutine(ExecuteCapture());
                     break;
             }
         }
@@ -50,6 +51,13 @@ namespace ml_prompter.Network
 
         [SerializeField] private MeshRenderer m;
         private TextureCompressor textureCompressor = new TextureCompressor();
+
+
+        private IEnumerator ExecuteCapture()
+        {
+            yield return new WaitForSeconds(0.05f);
+            Capture();
+        }
 
 
         // TODO : 後で private メソッドに変更する.

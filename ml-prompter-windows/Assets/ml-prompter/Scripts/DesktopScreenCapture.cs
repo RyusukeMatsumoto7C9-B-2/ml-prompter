@@ -64,7 +64,7 @@ namespace ml_prompter
                     var color = inputColors[(tex2D.width * y) + x];
                     for (int i = 0; i < split; i++)
                     {
-                        if (y % 4 == 0)
+                        //if (y % 4 == 0)
                         {
                             float col1 = i * (1f / split);
                             float col2 = (i + 1f) * (1f / split);
@@ -87,10 +87,12 @@ namespace ml_prompter
                             byte value = (byte) (average < 0.5f ? 0 : 1);
                             outputColors[(tex2D.width * y) + x] = new Color(value, value, value);
                         }
+                        /*
                         else
                         {
                             outputColors[(tex2D.width * y) + x] = new Color(0, 0,0);
                         }
+                    */
                     }
 
                 }
