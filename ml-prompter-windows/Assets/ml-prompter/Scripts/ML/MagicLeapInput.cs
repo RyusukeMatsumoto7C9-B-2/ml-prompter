@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.MagicLeap;
 
@@ -33,7 +34,9 @@ namespace ml_prompter.Ml
 
         public float triggerValue = 0f;
         public bool IsTriggerOn => 1f <= triggerValue;
-        
+        private readonly List<GameObject> buttonList = new List<GameObject>();
+     
+            
         private IEnumerator Start()
         {
             yield return new WaitUntil(() => MLInput.IsStarted);
@@ -45,14 +48,10 @@ namespace ml_prompter.Ml
             // コントローラのボタン入力.
             MLInput.OnControllerButtonDown += OnButtonDown;
 
-            var a = MLInput.GetController(0);
-            a.StartFeedbackPatternVibe(MLInput.Controller.FeedbackPatternVibe.Click, MLInput.Controller.FeedbackIntensity.Medium);
+            InitButton();
             
-            nextSlideButton.RegisterListener(OnNextSlideButton);
-            prevSlideButton.RegisterListener(OnPrevSlideButton);
-            nextNoteButton.RegisterListener(OnNextNoteButton);
-            prevNoteButton.RegisterListener(OnPrevNoteButton);
-            screenShotButton.RegisterListener(OnScreenShotButton);
+            // とりあえず完了の合図に振動させておく.
+            HapticVibration();
         }
 
 
@@ -73,6 +72,42 @@ namespace ml_prompter.Ml
         }
 
 
+        private void InitButton()
+        {
+            nextSlideButton.RegisterListener(OnNextSlideButton);
+            prevSlideButton.RegisterListener(OnPrevSlideButton);
+            nextNoteButton.RegisterListener(OnNextNoteButton);
+            prevNoteButton.RegisterListener(OnPrevNoteButton);
+            screenShotButton.RegisterListener(OnScreenShotButton);
+            
+            buttonList.Add(nextSlideButton.gameObject);
+            buttonList.Add(prevSlideButton.gameObject);
+            buttonList.Add(nextNoteButton.gameObject);
+            buttonList.Add(prevNoteButton.gameObject);
+            buttonList.Add(screenShotButton.gameObject);
+            
+            HideButton();
+        }
+
+
+        private void HideButton()
+        {
+            foreach (var button in buttonList)
+            {
+                button.SetActive(false);
+            }
+        }
+
+
+        private void ShowButton()
+        {
+            foreach (var button in buttonList)
+            {
+                button.SetActive(true);
+            }
+        }
+
+
         private void HapticVibration()
         {
             var controller = MLInput.GetController(0);
@@ -84,13 +119,22 @@ namespace ml_prompter.Ml
         {
             speakerNote.ResetTimer();
             speakerNote.StartTimer();
+
             triggerValue = value;
+            if (IsTriggerOn)
+            {
+                ShowButton();
+            }
         }
 
 
         private void OnTriggerUp(byte id, float value)
         {
             triggerValue = value;
+            if (!IsTriggerOn)
+            {
+                HideButton();
+            }
         }
 
 
