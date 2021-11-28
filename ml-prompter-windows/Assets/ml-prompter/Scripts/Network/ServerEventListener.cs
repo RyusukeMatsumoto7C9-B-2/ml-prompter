@@ -41,6 +41,11 @@ namespace ml_prompter.Network
                     windowsInputProxy.LeftArrowKey();
                     StartCoroutine(ExecuteCapture());
                     break;
+                
+                case 3:
+                    Debug.Log("スクリーンショットを撮影して送信のみ.");
+                    StartCoroutine(ExecuteCapture());
+                    break;
             }
         }
 
