@@ -13,15 +13,26 @@ namespace ml_prompter.Ml
     public class MagicLeapInput : MonoBehaviour
     {
         #if PLATFORM_LUMIN
-        [SerializeField] 
-        private ClientEventSender clientEventSender;
+        [SerializeField] private ClientEventSender clientEventSender;
+        [SerializeField] private ClientEventListener clientEventListener;
+        [SerializeField] private SpeakerNote speakerNote;
+        [SerializeField] private Transform mainCamera;
 
-        [SerializeField] 
-        private ClientEventListener clientEventListener;
+        [Space]
 
-        [SerializeField] 
-        private SpeakerNote speakerNote;
-        
+        // 次/前のスライド ( スクリーンショットも撮影する )
+        [SerializeField] private SpeakerNoteButton nextSlideButton;
+        [SerializeField] private SpeakerNoteButton prevSlideButton;
+
+        // 次/前のノート ( ノートのページ送りのみ )
+        [SerializeField] private SpeakerNoteButton nextNoteButton;
+        [SerializeField] private SpeakerNoteButton prevNoteButton;
+
+        // スクリーンショットのみ.
+        [SerializeField] private SpeakerNoteButton screenShotButton;
+
+        public float triggerValue = 0f;
+        public bool IsTriggerOn => 1f <= triggerValue;
         
         private IEnumerator Start()
         {
@@ -29,20 +40,43 @@ namespace ml_prompter.Ml
 
             // コントローラのトリガー入力.
             MLInput.OnTriggerDown += OnTriggerDown;
+            MLInput.OnTriggerUp += OnTriggerUp;
 
             // コントローラのボタン入力.
             MLInput.OnControllerButtonDown += OnButtonDown;
 
-            // タッチパッド入力.
-            MLInput.OnControllerTouchpadGestureStart += OnTouchpadGestureStart;
+            var a = MLInput.GetController(0);
+            a.StartFeedbackPatternVibe(MLInput.Controller.FeedbackPatternVibe.Click, MLInput.Controller.FeedbackIntensity.Medium);
+            
+            nextSlideButton.RegisterListener(OnNextSlideButton);
+            prevSlideButton.RegisterListener(OnPrevSlideButton);
+            nextNoteButton.RegisterListener(OnNextNoteButton);
+            prevNoteButton.RegisterListener(OnPrevNoteButton);
+            screenShotButton.RegisterListener(OnScreenShotButton);
         }
 
+
+        private void Update()
+        {
+            // ここで移動処理.
+            Vector3 temp = mainCamera.position + (mainCamera.forward * 0.5f);
+            transform.position = temp;
+            transform.LookAt(mainCamera);
+        }
+        
 
         private void OnDestroy()
         {
             MLInput.OnTriggerDown -= OnTriggerDown;
+            MLInput.OnTriggerUp -= OnTriggerUp;
             MLInput.OnControllerButtonDown -= OnButtonDown;
-            MLInput.OnControllerTouchpadGestureStart -= OnTouchpadGestureStart;
+        }
+
+
+        private void HapticVibration()
+        {
+            var controller = MLInput.GetController(0);
+            controller.StartFeedbackPatternVibe(MLInput.Controller.FeedbackPatternVibe.Click, MLInput.Controller.FeedbackIntensity.Medium);
         }
 
 
@@ -50,18 +84,22 @@ namespace ml_prompter.Ml
         {
             speakerNote.ResetTimer();
             speakerNote.StartTimer();
+            triggerValue = value;
         }
 
-        
+
+        private void OnTriggerUp(byte id, float value)
+        {
+            triggerValue = value;
+        }
+
+
         private void OnButtonDown(byte controllerId, MLInput.Controller.Button button)
         {
             switch (button)
             {
                 case MLInput.Controller.Button.Bumper:
                     speakerNote.StopTimer();
-                    
-                    // TODO : テストとして切断を行っている.
-                    NetworkConnectionManager.Instance.Disconnection();
                     break;
 
                 case MLInput.Controller.Button.HomeTap:
@@ -70,46 +108,47 @@ namespace ml_prompter.Ml
             }
         }
 
-
-        private void OnTouchpadGestureStart(byte id, MLInput.Controller.TouchpadGesture gesture)
+        
+        private void OnNextSlideButton()
         {
-            switch (gesture.Direction)
-            {
-                case MLInput.Controller.TouchpadGesture.GestureDirection.Left:
-                    Debug.Log("Left");
-                    clientEventSender.SendInputEvent(2);
-                    speakerNote.PreviousPage();
-                    break;
-                
-                case MLInput.Controller.TouchpadGesture.GestureDirection.Right:
-                    Debug.Log("Right");
-                    clientEventSender.SendInputEvent(1);
-                    speakerNote.NextPage();
-                    break;
-                
-                case MLInput.Controller.TouchpadGesture.GestureDirection.Clockwise:
-                    Debug.Log("Clockwise");
-                    break;
-                
-                case MLInput.Controller.TouchpadGesture.GestureDirection.Down:
-                    Debug.Log("Down");
-                    break;
-                
-                case MLInput.Controller.TouchpadGesture.GestureDirection.Up:
-                    Debug.Log("Up" );
-                    break;
-                
-                case MLInput.Controller.TouchpadGesture.GestureDirection.In:
-                    Debug.Log("In");
-                    break;
-                
-                case MLInput.Controller.TouchpadGesture.GestureDirection.Out:
-                    Debug.Log("Out");
-                    break;
-            }
+            if (!IsTriggerOn) return;
+            HapticVibration();
+            clientEventSender.SendInputEvent(1);
         }
 
-        #endif
+
+        private void OnPrevSlideButton()
+        {
+            if (!IsTriggerOn) return;
+            HapticVibration();
+            clientEventSender.SendInputEvent(2);
+        }
+
+
+        private void OnNextNoteButton()
+        {
+            if (!IsTriggerOn) return;
+            HapticVibration();
+            speakerNote.NextPage();
+        }
+
+
+        private void OnPrevNoteButton()
+        {
+            if (!IsTriggerOn) return;
+            HapticVibration();
+            speakerNote.PreviousPage();
+        }
+
+
+        private void OnScreenShotButton()
+        {
+            if (!IsTriggerOn) return;
+            HapticVibration();
+            clientEventSender.SendInputEvent(3);
+        }
+
+#endif
     }
 }
 
