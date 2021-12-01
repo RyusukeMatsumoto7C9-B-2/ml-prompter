@@ -117,9 +117,6 @@ namespace ml_prompter.Ml
 
         private void OnTriggerDown(byte id, float value)
         {
-            speakerNote.ResetTimer();
-            speakerNote.StartTimer();
-
             triggerValue = value;
             if (IsTriggerOn)
             {
@@ -143,7 +140,14 @@ namespace ml_prompter.Ml
             switch (button)
             {
                 case MLInput.Controller.Button.Bumper:
-                    speakerNote.StopTimer();
+                    if (!speakerNote.TimerRunning)
+                    {
+                        speakerNote.StartTimer();
+                    }
+                    else
+                    {
+                        speakerNote.StopTimer();
+                    }
                     break;
 
                 case MLInput.Controller.Button.HomeTap:

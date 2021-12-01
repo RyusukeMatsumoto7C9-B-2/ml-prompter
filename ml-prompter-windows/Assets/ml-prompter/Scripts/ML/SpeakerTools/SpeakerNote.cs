@@ -12,6 +12,9 @@ namespace ml_prompter.Ml.SpeakerTools
     public class SpeakerNote : MonoBehaviour
     {
 
+        public bool TimerRunning => timerRunning;
+
+        
         [SerializeField] 
         private float distance;
 
@@ -30,6 +33,7 @@ namespace ml_prompter.Ml.SpeakerTools
         private Vector3 lastPosition;
         private SpeakerNoteText note = new SpeakerNoteText();
         private SpeakerTimer timer = new SpeakerTimer();
+        private bool timerRunning = false;
         
         
         private void Start()
@@ -82,13 +86,25 @@ namespace ml_prompter.Ml.SpeakerTools
         public void PreviousPage() => noteText.SetText(note.Previous());
 
 
-        public void StartTimer() => timer.Start();
+        public void StartTimer()
+        {
+            timer.Start();
+            timerRunning = true;
+        }
 
-        
-        public void StopTimer() => timer.Stop();
+
+        public void StopTimer()
+        {
+            timer.Stop();
+            timerRunning = false;
+        }
 
 
-        public void ResetTimer() => timer.Reset();
+        public void ResetTimer()
+        {
+            timer.Reset();
+            timerRunning = false;
+        }
 
 
         public void Connected() => networkIndicator.text = "Connected";
