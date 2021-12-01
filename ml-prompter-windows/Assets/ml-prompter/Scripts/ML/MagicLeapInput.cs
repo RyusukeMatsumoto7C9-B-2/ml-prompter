@@ -59,7 +59,7 @@ namespace ml_prompter.Ml
         {
             // ここで移動処理.
             Vector3 temp = mainCamera.position + (mainCamera.forward * 0.5f);
-            transform.position = temp;
+            transform.position = Vector3.Lerp(transform.position, temp, Time.deltaTime * 3);
             transform.LookAt(mainCamera);
         }
         
