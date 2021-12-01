@@ -353,7 +353,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 403, y: -215}
+  m_AnchoredPosition: {x: 403, y: -692}
   m_SizeDelta: {x: 1600, y: 900}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7039696184615636014
@@ -762,6 +762,7 @@ MonoBehaviour:
   nextNoteButton: {fileID: 5453161608577008703}
   prevNoteButton: {fileID: 8692761904352387772}
   screenShotButton: {fileID: 9033408743631409243}
+  distance: 0.55
   triggerValue: 0
 --- !u!1 &2626493754676502110
 GameObject:
@@ -1604,7 +1605,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -87, y: 0}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!33 &3790036863690095710

@@ -68,6 +68,7 @@ namespace ml_prompter.Ml.SpeakerTools
         private void UpdatePosition()
         {
             Vector3 tempPosition = mainCamera.TransformDirection(Vector3.forward) * 3;
+            tempPosition.y = mainCamera.transform.position.y;
             lastPosition = transform.position;
             transform.position = Vector3.Slerp(lastPosition, tempPosition, Time.deltaTime * 3);
             transform.LookAt(mainCamera);

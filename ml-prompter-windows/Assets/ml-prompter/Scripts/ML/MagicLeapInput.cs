@@ -13,6 +13,9 @@ namespace ml_prompter.Ml
     /// </summary>
     public class MagicLeapInput : MonoBehaviour
     {
+        private bool IsTriggerOn => 1f <= triggerValue;
+
+        
         #if PLATFORM_LUMIN
         [SerializeField] private ClientEventSender clientEventSender;
         [SerializeField] private ClientEventListener clientEventListener;
@@ -31,10 +34,11 @@ namespace ml_prompter.Ml
 
         // スクリーンショットのみ.
         [SerializeField] private SpeakerNoteButton screenShotButton;
-
+        [SerializeField] private float distance = 0.4f;
+        
         public float triggerValue = 0f;
-        public bool IsTriggerOn => 1f <= triggerValue;
         private readonly List<GameObject> buttonList = new List<GameObject>();
+        
      
             
         private IEnumerator Start()
@@ -58,7 +62,7 @@ namespace ml_prompter.Ml
         private void Update()
         {
             // ここで移動処理.
-            Vector3 temp = mainCamera.position + (mainCamera.forward * 0.5f);
+            Vector3 temp = mainCamera.position + (mainCamera.forward * distance);
             transform.position = Vector3.Lerp(transform.position, temp, Time.deltaTime * 3);
             transform.LookAt(mainCamera);
         }

@@ -178,9 +178,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagicLeapSceneObject
       objectReference: {fileID: 0}
-    - target: {fileID: 3714517730000267563, guid: cd46ee4e33e5d4245a58cb12f9e309f2, type: 3}
-      propertyPath: m_TagString
-      value: SpeakerController
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd46ee4e33e5d4245a58cb12f9e309f2, type: 3}
