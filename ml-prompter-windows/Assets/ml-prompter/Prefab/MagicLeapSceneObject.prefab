@@ -762,7 +762,7 @@ MonoBehaviour:
   nextNoteButton: {fileID: 5453161608577008703}
   prevNoteButton: {fileID: 8692761904352387772}
   screenShotButton: {fileID: 9033408743631409243}
-  distance: 0.55
+  distance: 0.5
   triggerValue: 0
 --- !u!1 &2626493754676502110
 GameObject:
@@ -3032,6 +3032,10 @@ PrefabInstance:
     - target: {fileID: 1463616170062846, guid: 6884f69ad0adbb441905ff499f5d1ece, type: 3}
       propertyPath: m_Name
       value: Controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 1463616170062846, guid: 6884f69ad0adbb441905ff499f5d1ece, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1463616170062846, guid: 6884f69ad0adbb441905ff499f5d1ece, type: 3}
       propertyPath: m_TagString
