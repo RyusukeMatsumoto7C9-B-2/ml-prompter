@@ -13,10 +13,10 @@ namespace ml_prompter.Ml
     /// </summary>
     public class MagicLeapInput : MonoBehaviour
     {
+
+        #if PLATFORM_LUMIN
         private bool IsTriggerOn => 1f <= triggerValue;
 
-        
-        #if PLATFORM_LUMIN
         [SerializeField] private ClientEventSender clientEventSender;
         [SerializeField] private ClientEventListener clientEventListener;
         [SerializeField] private SpeakerNote speakerNote;
