@@ -35,7 +35,7 @@ namespace ml_prompter.Network
             IsSendingScreenShotData = true;
 
             Debug.Log($"ML_ CaptureStringsCount {captureStrings.Length} {captureStrings[captureStrings.Length - 1]}");
-
+            float time = Time.realtimeSinceStartup;
             foreach (var data in captureStrings)
             {
                 var ev = ScreenCaptureEvent.Create();
@@ -43,7 +43,7 @@ namespace ml_prompter.Network
                 ev.Send();
                 yield return new WaitForEndOfFrame();
             }
-            Debug.Log("ML_ 送信完了.");
+            Debug.Log($"ML_ 送信完了. 経過時間 : {Time.realtimeSinceStartup - time}");
             IsSendingScreenShotData = false;
         }
 
