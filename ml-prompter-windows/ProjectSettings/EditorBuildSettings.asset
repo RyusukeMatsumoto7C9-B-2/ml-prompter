@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ml-prompter/Scenes/Windows_Start.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/ml-prompter/Scenes/MagicLeap_Start.unity
     guid: 04af59bceadc7fe44827f53b7604baa1
-  - enabled: 1
+  - enabled: 0
     path: Assets/ml-prompter/Scenes/Main.unity
     guid: 430c9fe07c4df6d48b51c4375a6ca91f
   m_configObjects:
