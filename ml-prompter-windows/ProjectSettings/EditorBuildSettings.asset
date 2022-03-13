@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/ml_prompter_windows/Scenes/Test.unity
-    guid: 7d5965137a77db84ca4bc59fd4fe2c0b
+    path: Assets/MagicLeap/WebRTC/Scenes/WebRTC.unity
+    guid: 045c1e8ebe1715949a4fa2b840283c7a
   m_configObjects:
     com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: 7f4f06d7317ee9e4eb5c2fc67c040ac7, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 724c4aa73c7d20e40ba07fb907ff450d, type: 2}
