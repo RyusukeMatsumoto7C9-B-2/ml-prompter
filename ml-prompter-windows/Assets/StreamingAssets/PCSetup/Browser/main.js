@@ -3,9 +3,13 @@
 const hostInput = document.getElementById('host');
 const startButton = document.getElementById('startButton');
 const hangupButton = document.getElementById('hangupButton');
+const serverStartButton = document.getElementById('serverStartButton');
 hangupButton.disabled = true;
 startButton.addEventListener('click', start);
 hangupButton.addEventListener('click', hangup);
+serverStartButton.addEventListener('click', serverStart);
+serverStartButton.disabled = false;
+
 
 const localVideo = document.getElementById('localVideo');
 const remoteVideo = document.getElementById('remoteVideo');
@@ -67,6 +71,30 @@ const offerOptions = {
   offerToReceiveAudio: 1,
   offerToReceiveVideo: 1
 };
+
+
+// シグナリングサーバーを起動( ローカルネットワーク用 ).
+function sleep(msec) {
+  return new Promise(function(resolve) {
+
+    setTimeout(function() {resolve()}, msec);
+
+  })
+}
+
+function serverStart() {
+  try {
+    document.dispatchEvent(new KeyboardEvent("keyup", {key: "ArrowLeft"}));
+    document.dispatchEvent(new KeyboardEvent("keydown", {key: "ArrowLeft"}));
+    document.dispatchEvent(new KeyboardEvent("keydown", {key: "ArrowLeft"}));
+    document.dispatchEvent(new KeyboardEvent("keydown", {key: "ArrowLeft"}));
+    alert("キー入力を代行したよ");
+  }
+  catch(e)
+  {
+    alert(e);
+  }
+}
 
 
 async function start() {
@@ -227,6 +255,19 @@ function setupDataChannel() {
         chat.textContent += "Peer (binary): " + bufferView.toString() + "\n";
       } else if (typeof(ev.data) == "string") {
         chat.textContent += "Peer: " + ev.data + "\n";
+        
+        // ここでイベントを発火してみる
+        try{
+          var keyboardEvent = new KeyboardEvent('keypress', {bubbles:true});
+          Object.defineProperty(keyboardEvent, 'charCode', {get:function(){return this.charCodeVal;}});
+          keyboardEvent.charCodeVal = [37];
+          document.body.dispatchEvent(keyboardEvent);
+          //document.dispatchEvent(new KeyboardEvent("keydown", {key: "a"}))
+        }
+        catch(e){
+          alert(e);
+        }
+
       } else {
         console.log("recieved data channel message of unexpected type %s" + typeof(ev.data));
         chat.textContent += "Peer: " + ev.data + "\n";
@@ -279,3 +320,6 @@ localVideo.addEventListener('loadedmetadata', function() {
 remoteVideo.addEventListener('loadedmetadata', function() {
   console.log(`Remote video videoWidth: ${this.videoWidth}px,  videoHeight: ${this.videoHeight}px`);
 });
+
+
+
