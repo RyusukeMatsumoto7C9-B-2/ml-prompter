@@ -270,20 +270,7 @@ function setupDataChannel() {
         var bufferView = new Int32Array(ev.data);
         chat.textContent += "Peer (binary): " + bufferView.toString() + "\n";
       } else if (typeof(ev.data) == "string") {
-        chat.textContent += "Peer: " + ev.data + "\n";
-        
-        // ここでイベントを発火してみる
-        try{
-          var keyboardEvent = new KeyboardEvent('keypress', {bubbles:true});
-          Object.defineProperty(keyboardEvent, 'charCode', {get:function(){return this.charCodeVal;}});
-          keyboardEvent.charCodeVal = [37];
-          document.body.dispatchEvent(keyboardEvent);
-          //document.dispatchEvent(new KeyboardEvent("keydown", {key: "a"}))
-        }
-        catch(e){
-          alert(e);
-        }
-
+        chat.textContent += "Peer: " + ev.data + "\n";        
       } else {
         console.log("recieved data channel message of unexpected type %s" + typeof(ev.data));
         chat.textContent += "Peer: " + ev.data + "\n";
@@ -291,6 +278,7 @@ function setupDataChannel() {
     }
   }
 }
+
 
 async function update() {
   try {
