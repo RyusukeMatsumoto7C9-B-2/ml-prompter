@@ -240,3 +240,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+ml-prompter-windows-browser/.idea
+ml-prompter-windows-browser/ml-prompter-WebSocketServer/.idea
