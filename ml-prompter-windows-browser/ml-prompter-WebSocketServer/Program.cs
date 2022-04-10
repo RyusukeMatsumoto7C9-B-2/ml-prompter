@@ -5,13 +5,50 @@ using System.Net;
 using System.Net.WebSockets;
 using System.Threading;
 
+
+// DLLImportに必要.
+using System.Runtime.InteropServices;
+
 namespace ml_prompter_WebSocketServer
 {
+
+    
+    #region --- Win32Api ---
+    /// <summary>
+    /// Win32APIを呼び出すためのクラス.
+    /// </summary>
+    public class Win32Api
+    {
+        // キーの押上.
+        public const int KEYEVENT_KEYUP = 0x0002;
+
+
+        // 0キー.
+        public static readonly byte VK_0 = 0x30;
+        public static readonly byte VK_1 = 0x01;
+        
+        
+        [DllImport("user32.dll")]
+        public static extern uint keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
+    }
+    #endregion --- Win32Api ---
+    
+
+
     class Program
     {
         static void Main(string[] args)
         {
             Console.ReadLine();
+            Console.WriteLine("5秒後にキーボードシミュレートします.");
+            Thread.Sleep(5000);
+            Win32Api.keybd_event(Win32Api.VK_0, 0, 0, 0);
+            Win32Api.keybd_event(Win32Api.VK_0, 0, Win32Api.KEYEVENT_KEYUP, 0 );
+
+            Console.WriteLine("キーシミュレートしました、何かキーを入力してください.");
+            Console.ReadLine();
+
+            return;
             Task task = Run();
             while (!task.IsCompleted)
             {
@@ -59,7 +96,54 @@ namespace ml_prompter_WebSocketServer
             var wsc = await hc.AcceptWebSocketAsync(null);
             var ws = wsc.WebSocket;
 
+
+            var buffer = new byte[1024];
+            while (true)
+            {
+                //所得情報確保用の配列を準備
+                var segment = new ArraySegment<byte>(buffer);
+                
+                //クライアントからのレスポンス情報を取得
+                var result = await ws.ReceiveAsync(segment, CancellationToken.None);
+                
+                //バイナリの場合は、当処理では扱えないため、処理を中断
+                if (result.MessageType == WebSocketMessageType.Binary)
+                {
+                    await ws.CloseAsync(WebSocketCloseStatus.InvalidMessageType,
+                        "I don't do binary", CancellationToken.None);
+                    return;
+                }
+                
+                //メッセージの最後まで取得
+                int count = result.Count;
+                while (!result.EndOfMessage)
+                {
+                    if (count >= buffer.Length)
+                    {
+                        await ws.CloseAsync(WebSocketCloseStatus.InvalidPayloadData,
+                            "That's too long", CancellationToken.None);
+                        return;
+                    }
+                    segment = new ArraySegment<byte>(buffer, count, buffer.Length - count);
+                    result = await ws.ReceiveAsync(segment, CancellationToken.None);
+
+                    count += result.Count;
+                }
+
+                //メッセージを取得
+                var message = Encoding.UTF8.GetString(buffer, 0, count);
+                Console.WriteLine("> " + message);
+                if (message == "close")
+                {
+                    Console.WriteLine("接続を閉じる");
+                    await ws.CloseAsync(WebSocketCloseStatus.NormalClosure,
+                        "Done", CancellationToken.None);
+                }
+            }
+
+
             //１０回のレスポンスを返却
+            /*
             Console.WriteLine("10回のレスポンスを返却.");
             for (int i = 0; i != 10; ++i)
             {
@@ -78,11 +162,12 @@ namespace ml_prompter_WebSocketServer
                     true, CancellationToken.None);
                 Console.WriteLine("レスポンスを返却");
             }
-
+            
             //接続を閉じる
             Console.WriteLine("接続を閉じる");
             await ws.CloseAsync(WebSocketCloseStatus.NormalClosure,
                 "Done", CancellationToken.None);
+            */
         }
     }
 }
