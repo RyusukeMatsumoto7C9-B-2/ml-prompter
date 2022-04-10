@@ -29,6 +29,10 @@ namespace ml_prompter_WebSocketServer
         }
         
         
+        /// <summary>
+        /// WebSocketサーバーを立ち上げ.
+        /// </summary>
+        /// <returns></returns>
         static async Task Run()
         {
             Console.WriteLine("非同期処理Run()");
