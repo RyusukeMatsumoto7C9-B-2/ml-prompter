@@ -14,14 +14,14 @@ namespace ml_prompter_WebSocketServer
     {
         static void Main(string[] args)
         {
+            /*
             Console.WriteLine("5秒後にキーボードシミュレートします.");
             Thread.Sleep(5000);
             Win32Api.KeyBoardEvent(Win32Api.VK_1);
 
             Console.WriteLine("キーシミュレートしました、何かキーを入力してください.");
             Console.ReadLine();
-
-            return;
+            */
             Task task = Run();
             while (!task.IsCompleted)
             {

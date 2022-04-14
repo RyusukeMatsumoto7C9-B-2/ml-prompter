@@ -3,12 +3,18 @@
 const hostInput = document.getElementById('host');
 const startButton = document.getElementById('startButton');
 const hangupButton = document.getElementById('hangupButton');
-const serverStartButton = document.getElementById('serverStartButton');
+
+// WebSocketサーバーと接続するボタン.
+const connectingWebSocketButton = document.getElementById('connectingWebSocketButton');
+const sendMessageAButton = document.getElementById('sendMessageAButton');
+
+
 hangupButton.disabled = true;
 startButton.addEventListener('click', start);
 hangupButton.addEventListener('click', hangup);
-serverStartButton.addEventListener('click', serverStart);
-serverStartButton.disabled = false;
+
+connectingWebSocketButton.addEventListener('click', connectingWebSocket);
+sendMessageAButton.addEventListener('click', sendMessageA);
 
 
 const localVideo = document.getElementById('localVideo');
@@ -84,11 +90,13 @@ function sleep(msec) {
 
 
 // WebSocketでサーバーと接続.
-function serverStart() {
+var connection;
+function connectingWebSocket() {
   console.log(location.pathname);
 
   console.log("WebSocketでサーバーに接続.");
-  var connection = new WebSocket('ws://localhost:8000/ws/');
+  //var connection = new WebSocket('ws://localhost:8000/ws/');
+  connection = new WebSocket('ws://localhost:8000/ws/');
   connection.onopen = function(event) {
     console.log("通信接続イベント受信");
     console.log(event.data);
@@ -112,6 +120,15 @@ function serverStart() {
   };
 }
  
+function sendMessageA()
+{
+  console.log("Hogeメッセージを送信します");
+  connection.send("Hoge");
+}
+
+
+
+
 
 async function start() {
   try {
