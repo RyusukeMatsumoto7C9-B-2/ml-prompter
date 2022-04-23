@@ -6,15 +6,12 @@ const hangupButton = document.getElementById('hangupButton');
 
 // WebSocketサーバーと接続するボタン.
 const connectingWebSocketButton = document.getElementById('connectingWebSocketButton');
-const sendMessageAButton = document.getElementById('sendMessageAButton');
 
 
 hangupButton.disabled = true;
 startButton.addEventListener('click', start);
 hangupButton.addEventListener('click', hangup);
-
 connectingWebSocketButton.addEventListener('click', connectingWebSocket);
-sendMessageAButton.addEventListener('click', sendMessageA);
 
 
 const localVideo = document.getElementById('localVideo');
@@ -36,8 +33,6 @@ function handleLocalMediaStreamError(error)
 }
 
 
-
-//
 
 const localAudioEnabled = document.querySelector('#localAudioEnabled');
 const localVideoEnabled = document.querySelector('#localVideoEnabled');
@@ -79,18 +74,9 @@ const offerOptions = {
 };
 
 
-// シグナリングサーバーを起動( ローカルネットワーク用 ).
-function sleep(msec) {
-  return new Promise(function(resolve) {
-
-    setTimeout(function() {resolve()}, msec);
-
-  })
-}
-
-
-// WebSocketでサーバーと接続.
+// WebSocketサーバと接続した情報.
 var connection;
+
 function connectingWebSocket() {
   console.log(location.pathname);
 
