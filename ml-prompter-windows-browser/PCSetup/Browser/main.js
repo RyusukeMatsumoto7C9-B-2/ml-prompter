@@ -1,10 +1,14 @@
 'use strict';
 
 const hostInput = document.getElementById('host');
+
+// ブラウザ上では Connect ボタン.
 const startButton = document.getElementById('startButton');
+
+// ブラウザ上では Disconnect ボタン.
 const hangupButton = document.getElementById('hangupButton');
 
-// WebSocketサーバーと接続するボタン.
+// WebSocketサーバーと接続するボタン( 現在ブラウザを起動したときに自動で接続するが一応残している ).
 const connectingWebSocketButton = document.getElementById('connectingWebSocketButton');
 
 
@@ -88,28 +92,30 @@ function connectingWebSocket() {
     console.log(event.data);
   };
 
-  //エラー発生
+  // エラー発生.
   connection.onerror = function(error) {
     console.log("エラー発生イベント受信");
     console.log(error.data);
   };
 
-  //メッセージ受信
+  // WebSocketサーバからメッセージ受信.
   connection.onmessage = function(event) {
     console.log("メッセージ受信");
     console.log(event.data);
   };
 
-  //切断
+  // WebSocketと切断.
   connection.onclose = function() {
     console.log("通信切断イベント受信");
   };
 }
  
-function sendMessageA()
+
+// WebSocket側にメッセージを送信.
+function sendMessageToWebSocket(message)
 {
-  console.log("Hogeメッセージを送信します");
-  connection.send("Hoge");
+  console.log("Hogeメッセージを送信します : " + message);
+  connection.send(message.toString());
 }
 
 
@@ -207,6 +213,9 @@ async function start() {
   hostInput.disabled = true;
   startButton.disabled = true;
   hangupButton.disabled = false;
+
+  // WebSocketサーバーへ接続.
+  connectingWebSocket();
 }
 
 async function hangup() {
@@ -268,12 +277,16 @@ function setupDataChannel() {
       sendButton.disabled = true;
       sendBinaryButton.disabled = true;
     }
+
+    // メッセージの受け取り.
     dataChannel.onmessage = function(ev) {
       if (ev.data instanceof ArrayBuffer) {
         var bufferView = new Int32Array(ev.data);
         chat.textContent += "Peer (binary): " + bufferView.toString() + "\n";
       } else if (typeof(ev.data) == "string") {
-        chat.textContent += "Peer: " + ev.data + "\n";        
+        chat.textContent += "Peer: " + ev.data + "\n";
+        
+        sendMessageToWebSocket(ev.data);
       } else {
         console.log("recieved data channel message of unexpected type %s" + typeof(ev.data));
         chat.textContent += "Peer: " + ev.data + "\n";
