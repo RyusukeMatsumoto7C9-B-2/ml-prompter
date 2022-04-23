@@ -14,6 +14,12 @@ namespace ml_prompter_WebSocketServer
     {
         static void Main(string[] args)
         {
+            
+            // シグナリングサーバーとブラウザを起動.
+            var executeFilePathManager = new ExecuteFilePathManager();
+            System.Diagnostics.Process.Start(executeFilePathManager.SignalingServerPath);
+            System.Diagnostics.Process.Start(executeFilePathManager.BrowserPath);
+            
             /*
             Console.WriteLine("5秒後にキーボードシミュレートします.");
             Thread.Sleep(5000);
@@ -22,7 +28,9 @@ namespace ml_prompter_WebSocketServer
             Console.WriteLine("キーシミュレートしました、何かキーを入力してください.");
             Console.ReadLine();
             */
-            Task task = Run();
+
+            // TODO : 現在自動起動の部分のテストのためここから下をいったん止めてる.
+            Task task = RunWebSocketServer();
             while (!task.IsCompleted)
             {
             }
@@ -43,7 +51,7 @@ namespace ml_prompter_WebSocketServer
         /// WebSocketサーバーを立ち上げ.
         /// </summary>
         /// <returns></returns>
-        static async Task Run()
+        static async Task RunWebSocketServer()
         {
             Console.WriteLine("非同期処理Run()");
 
@@ -111,6 +119,11 @@ namespace ml_prompter_WebSocketServer
                     Console.WriteLine("接続を閉じる");
                     await ws.CloseAsync(WebSocketCloseStatus.NormalClosure,
                         "Done", CancellationToken.None);
+                }
+
+                if (message == "l")
+                {
+                    Console.WriteLine("前のスライドに戻る.");
                 }
             }
 

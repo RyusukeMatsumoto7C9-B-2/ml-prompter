@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\ExecuteFilePathManager.cs" />
     <Compile Include="Scripts\Program.cs" />
     <Compile Include="Scripts\Win32Api.cs" />
   </ItemGroup>
