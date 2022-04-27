@@ -694,18 +694,6 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: ToggleRemoteVideo
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: ToggleRemoteVideo
@@ -2822,18 +2810,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: SendBinaryMessageOnDataChannel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: SendBinaryMessageOnDataChannel
@@ -2969,18 +2945,6 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: ToggleLocalVideo
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: ToggleLocalVideo
@@ -4679,18 +4643,6 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: ToggleRemoteVideo
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: ToggleRemoteVideo
@@ -5381,18 +5333,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: Disconnect
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: Disconnect
@@ -8110,18 +8050,6 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: ToggleRemoteAudio
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: ToggleRemoteAudio
@@ -8374,18 +8302,6 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: ToggleLocalAudio
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: ToggleLocalAudio
@@ -10059,18 +9975,6 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: ToggleLocalVideo
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: ToggleLocalVideo
@@ -10923,18 +10827,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: OnAudioCacheSizeSliderValueChanged
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: OnAudioCacheSizeSliderValueChanged
@@ -12053,7 +11945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardSubmit.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardCancel.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -12090,7 +11982,7 @@ PrefabInstance:
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardSubmit.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1942974264}
+      objectReference: {fileID: 1942974263}
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardSubmit.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
@@ -12137,7 +12029,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardSubmit.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: MLWebRTCExample, Assembly-CSharp
+      value: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardSubmit.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
@@ -13522,7 +13414,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1942974262}
-  - component: {fileID: 1942974264}
   - component: {fileID: 1942974263}
   m_Layer: 0
   m_Name: WebRTCExample
@@ -13555,34 +13446,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dfffaf1d1b2643b9865de9c42e2c8bd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localVideoSinkBehavior: {fileID: 1575860808}
-  remoteVideoSinkBehavior: {fileID: 134817451}
-  remoteAudioSinkBehavior: {fileID: 1257921280}
-  keyboardUI: {fileID: 3232783066550907789}
-  messageUI: {fileID: 1715186924}
-  disconnectUI: {fileID: 2023408674}
-  localStatusText: {fileID: 2013814462}
-  remoteStatusText: {fileID: 645941203}
-  dataChannelText: {fileID: 1287375666}
-  localVideoToggle: {fileID: 1482130373}
-  remoteVideoToggle: {fileID: 629573383}
-  localAudioToggle: {fileID: 2292746225595016830}
-  remoteAudioToggle: {fileID: 1185661237}
-  localVideoSourceDropdown: {fileID: 870033005}
-  audioCacheSizeSlider: {fileID: 1619617904}
-  audioCacheSliderValue: {fileID: 436875821}
---- !u!114 &1942974264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1942974261}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7990e61760292b4dbecb35508194bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   localVideoSinkBehavior: {fileID: 1575860808}
@@ -13892,7 +13755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardSubmit.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardCancel.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -13929,7 +13792,7 @@ PrefabInstance:
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardSubmit.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1942974264}
+      objectReference: {fileID: 1942974263}
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardSubmit.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
@@ -13976,7 +13839,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardSubmit.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: MagicLeap.MLWebRTCExample, Assembly-CSharp
+      value: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5112327779683042536, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: OnKeyboardSubmit.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
@@ -14548,18 +14411,6 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: ToggleRemoteAudio
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: ToggleRemoteAudio
@@ -14969,18 +14820,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: Disconnect
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: Disconnect
@@ -16032,18 +15871,6 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1942974264}
-        m_TargetAssemblyTypeName: MagicLeap.MLWebRTCExample, Assembly-CSharp
-        m_MethodName: ToggleLocalAudio
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1942974263}
         m_TargetAssemblyTypeName: MagicLeap.MagicLeapWebRTC, Assembly-CSharp
         m_MethodName: ToggleLocalAudio
