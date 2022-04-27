@@ -1,22 +1,27 @@
-﻿using MagicLeap;
-using System;
-using System.Text;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.UI;
-using UnityEngine.XR.MagicLeap;
-using SimpleJson;
+﻿// %BANNER_BEGIN%
+// ---------------------------------------------------------------------
+// %COPYRIGHT_BEGIN%
+//
+// Copyright (c) 2019-present, Magic Leap, Inc. All Rights Reserved.
+// Use of this file is governed by the Developer Agreement, located
+// here: https://auth.magicleap.com/terms/developer
+//
+// %COPYRIGHT_END%
+// ---------------------------------------------------------------------
+// %BANNER_END%
 
-
-namespace ml_prompter.MagicLeap
+namespace MagicLeap
 {
-    
-    
-    
-    /// <summary>
-    /// WebRTCのMagicLeap側処理.
-    /// </summary>
+    using MagicLeap.Core;
+    using SimpleJson;
+    using System;
+    using System.Text;
+    using System.Collections.Generic;
+    using UnityEngine;
+    using UnityEngine.Networking;
+    using UnityEngine.UI;
+    using UnityEngine.XR.MagicLeap;
+
     public class MagicLeapWebRTC : MonoBehaviour
     {
         public MLWebRTCVideoSinkBehavior localVideoSinkBehavior;
@@ -350,7 +355,7 @@ namespace ml_prompter.MagicLeap
                     UnityWebRequestAsyncOperation webRequenstAsyncOp = asyncOp as UnityWebRequestAsyncOperation;
                     string iceCandidates = webRequenstAsyncOp.webRequest.downloadHandler.text;
                     // Parses all the ice candidates
-                    JsonObject jsonObjects = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(iceCandidates);
+                    JsonObject jsonObjects = (JsonObject)SimpleJson.DeserializeObject(iceCandidates);
 
                     JsonArray jsonArray = (JsonArray)jsonObjects[0];
 
@@ -544,8 +549,8 @@ namespace ml_prompter.MagicLeap
             {
                 return result;
             }
-            
-            SimpleJson.SimpleJson.TryDeserializeObject(data, out object obj);
+
+            SimpleJson.TryDeserializeObject(data, out object obj);
             JsonObject jsonObj = (JsonObject)obj;
             foreach (KeyValuePair<string, object> pair in jsonObj)
             {
@@ -569,7 +574,7 @@ namespace ml_prompter.MagicLeap
                 return result;
             }
 
-            SimpleJson.SimpleJson.TryDeserializeObject(data, out object obj);
+            SimpleJson.TryDeserializeObject(data, out object obj);
             if(obj == null)
             {
                 return false;
