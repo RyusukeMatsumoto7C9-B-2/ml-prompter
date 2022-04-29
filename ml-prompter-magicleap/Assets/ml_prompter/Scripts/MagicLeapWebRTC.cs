@@ -31,7 +31,15 @@ namespace ml_promter
         public MLWebRTCVideoSinkBehavior remoteVideoSinkBehavior;
         public MLWebRTCAudioSinkBehavior remoteAudioSinkBehavior;
 
-        public GameObject keyboardUI;
+        // Connect周り.
+        [SerializeField]
+        private GameObject connectUI;
+        
+        [SerializeField] 
+        private VirtualKeyboard connectVirtualKeyboard;
+
+        
+        
         public GameObject messageUI;
         public GameObject disconnectUI;
 
@@ -68,10 +76,6 @@ namespace ml_promter
         private bool lastWebRequestCompleted = true;
         
         [Header("Inspectorで参照している外部オブジェクト.")]
-
-        // Connect呼び出し.
-        [SerializeField] 
-        private VirtualKeyboard connectVirtualKeyboard;
 
         [SerializeField]
         private VirtualKeyboard sendMessageVirtualKeyboard;
@@ -143,7 +147,7 @@ namespace ml_promter
             serverAddress = address;
             serverURI = CreateServerURI(serverAddress);
             remoteStatusText.text = "Creating connection...";
-            keyboardUI.SetActive(false);
+            connectUI.SetActive(false);
             Login();
 #endif
         }
@@ -162,7 +166,7 @@ namespace ml_promter
                 if (webRequenstAsyncOp.webRequest.result != UnityWebRequest.Result.Success || string.IsNullOrEmpty(webRequenstAsyncOp.webRequest.downloadHandler.text))
                 {
                     remoteStatusText.text = "";
-                    keyboardUI.SetActive(true);
+                    connectUI.SetActive(true);
                     return;
                 }
 
@@ -595,7 +599,7 @@ namespace ml_promter
         {
             remoteStatusText.text = "Error: " + errorMessage;
             dataChannelText.text = "";
-            keyboardUI.SetActive(true);
+            connectUI.SetActive(true);
             messageUI.SetActive(false);
         }
 
@@ -772,7 +776,7 @@ namespace ml_promter
 
             if (!onDestroy)
             {
-                keyboardUI.SetActive(true);
+                connectUI.SetActive(true);
                 localVideoSinkBehavior.gameObject.SetActive(false);
                 remoteStatusText.text = "Disconnected";
                 localStatusText.text = "";
