@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using MagicLeap;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace ml_promter
 {
@@ -10,6 +12,11 @@ namespace ml_promter
         [SerializeField]
         private GameObject messageUi;
 
+        [SerializeField]
+        private VirtualKeyboard virtualKeyboard;
+
+
+        public void RegisterOnKeyboardSubmit(UnityAction<string> listener) => virtualKeyboard.OnKeyboardSubmit.AddListener(listener);
 
         public void ShowMessageUiButton() => messageUi.SetActive(true);
 

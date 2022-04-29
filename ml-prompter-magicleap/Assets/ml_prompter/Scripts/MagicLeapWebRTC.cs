@@ -71,9 +71,6 @@ namespace ml_promter
         private bool lastWebRequestCompleted = true;
         
         [Header("Inspectorで参照している外部オブジェクト.")]
-
-        [SerializeField]
-        private VirtualKeyboard sendMessageVirtualKeyboard;
         
         [SerializeField] 
         private Toggle toggleRemoteVideo;
@@ -104,17 +101,14 @@ namespace ml_promter
 
             connectionUi.HideDisconnectUi();
 
-            // TODO : mlp-31 : MessageUiに移動中.
             messageUi.HideMessageUiButton();
+            messageUi.RegisterOnKeyboardSubmit(SendMessageOnDataChannel);
 
             // 
             audioCacheSizeSlider.onValueChanged.AddListener(OnAudioCacheSizeSliderValueChanged);
             
             // サーバと接続する際のキーボード.
             connectionUi.RegisterOnConnectionListener(Connect);
-
-            // メッセージの送信.
-            sendMessageVirtualKeyboard.OnKeyboardSubmit.AddListener(SendMessageOnDataChannel);
             
             // Disconnectボタン.
             connectionUi.RegisterOnDisconnectListener(() => Disconnect(true));
@@ -368,7 +362,6 @@ namespace ml_promter
                 }
                 else // If there are no offers available then create our own local data channel on the connection.
                 {
-                    // TODO : mlp-31 : MessageUiに移動中.
                     messageUi.ShowMessageUiButton();
                     
                     this.dataChannel = MLWebRTC.DataChannel.CreateLocal(connection, out MLResult result);
@@ -494,7 +487,6 @@ namespace ml_promter
 
         private void OnConnectionDataChannelReceived(MLWebRTC.PeerConnection connection, MLWebRTC.DataChannel dataChannel)
         {
-            // TODO : mlp-31 : MessageUiに移動.
             messageUi.ShowMessageUiButton();
 
             if (this.dataChannel != null)
@@ -600,7 +592,6 @@ namespace ml_promter
             dataChannelText.text = "";
             connectionUi.ShowConnectUi();
             
-            // TODO : mlp-31 : MessageUiに移動
             messageUi.HideMessageUiButton();
         }
 
@@ -789,7 +780,6 @@ namespace ml_promter
 
                 connectionUi.HideDisconnectUi();
                 
-                // TODO : mlp-31 : MessageUiに移動.
                 messageUi.HideMessageUiButton();
                 dataChannelText.text = "";
             }

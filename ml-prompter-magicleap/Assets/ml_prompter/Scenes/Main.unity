@@ -250,6 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   messageUi: {fileID: 1715186924}
+  virtualKeyboard: {fileID: 2001391900}
 --- !u!114 &6368255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9923,7 +9924,6 @@ MonoBehaviour:
   localVideoSourceDropdown: {fileID: 870033005}
   audioCacheSizeSlider: {fileID: 1619617904}
   audioCacheSliderValue: {fileID: 436875821}
-  sendMessageVirtualKeyboard: {fileID: 2001391900}
   toggleRemoteVideo: {fileID: 42537386}
   toggleRemoteAudio: {fileID: 2023621963}
   toggleLocalVideo: {fileID: 276088188}
