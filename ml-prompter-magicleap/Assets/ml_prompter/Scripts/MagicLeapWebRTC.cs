@@ -415,7 +415,7 @@ namespace ml_promter
                     UnityWebRequestAsyncOperation webRequenstAsyncOp = asyncOp as UnityWebRequestAsyncOperation;
                     string iceCandidates = webRequenstAsyncOp.webRequest.downloadHandler.text;
                     // Parses all the ice candidates
-                    JsonObject jsonObjects = (JsonObject)SimpleJson.DeserializeObject(iceCandidates);
+                    JsonObject jsonObjects = (JsonObject)SimpleJson.SimpleJson.DeserializeObject(iceCandidates);
 
                     JsonArray jsonArray = (JsonArray)jsonObjects[0];
 
@@ -610,7 +610,7 @@ namespace ml_promter
                 return result;
             }
 
-            SimpleJson.TryDeserializeObject(data, out object obj);
+            SimpleJson.SimpleJson.TryDeserializeObject(data, out object obj);
             JsonObject jsonObj = (JsonObject)obj;
             foreach (KeyValuePair<string, object> pair in jsonObj)
             {
@@ -634,7 +634,7 @@ namespace ml_promter
                 return result;
             }
 
-            SimpleJson.TryDeserializeObject(data, out object obj);
+            SimpleJson.SimpleJson.TryDeserializeObject(data, out object obj);
             if(obj == null)
             {
                 return false;
