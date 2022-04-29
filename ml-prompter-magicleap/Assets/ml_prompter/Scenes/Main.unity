@@ -9447,7 +9447,7 @@ MonoBehaviour:
   localVideoSourceDropdown: {fileID: 870033005}
   audioCacheSizeSlider: {fileID: 1619617904}
   audioCacheSliderValue: {fileID: 436875821}
-  virtualKeyboard: {fileID: 1750597861}
+  connectVirtualKeyboard: {fileID: 1750597861}
   sendMessageVirtualKeyboard: {fileID: 2001391900}
   disconnectButton: {fileID: 713834701}
   toggleRemoteVideo: {fileID: 42537386}

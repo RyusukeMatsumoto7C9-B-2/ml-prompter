@@ -68,7 +68,7 @@ namespace MagicLeap
 
         // Connect呼び出し.
         [SerializeField] 
-        private VirtualKeyboard virtualKeyboard;
+        private VirtualKeyboard connectVirtualKeyboard;
 
         [SerializeField]
         private VirtualKeyboard sendMessageVirtualKeyboard;
@@ -110,7 +110,7 @@ namespace MagicLeap
             audioCacheSizeSlider.onValueChanged.AddListener(OnAudioCacheSizeSliderValueChanged);
             
             // サーバと接続する際のキーボード.
-            virtualKeyboard.OnKeyboardSubmit.AddListener(Connect);
+            connectVirtualKeyboard.OnKeyboardSubmit.AddListener(Connect);
 
             // メッセージの送信.
             sendMessageVirtualKeyboard.OnKeyboardSubmit.AddListener(SendMessageOnDataChannel);
