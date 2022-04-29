@@ -35,8 +35,6 @@ namespace ml_promter
         [SerializeField, Header("ConnectionUi")]
         private ConnectionUi connectionUi;
 
-        public GameObject disconnectUI;
-        
         
         public GameObject messageUI;
 
@@ -77,9 +75,6 @@ namespace ml_promter
         [SerializeField]
         private VirtualKeyboard sendMessageVirtualKeyboard;
         
-        [SerializeField]
-        private Button disconnectButton;
-
         [SerializeField] 
         private Toggle toggleRemoteVideo;
         
@@ -106,7 +101,9 @@ namespace ml_promter
                 enabled = false;
             }
 #endif
-            disconnectUI.SetActive(false);
+            
+            // TODO : mlp-31 : ConnectionUiに移動.
+            connectionUi.HideDisconnectUi();
             messageUI.SetActive(false);
             
             
@@ -120,7 +117,7 @@ namespace ml_promter
             sendMessageVirtualKeyboard.OnKeyboardSubmit.AddListener(SendMessageOnDataChannel);
             
             // Disconnectボタン.
-            disconnectButton.onClick.AddListener(()=>Disconnect(true));
+            connectionUi.RegisterOnDisconnectListener(() => Disconnect(true));
 
             // ローカル動画、音声の切り替え.
             toggleLocalVideo.onValueChanged.AddListener(ToggleLocalVideo);
@@ -180,7 +177,8 @@ namespace ml_promter
                     return;
                 }
 
-                disconnectUI.SetActive(true);
+                // TODO : mlp-31 : ConnectionUiに移動.
+                connectionUi.ShowDisconnectUi();
 
                 SubscribeToConnection(connection);
                 CreateLocalMediaStream();
@@ -790,7 +788,10 @@ namespace ml_promter
                 remoteAudioSinkBehavior.gameObject.SetActive(false);
                 remoteAudioSinkBehavior.gameObject.SetActive(false);
                 remoteVideoSinkBehavior.gameObject.SetActive(false);
-                disconnectUI.SetActive(false);
+
+                // TODO : mlp-31 : ConnectionUiに移動.
+                connectionUi.HideDisconnectUi();
+                
                 messageUI.SetActive(false);
                 dataChannelText.text = "";
             }

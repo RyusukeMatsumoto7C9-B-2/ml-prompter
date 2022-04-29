@@ -1,6 +1,7 @@
 ﻿using MagicLeap;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 
 
@@ -16,10 +17,13 @@ namespace ml_promter
         private GameObject connectUi;
 
         [SerializeField]
+        private VirtualKeyboard connectionKeyboard;
+
+        [SerializeField]
         private GameObject disconnectUi;
 
         [SerializeField]
-        private VirtualKeyboard connectionKeyboard;
+        private Button disconnectButton;
 
 
         private void Awake()
@@ -29,15 +33,21 @@ namespace ml_promter
         }
 
 
-        public void RegisterOnConnectionListener(UnityAction<string> listener)
-        {
-            Debug.Log($"キーボードイベントをセット. {connectionKeyboard == null}");
-            connectionKeyboard.OnKeyboardSubmit.AddListener(listener);
-        }
+        public void RegisterOnConnectionListener(UnityAction<string> listener) => connectionKeyboard.OnKeyboardSubmit.AddListener(listener);
+
+
+        public void RegisterOnDisconnectListener(UnityAction listener) => disconnectButton.onClick.AddListener(listener);
 
 
         public void ShowConnectUi() => connectUi.SetActive(true);
 
+        
         public void HideConnectUi() => connectUi.SetActive(false);
+
+
+        public void ShowDisconnectUi() => disconnectUi.SetActive(true);
+
+
+        public void HideDisconnectUi() => disconnectUi.SetActive(false);
     }
 }
