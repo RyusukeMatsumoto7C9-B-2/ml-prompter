@@ -31,17 +31,14 @@ namespace ml_promter
         public MLWebRTCVideoSinkBehavior remoteVideoSinkBehavior;
         public MLWebRTCAudioSinkBehavior remoteAudioSinkBehavior;
 
-        // Connect周り.
-        [SerializeField]
-        private GameObject connectUI;
-        
-        [SerializeField] 
-        private VirtualKeyboard connectVirtualKeyboard;
+        // Connect周り、ConnectionUiクラスに移動予定.
+        [SerializeField, Header("ConnectionUi")]
+        private ConnectionUi connectionUi;
 
+        public GameObject disconnectUI;
         
         
         public GameObject messageUI;
-        public GameObject disconnectUI;
 
         public Text localStatusText;
         public Text remoteStatusText;
@@ -117,7 +114,7 @@ namespace ml_promter
             audioCacheSizeSlider.onValueChanged.AddListener(OnAudioCacheSizeSliderValueChanged);
             
             // サーバと接続する際のキーボード.
-            connectVirtualKeyboard.OnKeyboardSubmit.AddListener(Connect);
+            connectionUi.RegisterOnConnectionListener(Connect);
 
             // メッセージの送信.
             sendMessageVirtualKeyboard.OnKeyboardSubmit.AddListener(SendMessageOnDataChannel);
@@ -147,7 +144,9 @@ namespace ml_promter
             serverAddress = address;
             serverURI = CreateServerURI(serverAddress);
             remoteStatusText.text = "Creating connection...";
-            connectUI.SetActive(false);
+
+            // TODO : mlp-31 : ConnectionUiクラスに処理を委譲.
+            connectionUi.HideConnectUi();
             Login();
 #endif
         }
@@ -166,7 +165,9 @@ namespace ml_promter
                 if (webRequenstAsyncOp.webRequest.result != UnityWebRequest.Result.Success || string.IsNullOrEmpty(webRequenstAsyncOp.webRequest.downloadHandler.text))
                 {
                     remoteStatusText.text = "";
-                    connectUI.SetActive(true);
+
+                    // TODO : mlp-31 : ConnectionUiクラスに処理を委譲.
+                    connectionUi.ShowConnectUi();
                     return;
                 }
 
@@ -599,7 +600,10 @@ namespace ml_promter
         {
             remoteStatusText.text = "Error: " + errorMessage;
             dataChannelText.text = "";
-            connectUI.SetActive(true);
+            
+            // TODO : mlp-31 : ConnectionUiに処理を委譲.
+            connectionUi.ShowConnectUi();
+            
             messageUI.SetActive(false);
         }
 
@@ -776,7 +780,9 @@ namespace ml_promter
 
             if (!onDestroy)
             {
-                connectUI.SetActive(true);
+                // TODO : mlp-31 : ConnectionUiクラスに処理を委譲.
+                connectionUi.ShowConnectUi();
+                
                 localVideoSinkBehavior.gameObject.SetActive(false);
                 remoteStatusText.text = "Disconnected";
                 localStatusText.text = "";

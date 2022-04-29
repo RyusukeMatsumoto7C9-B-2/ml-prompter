@@ -2211,6 +2211,81 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!1 &295038933
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 295038935}
+  - component: {fileID: 295038936}
+  - component: {fileID: 295038934}
+  m_Layer: 0
+  m_Name: ConnectionUi
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &295038934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295038933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29efdc02777f4900880d95d743f1257e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connectUi: {fileID: 3232783066550907789}
+  disconnectUi: {fileID: 2023408674}
+  connectionKeyboard: {fileID: 1750597861}
+--- !u!4 &295038935
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295038933}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3441956829261715591}
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &295038936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295038933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea05a203896b48146ab21000fc478d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _distance: 3
+  _heightOffset: 0.015
+  _lateralOffset: 0
+  _positionSmoothTime: 5
+  _rotationSmoothTime: 5
+  _lookDirection: 2
+  _placeOnAwake: 1
+  _placeOnUpdate: 0
+  _lockZRotation: 1
+  _lockXRotation: 1
+  _lockToXZPlane: 1
+  _useThreshold: 0
+  _movementThreshold: {x: 10, y: 5}
+  _distanceThreshold: 0.15
+  _useLocalSpace: 0
 --- !u!1 &312403867
 GameObject:
   m_ObjectHideFlags: 0
@@ -5031,7 +5106,7 @@ RectTransform:
   - {fileID: 1303159381}
   - {fileID: 2023408675}
   m_Father: {fileID: 1506593944}
-  m_RootOrder: 6
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6798,12 +6873,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 373820690}
-  - {fileID: 3441956829261715591}
   - {fileID: 1715186925}
+  - {fileID: 1132103436}
   - {fileID: 1575860807}
   - {fileID: 1257921279}
   - {fileID: 134817450}
-  - {fileID: 1132103436}
   m_Father: {fileID: 1731829235}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7757,7 +7831,7 @@ RectTransform:
   - {fileID: 2001391899}
   - {fileID: 1149426436}
   m_Father: {fileID: 1506593944}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7886,7 +7960,7 @@ Transform:
   - {fileID: 1925167248}
   - {fileID: 1737786921}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1737786919
 PrefabInstance:
@@ -9438,16 +9512,15 @@ MonoBehaviour:
   localVideoSinkBehavior: {fileID: 1575860808}
   remoteVideoSinkBehavior: {fileID: 134817451}
   remoteAudioSinkBehavior: {fileID: 1257921280}
-  keyboardUI: {fileID: 3232783066550907789}
-  messageUI: {fileID: 1715186924}
+  connectionUi: {fileID: 295038934}
   disconnectUI: {fileID: 2023408674}
+  messageUI: {fileID: 1715186924}
   localStatusText: {fileID: 2013814462}
   remoteStatusText: {fileID: 645941203}
   dataChannelText: {fileID: 1287375666}
   localVideoSourceDropdown: {fileID: 870033005}
   audioCacheSizeSlider: {fileID: 1619617904}
   audioCacheSliderValue: {fileID: 436875821}
-  connectVirtualKeyboard: {fileID: 1750597861}
   sendMessageVirtualKeyboard: {fileID: 2001391900}
   disconnectButton: {fileID: 713834701}
   toggleRemoteVideo: {fileID: 42537386}
@@ -10564,17 +10637,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3232783066550907789}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -4.549}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.0020671152, y: 0.0020671152, z: 0.0020671152}
   m_Children:
   - {fileID: 237189395}
   - {fileID: 1653565579}
-  m_Father: {fileID: 1506593944}
-  m_RootOrder: 1
+  m_Father: {fileID: 295038935}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.184, y: -0.29}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 800, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4759671844095542437
