@@ -35,7 +35,8 @@ namespace ml_promter
         [SerializeField, Header("ConnectionUi")]
         private ConnectionUi connectionUi;
 
-        public GameObject messageUI;
+        [SerializeField, Header("MessageUi")]
+        private MessageUi messageUi;
 
         public Text localStatusText;
         public Text remoteStatusText;
@@ -102,9 +103,10 @@ namespace ml_promter
 #endif
 
             connectionUi.HideDisconnectUi();
-            messageUI.SetActive(false);
-            
-            
+
+            // TODO : mlp-31 : MessageUiに移動中.
+            messageUi.HideMessageUiButton();
+
             // 
             audioCacheSizeSlider.onValueChanged.AddListener(OnAudioCacheSizeSliderValueChanged);
             
@@ -141,6 +143,7 @@ namespace ml_promter
             remoteStatusText.text = "Creating connection...";
 
             connectionUi.HideConnectUi();
+            messageUi.ShowMessageUiButton();
             Login();
 #endif
         }
@@ -365,7 +368,9 @@ namespace ml_promter
                 }
                 else // If there are no offers available then create our own local data channel on the connection.
                 {
-                    messageUI.SetActive(true);
+                    // TODO : mlp-31 : MessageUiに移動中.
+                    messageUi.ShowMessageUiButton();
+                    
                     this.dataChannel = MLWebRTC.DataChannel.CreateLocal(connection, out MLResult result);
                     SubscribeToDataChannel(this.dataChannel);
                     connection.CreateOffer();
@@ -489,7 +494,8 @@ namespace ml_promter
 
         private void OnConnectionDataChannelReceived(MLWebRTC.PeerConnection connection, MLWebRTC.DataChannel dataChannel)
         {
-            messageUI.SetActive(true);
+            // TODO : mlp-31 : MessageUiに移動.
+            messageUi.ShowMessageUiButton();
 
             if (this.dataChannel != null)
             {
@@ -594,7 +600,8 @@ namespace ml_promter
             dataChannelText.text = "";
             connectionUi.ShowConnectUi();
             
-            messageUI.SetActive(false);
+            // TODO : mlp-31 : MessageUiに移動
+            messageUi.HideMessageUiButton();
         }
 
         private bool ParseOffers(string data, out string remoteId, out string sdp)
@@ -782,7 +789,8 @@ namespace ml_promter
 
                 connectionUi.HideDisconnectUi();
                 
-                messageUI.SetActive(false);
+                // TODO : mlp-31 : MessageUiに移動.
+                messageUi.HideMessageUiButton();
                 dataChannelText.text = "";
             }
 
