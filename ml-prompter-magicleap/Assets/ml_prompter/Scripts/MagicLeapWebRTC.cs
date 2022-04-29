@@ -36,12 +36,6 @@ namespace MagicLeap
         public Text remoteStatusText;
         public Text dataChannelText;
 
-        public Toggle localVideoToggle;
-        public Toggle remoteVideoToggle;
-
-        public Toggle localAudioToggle;
-        public Toggle remoteAudioToggle;
-
         public Dropdown localVideoSourceDropdown;
 
         public Slider audioCacheSizeSlider;
@@ -69,8 +63,35 @@ namespace MagicLeap
         private UnityWebRequest lastWebRequest = null;
         private UnityWebRequestAsyncOperation lastWebRequestAsyncOp = null;
         private bool lastWebRequestCompleted = true;
+        
+        [Header("Inspectorで参照している外部オブジェクト.")]
 
-        void Start()
+        // Connect呼び出し.
+        [SerializeField] 
+        private VirtualKeyboard virtualKeyboard;
+
+        [SerializeField]
+        private VirtualKeyboard sendMessageVirtualKeyboard;
+        
+        [SerializeField]
+        private Button disconnectButton;
+
+        [SerializeField] 
+        private Toggle toggleRemoteVideo;
+        
+        [SerializeField] 
+        private Toggle toggleRemoteAudio;
+
+        [SerializeField]
+        private Toggle toggleLocalVideo;
+
+        [SerializeField]
+        private Toggle toggleLocalAudio;
+        
+        
+        
+        
+        private void Start()
         {
 #if PLATFORM_LUMIN
             MLResult result = MLPrivileges.RequestPrivileges(MLPrivileges.Id.Internet, MLPrivileges.Id.LocalAreaNetwork, MLPrivileges.Id.CameraCapture, MLPrivileges.Id.AudioCaptureMic);
@@ -83,9 +104,36 @@ namespace MagicLeap
 #endif
             disconnectUI.SetActive(false);
             messageUI.SetActive(false);
+            
+            
+            // 
+            audioCacheSizeSlider.onValueChanged.AddListener(OnAudioCacheSizeSliderValueChanged);
+            
+            // サーバと接続する際のキーボード.
+            virtualKeyboard.OnKeyboardSubmit.AddListener(Connect);
+
+            // メッセージの送信.
+            sendMessageVirtualKeyboard.OnKeyboardSubmit.AddListener(SendMessageOnDataChannel);
+            
+            // Disconnectボタン.
+            disconnectButton.onClick.AddListener(()=>Disconnect(true));
+
+            // ローカル動画、音声の切り替え.
+            toggleLocalVideo.onValueChanged.AddListener(ToggleLocalVideo);
+            toggleLocalAudio.onValueChanged.AddListener(ToggleLocalAudio);
+            
+            // リモート動画、音声の切り替え.
+            toggleRemoteVideo.onValueChanged.AddListener(ToggleRemoteVideo);
+            toggleRemoteAudio.onValueChanged.AddListener(ToggleRemoteAudio);
         }
 
-        // Subscribed to keyboard event within the inspector
+        
+        /// <summary>
+        /// 同期先のPCと接続.
+        /// Keyboardからイベント購読している( return キーで呼び出される. ).
+        /// Subscribed to keyboard event within the inspector
+        /// </summary>
+        /// <param name="address"></param>
         public void Connect(string address)
         {
 #if PLATFORM_LUMIN
@@ -97,6 +145,11 @@ namespace MagicLeap
 #endif
         }
 
+        
+        /// <summary>
+        /// シグナリングサーバーへのログイン、現在はPCのローカルサーバを利用.
+        /// PCのIPアドレスからログインする.
+        /// </summary>
         public void Login()
         {
 #if PLATFORM_LUMIN
@@ -209,7 +262,8 @@ namespace MagicLeap
 
         }
 
-        void Update()
+        
+        private void Update()
         {
             UpdateWebRequests();
 
@@ -241,15 +295,18 @@ namespace MagicLeap
             }
         }
 
-        void OnDestroy()
+        
+        private void OnDestroy()
         {
 #if PLATFORM_LUMIN
             Disconnect(true);
 #endif
         }
+        
 
         public void SendMessageOnDataChannel(string message)
         {
+            Debug.Log($"message : {message}");
 #if PLATFORM_LUMIN
             MLResult? result = this.dataChannel?.SendMessage(message);
             if (result.HasValue)
@@ -657,6 +714,7 @@ namespace MagicLeap
 #endif
         }
 
+        
         public void ToggleRemoteVideo(bool on)
         {
 #if PLATFORM_LUMIN
@@ -665,16 +723,16 @@ namespace MagicLeap
         }
 
 
-        public void OnAudioCacheSizeSliderValueChanged()
+        public void OnAudioCacheSizeSliderValueChanged(float value)
         {
             if (audioCacheSliderValue != null)
             {
-                audioCacheSliderValue.text = $"{audioCacheSizeSlider.value} ms";
+                audioCacheSliderValue.text = $"{value} ms";
             }
 
             if (remoteAudioSinkBehavior.AudioSink != null)
             {
-                remoteAudioSinkBehavior.AudioSink.SetCacheSize((uint)audioCacheSizeSlider.value);
+                remoteAudioSinkBehavior.AudioSink.SetCacheSize((uint)value);
             }
         }
 
