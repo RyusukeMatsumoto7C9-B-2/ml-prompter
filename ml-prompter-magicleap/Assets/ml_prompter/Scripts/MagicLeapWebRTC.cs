@@ -35,7 +35,6 @@ namespace ml_promter
         [SerializeField, Header("ConnectionUi")]
         private ConnectionUi connectionUi;
 
-        
         public GameObject messageUI;
 
         public Text localStatusText;
@@ -101,8 +100,7 @@ namespace ml_promter
                 enabled = false;
             }
 #endif
-            
-            // TODO : mlp-31 : ConnectionUiに移動.
+
             connectionUi.HideDisconnectUi();
             messageUI.SetActive(false);
             
@@ -142,7 +140,6 @@ namespace ml_promter
             serverURI = CreateServerURI(serverAddress);
             remoteStatusText.text = "Creating connection...";
 
-            // TODO : mlp-31 : ConnectionUiクラスに処理を委譲.
             connectionUi.HideConnectUi();
             Login();
 #endif
@@ -162,8 +159,6 @@ namespace ml_promter
                 if (webRequenstAsyncOp.webRequest.result != UnityWebRequest.Result.Success || string.IsNullOrEmpty(webRequenstAsyncOp.webRequest.downloadHandler.text))
                 {
                     remoteStatusText.text = "";
-
-                    // TODO : mlp-31 : ConnectionUiクラスに処理を委譲.
                     connectionUi.ShowConnectUi();
                     return;
                 }
@@ -177,7 +172,6 @@ namespace ml_promter
                     return;
                 }
 
-                // TODO : mlp-31 : ConnectionUiに移動.
                 connectionUi.ShowDisconnectUi();
 
                 SubscribeToConnection(connection);
@@ -598,8 +592,6 @@ namespace ml_promter
         {
             remoteStatusText.text = "Error: " + errorMessage;
             dataChannelText.text = "";
-            
-            // TODO : mlp-31 : ConnectionUiに処理を委譲.
             connectionUi.ShowConnectUi();
             
             messageUI.SetActive(false);
@@ -778,7 +770,6 @@ namespace ml_promter
 
             if (!onDestroy)
             {
-                // TODO : mlp-31 : ConnectionUiクラスに処理を委譲.
                 connectionUi.ShowConnectUi();
                 
                 localVideoSinkBehavior.gameObject.SetActive(false);
@@ -789,7 +780,6 @@ namespace ml_promter
                 remoteAudioSinkBehavior.gameObject.SetActive(false);
                 remoteVideoSinkBehavior.gameObject.SetActive(false);
 
-                // TODO : mlp-31 : ConnectionUiに移動.
                 connectionUi.HideDisconnectUi();
                 
                 messageUI.SetActive(false);
