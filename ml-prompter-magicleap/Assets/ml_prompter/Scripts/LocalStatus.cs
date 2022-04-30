@@ -1,13 +1,7 @@
 ﻿using MagicLeap;
-using SimpleJson;
-using System;
-using System.Text;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.XR.MagicLeap;
-using UnityEngine.Serialization;
 
 
 namespace ml_promter
