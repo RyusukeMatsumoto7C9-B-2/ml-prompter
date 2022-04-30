@@ -27,12 +27,11 @@ namespace ml_promter
 
     public class MagicLeapWebRTC : MonoBehaviour
     {
-        [SerializeField,Header("LocalStatus")]
+        [SerializeField, Header("LocalStatus")]
         private LocalStatus localStatus;
 
-        
-        public MLWebRTCVideoSinkBehavior remoteVideoSinkBehavior;
-        public MLWebRTCAudioSinkBehavior remoteAudioSinkBehavior;
+        [SerializeField, Header("RemoteStatus")]
+        private RemoteStatus remoteStatus;
 
         // Connect周り、ConnectionUiクラスに移動予定.
         [SerializeField, Header("ConnectionUi")]
@@ -41,11 +40,7 @@ namespace ml_promter
         [SerializeField, Header("MessageUi")]
         private MessageUi messageUi;
 
-        public Text remoteStatusText;
         public Text dataChannelText;
-
-        public Slider audioCacheSizeSlider;
-        public Text audioCacheSliderValue;
 
         private bool waitingForAnswer = false;
         private bool waitingForAnswerGetRequest = false;
@@ -58,23 +53,12 @@ namespace ml_promter
         private MLWebRTC.PeerConnection connection = null;
         private MLWebRTC.DataChannel dataChannel = null;
 
-        private MLWebRTC.MediaStream remoteMediaStream = null;
-
         // The sample server can only handle concurrent requests. Maintain a queue to send only 1 request at a time.
         private Queue<UnityWebRequest> pendingWebRequests = new Queue<UnityWebRequest>();
         private Dictionary<UnityWebRequest, Action<AsyncOperation>> webRequestsToOnCompletedEvent = new Dictionary<UnityWebRequest, Action<AsyncOperation>>();
         private UnityWebRequest lastWebRequest = null;
         private UnityWebRequestAsyncOperation lastWebRequestAsyncOp = null;
         private bool lastWebRequestCompleted = true;
-        
-        [Header("Inspectorで参照している外部オブジェクト.")]
-        
-        [SerializeField] 
-        private Toggle toggleRemoteVideo;
-        
-        [SerializeField] 
-        private Toggle toggleRemoteAudio;
-
         
         
         private void Start()
@@ -90,22 +74,10 @@ namespace ml_promter
 #endif
 
             connectionUi.HideDisconnectUi();
-
+            connectionUi.RegisterOnConnectionListener(Connect);
+            connectionUi.RegisterOnDisconnectListener(() => Disconnect(true));
             messageUi.HideMessageUiButton();
             messageUi.RegisterOnKeyboardSubmit(SendMessageOnDataChannel);
-
-            // 
-            audioCacheSizeSlider.onValueChanged.AddListener(OnAudioCacheSizeSliderValueChanged);
-            
-            // サーバと接続する際のキーボード.
-            connectionUi.RegisterOnConnectionListener(Connect);
-            
-            // Disconnectボタン.
-            connectionUi.RegisterOnDisconnectListener(() => Disconnect(true));
-            
-            // リモート動画、音声の切り替え.
-            toggleRemoteVideo.onValueChanged.AddListener(ToggleRemoteVideo);
-            toggleRemoteAudio.onValueChanged.AddListener(ToggleRemoteAudio);
         }
 
         
@@ -115,13 +87,12 @@ namespace ml_promter
         /// Subscribed to keyboard event within the inspector
         /// </summary>
         /// <param name="address"></param>
-        public void Connect(string address)
+        private void Connect(string address)
         {
 #if PLATFORM_LUMIN
             serverAddress = address;
             serverURI = CreateServerURI(serverAddress);
-            remoteStatusText.text = "Creating connection...";
-
+            remoteStatus.SetStatusText("Creating connection...");            
             connectionUi.HideConnectUi();
             messageUi.ShowMessageUiButton();
             Login();
@@ -141,7 +112,8 @@ namespace ml_promter
                 UnityWebRequestAsyncOperation webRequenstAsyncOp = asyncOp as UnityWebRequestAsyncOperation;
                 if (webRequenstAsyncOp.webRequest.result != UnityWebRequest.Result.Success || string.IsNullOrEmpty(webRequenstAsyncOp.webRequest.downloadHandler.text))
                 {
-                    remoteStatusText.text = "";
+                    remoteStatus.ClearStatusText();
+                    
                     connectionUi.ShowConnectUi();
                     return;
                 }
@@ -156,11 +128,8 @@ namespace ml_promter
                 }
 
                 connectionUi.ShowDisconnectUi();
-
                 SubscribeToConnection(connection);
-
                 localStatus.CreateLocalMediaStream(connection);
-                
                 QueryOffers();
             });
 #endif
@@ -208,7 +177,7 @@ namespace ml_promter
         }
         
 
-        public void SendMessageOnDataChannel(string message)
+        private void SendMessageOnDataChannel(string message)
         {
             Debug.Log($"message : {message}");
 #if PLATFORM_LUMIN
@@ -227,6 +196,7 @@ namespace ml_promter
 #endif
         }
 
+        
         public void SendBinaryMessageOnDataChannel()
         {
 #if PLATFORM_LUMIN
@@ -253,6 +223,7 @@ namespace ml_promter
 #endif
         }
 
+        
         private void QueryOffers()
         {
             // GET request to check the server for any awaiting remote offers.
@@ -279,33 +250,38 @@ namespace ml_promter
             });
         }
 
+        
         private void OnConnectionLocalOfferCreated(MLWebRTC.PeerConnection connection, string sendSdp)
         {
-            remoteStatusText.text = "Sending offer...";
+            remoteStatus.SetStatusText("Sending offer...");
             HttpPost(serverURI + "/post_offer/" + localId, FormatSdpOffer("offer", sendSdp), (AsyncOperation ao) =>
             {
-                remoteStatusText.text = "Waiting for answer...";
+                remoteStatus.SetStatusText("Waiting for answer...");
                 waitingForAnswer = true;
             });
         }
 
+        
         private void OnConnectionLocalAnswerCreated(MLWebRTC.PeerConnection connection, string sendAnswer)
         {
-            remoteStatusText.text = "Sending answer to an offer...";
+            remoteStatus.SetStatusText("Sending answer to an offer...");
             HttpPost(serverURI + "/post_answer/" + localId + "/" + remoteId, FormatSdpOffer("answer", sendAnswer));
         }
 
+        
         private void OnConnectionLocalIceCandidateFound(MLWebRTC.PeerConnection connection, MLWebRTC.IceCandidate iceCandidate)
         {
-            remoteStatusText.text = "Sending ice candidate...";
+            remoteStatus.SetStatusText("Sending ice candidate...");
             HttpPost(serverURI + "/post_ice/" + localId, FormatIceCandidate(iceCandidate));
         }
 
+        
         private void OnConnectionIceGatheringCompleted(MLWebRTC.PeerConnection connection)
         {
-            remoteStatusText.text = "On ice gathering completed...";
+            remoteStatus.SetStatusText("On ice gathering completed...");
         }
 
+        
         private void ConsumeIces()
         {
             if (!string.IsNullOrEmpty(remoteId))
@@ -313,7 +289,6 @@ namespace ml_promter
                 // Queries for all the ices to test
                 HttpPost(serverURI + "/consume_ices/" + remoteId, "", (AsyncOperation asyncOp) =>
                 {
-
                     UnityWebRequestAsyncOperation webRequenstAsyncOp = asyncOp as UnityWebRequestAsyncOperation;
                     string iceCandidates = webRequenstAsyncOp.webRequest.downloadHandler.text;
                     // Parses all the ice candidates
@@ -329,69 +304,31 @@ namespace ml_promter
 #if PLATFORM_LUMIN
                         MLResult result = connection.AddRemoteIceCandidate(iceCandidate);
 #endif
-                        remoteStatusText.text = "";
+                        remoteStatus.ClearStatusText();
                     }
                 });
             }
         }
 
+        
         private void OnConnectionConnected(MLWebRTC.PeerConnection connection)
         {
-            remoteStatusText.text = "";
+            remoteStatus.ClearStatusText();
         }
 
+        
         private void OnConnectionTrackAdded(List<MLWebRTC.MediaStream> mediaStream, MLWebRTC.MediaStream.Track addedTrack)
         {
-            remoteStatusText.text = $"Adding {addedTrack.TrackType} track.";
-            if (remoteMediaStream == null)
-            {
-                remoteMediaStream = mediaStream[0];
-            }
-
-            switch (addedTrack.TrackType)
-            {
-                // if the incoming track is audio, set the audio sink to this track.
-                case MLWebRTC.MediaStream.Track.Type.Audio:
-                {
-                    remoteAudioSinkBehavior.AudioSink.SetStream(remoteMediaStream);
-                    remoteAudioSinkBehavior.gameObject.SetActive(true);
-                    remoteAudioSinkBehavior.AudioSink.SetCacheSize((uint)audioCacheSizeSlider.value);
-                    break;
-                }
-
-                // if the incoming track is video, set the video sink to this track.
-                case MLWebRTC.MediaStream.Track.Type.Video:
-                {
-                    remoteVideoSinkBehavior.VideoSink.SetStream(remoteMediaStream);
-                    remoteVideoSinkBehavior.ResetFrameFit();
-                    remoteVideoSinkBehavior.gameObject.SetActive(true);
-                    break;
-                }
-            }
+            remoteStatus.AddConnectionTrack(mediaStream, addedTrack);
         }
 
+        
         private void OnConnectionTrackRemoved(List<MLWebRTC.MediaStream> mediaStream, MLWebRTC.MediaStream.Track removedTrack)
         {
-            remoteStatusText.text = $"Removed {removedTrack.TrackType} track.";
-
-            switch (removedTrack.TrackType)
-            {
-                case MLWebRTC.MediaStream.Track.Type.Audio:
-                {
-                    remoteAudioSinkBehavior.AudioSink.SetStream(null);
-                    remoteAudioSinkBehavior.gameObject.SetActive(false);
-                    break;
-                }
-
-                case MLWebRTC.MediaStream.Track.Type.Video:
-                {
-                    remoteVideoSinkBehavior.VideoSink.SetStream(null);
-                    remoteVideoSinkBehavior.gameObject.SetActive(false);
-                    break;
-                }
-            }
+            remoteStatus.RemoveConnectionTrack(mediaStream, removedTrack);
         }
 
+        
         private void OnConnectionDataChannelReceived(MLWebRTC.PeerConnection connection, MLWebRTC.DataChannel dataChannel)
         {
             messageUi.ShowMessageUiButton();
@@ -405,6 +342,7 @@ namespace ml_promter
             SubscribeToDataChannel(this.dataChannel);
             dataChannelText.text = "Data Channel";
         }
+        
 
         private void SubscribeToConnection(MLWebRTC.PeerConnection connection)
         {
@@ -420,6 +358,7 @@ namespace ml_promter
             connection.OnIceGatheringCompleted += OnConnectionIceGatheringCompleted;
         }
 
+        
         private void UnsubscribeFromConnection(MLWebRTC.PeerConnection connection)
         {
             connection.OnError -= OnConnectionError;
@@ -434,6 +373,7 @@ namespace ml_promter
             connection.OnIceGatheringCompleted -= OnConnectionIceGatheringCompleted;
         }
 
+        
         private void SubscribeToDataChannel(MLWebRTC.DataChannel dataChannel)
         {
             dataChannel.OnClosed += OnDataChannelClosed;
@@ -442,6 +382,7 @@ namespace ml_promter
             dataChannel.OnMessageBinary += OnDataChannelBinaryMessage;
         }
 
+        
         private void UnsubscribeFromDataChannel(MLWebRTC.DataChannel dataChannel)
         {
             dataChannel.OnClosed -= OnDataChannelClosed;
@@ -450,21 +391,25 @@ namespace ml_promter
             dataChannel.OnMessageBinary -= OnDataChannelBinaryMessage;
         }
 
+        
         private void OnDataChannelOpened(MLWebRTC.DataChannel dataChannel)
         {
             dataChannelText.text = "Data Channel";
         }
 
+        
         private void OnDataChannelClosed(MLWebRTC.DataChannel dataChannel)
         {
             dataChannelText.text = "";
             UnsubscribeFromDataChannel(dataChannel);
         }
 
+        
         private void OnDataChannelTextMessage(MLWebRTC.DataChannel dataChannel, string message)
         {
             dataChannelText.text = "Received: \n" + message;
         }
+        
 
         private void OnDataChannelBinaryMessage(MLWebRTC.DataChannel dataChannel, byte[] message)
         {
@@ -486,22 +431,25 @@ namespace ml_promter
             }
         }
 
+        
         private void OnConnectionDisconnected(MLWebRTC.PeerConnection connection)
         {
             // Don't call Disconnect() here because that attempts to destroy the connection object
             // while being inside its callback and results in a deadlock.
             shouldDisconnect = true;
         }
-
+        
+        
         private void OnConnectionError(MLWebRTC.PeerConnection connection, string errorMessage)
         {
-            remoteStatusText.text = "Error: " + errorMessage;
+            remoteStatus.SetStatusText("Error: " + errorMessage);
             dataChannelText.text = "";
             connectionUi.ShowConnectUi();
             
             messageUi.HideMessageUiButton();
         }
 
+        
         private bool ParseOffers(string data, out string remoteId, out string sdp)
         {
             bool result = false;
@@ -525,6 +473,7 @@ namespace ml_promter
 
             return result;
         }
+        
 
         private bool ParseAnswer(string data, out string remoteId, out string sdp)
         {
@@ -554,8 +503,9 @@ namespace ml_promter
 
             return result;
         }
+        
 
-        public MLWebRTC.IceServer[] CreateIceServers()
+        private MLWebRTC.IceServer[] CreateIceServers()
         {
             string stunServer1Uri = "stun:stun.l.google.com:19302";
             string stunServer2Uri = "stun:" + serverAddress + ":3478";
@@ -577,12 +527,11 @@ namespace ml_promter
             return iceServers;
         }
 
-        public string CreateServerURI(string serverAddress)
-        {
-            return "http://" + serverAddress + ":8080";
-        }
 
-        public static string FormatSdpOffer(string offer, string sdp)
+        private string CreateServerURI(string serverAddress) => "http://" + serverAddress + ":8080";
+
+        
+        private static string FormatSdpOffer(string offer, string sdp)
         {
             JsonObject jsonObj = new JsonObject();
             jsonObj["sdp"] = sdp;
@@ -590,7 +539,8 @@ namespace ml_promter
             return jsonObj.ToString();
         }
 
-        public static string FormatIceCandidate(MLWebRTC.IceCandidate iceCandidate)
+        
+        private static string FormatIceCandidate(MLWebRTC.IceCandidate iceCandidate)
         {
             JsonObject jsonObj = new JsonObject();
             jsonObj["candidate"] = iceCandidate.Candidate;
@@ -600,36 +550,7 @@ namespace ml_promter
         }
 
 
-        public void ToggleRemoteAudio(bool on)
-        {
-#if PLATFORM_LUMIN
-            remoteAudioSinkBehavior.AudioSink.Stream.ActiveAudioTrack.SetEnabled(on);
-#endif
-        }
-
-        
-        public void ToggleRemoteVideo(bool on)
-        {
-#if PLATFORM_LUMIN
-            remoteVideoSinkBehavior.VideoSink.Stream.ActiveVideoTrack.SetEnabled(on);
-#endif
-        }
-
-
-        public void OnAudioCacheSizeSliderValueChanged(float value)
-        {
-            if (audioCacheSliderValue != null)
-            {
-                audioCacheSliderValue.text = $"{value} ms";
-            }
-
-            if (remoteAudioSinkBehavior.AudioSink != null)
-            {
-                remoteAudioSinkBehavior.AudioSink.SetCacheSize((uint)value);
-            }
-        }
-
-        public void Disconnect(bool onDestroy = false)
+        private void Disconnect(bool onDestroy = false)
         {
             if (connection == null)
             {
@@ -652,8 +573,8 @@ namespace ml_promter
             connection.Destroy();
 #endif
             connection = null;
-
-            remoteMediaStream = null;
+            remoteStatus.DestroyMediaStream();
+            
             waitingForAnswer = false;
             waitingForAnswerGetRequest = false;
 
@@ -662,18 +583,11 @@ namespace ml_promter
             if (!onDestroy)
             {
                 connectionUi.ShowConnectUi();
-                
                 localStatus.SetActiveLocalVideoSinkBehavior(false);
-                
-                remoteStatusText.text = "Disconnected";
-                
                 localStatus.ClearLocalStatusText();
-                
-                remoteVideoSinkBehavior.VideoSink.SetStream(null);
-                remoteAudioSinkBehavior.gameObject.SetActive(false);
-                remoteAudioSinkBehavior.gameObject.SetActive(false);
-                remoteVideoSinkBehavior.gameObject.SetActive(false);
 
+                remoteStatus.SetStatusText("Disconnected");
+                remoteStatus.DisableSinkBehavior();
                 connectionUi.HideDisconnectUi();
                 
                 messageUi.HideMessageUiButton();
@@ -684,6 +598,7 @@ namespace ml_promter
             localId = "";
         }
 
+        
         private void HttpPost(string url, string data, Action<AsyncOperation> onCompleted = null)
         {
             UnityWebRequest request;
@@ -703,6 +618,7 @@ namespace ml_promter
             webRequestsToOnCompletedEvent.Add(request, onCompleted);
         }
 
+        
         private void HttpGet(string url, Action<AsyncOperation> onCompleted = null)
         {
             UnityWebRequest request = UnityWebRequest.Get(url);
@@ -710,6 +626,7 @@ namespace ml_promter
             webRequestsToOnCompletedEvent.Add(request, onCompleted);
         }
 
+        
         private void UpdateWebRequests()
         {
             // Use lastWebRequestCompleted instead of lastWebRequest.isDone because the latter can
