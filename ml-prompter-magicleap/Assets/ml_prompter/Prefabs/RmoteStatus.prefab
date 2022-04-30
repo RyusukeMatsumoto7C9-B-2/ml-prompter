@@ -1633,6 +1633,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1961923972361891979}
   - component: {fileID: 1961923972361892084}
+  - component: {fileID: 269852012}
   m_Layer: 0
   m_Name: RmoteStatus
   m_TagString: Untagged
@@ -1676,6 +1677,33 @@ MonoBehaviour:
   toggleRemoteAudio: {fileID: 1961923972510371711}
   audioCacheSizeSlider: {fileID: 1961923972376994372}
   audioCacheSliderValue: {fileID: 1961923971999463449}
+--- !u!114 &269852012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1961923972361891978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea05a203896b48146ab21000fc478d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _distance: 8
+  _heightOffset: 0
+  _lateralOffset: 0
+  _positionSmoothTime: 0.1
+  _rotationSmoothTime: 0.1
+  _lookDirection: 2
+  _placeOnAwake: 0
+  _placeOnUpdate: 1
+  _lockZRotation: 1
+  _lockXRotation: 1
+  _lockToXZPlane: 1
+  _useThreshold: 0
+  _movementThreshold: {x: 10, y: 5}
+  _distanceThreshold: 0.15
+  _useLocalSpace: 0
 --- !u!1 &1961923972376994394
 GameObject:
   m_ObjectHideFlags: 0

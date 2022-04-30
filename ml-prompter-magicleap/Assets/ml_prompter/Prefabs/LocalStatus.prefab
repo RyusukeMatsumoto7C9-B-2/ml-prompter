@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4492045961223712188}
   - component: {fileID: 3132177740917684786}
+  - component: {fileID: 828109019}
   m_Layer: 0
   m_Name: LocalStatus
   m_TagString: Untagged
@@ -50,6 +51,33 @@ MonoBehaviour:
   localVideoSourceDropdown: {fileID: 8639621910898743179}
   toggleLocalVideo: {fileID: 8639621910405215386}
   toggleLocalAudio: {fileID: 8639621909177591947}
+--- !u!114 &828109019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227366511329496103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea05a203896b48146ab21000fc478d4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _distance: 8
+  _heightOffset: 0
+  _lateralOffset: 0
+  _positionSmoothTime: 0.1
+  _rotationSmoothTime: 0.1
+  _lookDirection: 2
+  _placeOnAwake: 0
+  _placeOnUpdate: 1
+  _lockZRotation: 1
+  _lockXRotation: 1
+  _lockToXZPlane: 1
+  _useThreshold: 0
+  _movementThreshold: {x: 10, y: 5}
+  _distanceThreshold: 0.15
+  _useLocalSpace: 1
 --- !u!1001 &1914781192046898838
 PrefabInstance:
   m_ObjectHideFlags: 0
