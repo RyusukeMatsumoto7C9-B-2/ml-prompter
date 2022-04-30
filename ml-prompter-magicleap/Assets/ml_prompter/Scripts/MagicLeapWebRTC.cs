@@ -528,7 +528,7 @@ namespace ml_promter
         }
 
 
-        private string CreateServerURI(string serverAddress) => "http://" + serverAddress + ":8080";
+        private string CreateServerURI(string address) => "http://" + address + ":8080";
 
         
         private static string FormatSdpOffer(string offer, string sdp)
