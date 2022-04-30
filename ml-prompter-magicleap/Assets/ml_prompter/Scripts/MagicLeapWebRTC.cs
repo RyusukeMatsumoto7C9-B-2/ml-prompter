@@ -24,7 +24,9 @@ using UnityEngine.Serialization;
 
 namespace ml_promter
 {
-
+    /// <summary>
+    /// MagicLeap側のWebRTC処理を行う.
+    /// </summary>
     public class MagicLeapWebRTC : MonoBehaviour
     {
         [SerializeField, Header("LocalStatus")]
