@@ -27,7 +27,10 @@ namespace ml_promter
 
     public class MagicLeapWebRTC : MonoBehaviour
     {
-        public MLWebRTCVideoSinkBehavior localVideoSinkBehavior;
+        [SerializeField,Header("LocalStatus")]
+        private LocalStatus localStatus;
+
+        
         public MLWebRTCVideoSinkBehavior remoteVideoSinkBehavior;
         public MLWebRTCAudioSinkBehavior remoteAudioSinkBehavior;
 
@@ -38,11 +41,8 @@ namespace ml_promter
         [SerializeField, Header("MessageUi")]
         private MessageUi messageUi;
 
-        public Text localStatusText;
         public Text remoteStatusText;
         public Text dataChannelText;
-
-        public Dropdown localVideoSourceDropdown;
 
         public Slider audioCacheSizeSlider;
         public Text audioCacheSliderValue;
@@ -58,10 +58,7 @@ namespace ml_promter
         private MLWebRTC.PeerConnection connection = null;
         private MLWebRTC.DataChannel dataChannel = null;
 
-        private MLWebRTC.MediaStream localMediaStream = null;
         private MLWebRTC.MediaStream remoteMediaStream = null;
-
-        private MLWebRTC.MediaStream.Track localVideoTrack = null;
 
         // The sample server can only handle concurrent requests. Maintain a queue to send only 1 request at a time.
         private Queue<UnityWebRequest> pendingWebRequests = new Queue<UnityWebRequest>();
@@ -78,13 +75,6 @@ namespace ml_promter
         [SerializeField] 
         private Toggle toggleRemoteAudio;
 
-        [SerializeField]
-        private Toggle toggleLocalVideo;
-
-        [SerializeField]
-        private Toggle toggleLocalAudio;
-        
-        
         
         
         private void Start()
@@ -112,10 +102,6 @@ namespace ml_promter
             
             // Disconnectボタン.
             connectionUi.RegisterOnDisconnectListener(() => Disconnect(true));
-
-            // ローカル動画、音声の切り替え.
-            toggleLocalVideo.onValueChanged.AddListener(ToggleLocalVideo);
-            toggleLocalAudio.onValueChanged.AddListener(ToggleLocalAudio);
             
             // リモート動画、音声の切り替え.
             toggleRemoteVideo.onValueChanged.AddListener(ToggleRemoteVideo);
@@ -172,93 +158,14 @@ namespace ml_promter
                 connectionUi.ShowDisconnectUi();
 
                 SubscribeToConnection(connection);
-                CreateLocalMediaStream();
+
+                localStatus.CreateLocalMediaStream(connection);
+                
                 QueryOffers();
             });
 #endif
         }
-
-        private void CreateLocalMediaStream()
-        {
-            localVideoSinkBehavior.gameObject.SetActive(true);
-            localStatusText.text = "";
-
-            string id = "local";
-
-            // Use factory methods to create a new media stream.
-            if(localMediaStream == null)
-            {
-                switch (localVideoSourceDropdown.value)
-                {
-                    // MLCamera defined source.
-                    case 0:
-                    {
-#if PLATFORM_LUMIN
-                        localMediaStream = MLWebRTC.MediaStream.CreateWithAppDefinedVideoTrack(id, MLCameraVideoSource.CreateLocal(new MLCamera.CaptureSettings(), out MLResult result), MLWebRTC.MediaStream.Track.AudioType.Microphone);
-#endif
-                        break;
-                    }
-
-                    // MLMRCamera defined source.
-                    case 1:
-                    {
-                        localMediaStream = MLWebRTC.MediaStream.CreateWithAppDefinedVideoTrack(id, MLMRCameraVideoSource.CreateLocal(MLMRCamera.InputContext.Create(), out MLResult result), MLWebRTC.MediaStream.Track.AudioType.Microphone);
-                        break;
-                    }
-                }
-            }
-            else // Replace the local video track with another.
-            {
-                // Determine which local video source to use
-                switch (localVideoSourceDropdown.value)
-                {
-                    // MLCamera defined source.
-                    case 0:
-                    {
-                        if (!(localVideoTrack is MLCameraVideoSource))
-                        {
-#if PLATFORM_LUMIN
-                            localVideoTrack = MLCameraVideoSource.CreateLocal(new MLCamera.CaptureSettings(), out MLResult result);
-#endif
-                        }
-                        break;
-                    }
-
-                    // MLMRCamera defined source.
-                    case 1:
-                    {
-                        if (!(localVideoTrack is MLMRCameraVideoSource))
-                        {
-                            localVideoTrack = MLMRCameraVideoSource.CreateLocal(MLMRCamera.InputContext.Create(), out MLResult result);
-                        }
-                        break;
-                    }
-                }
-
-                localMediaStream.AddLocalTrack(localVideoTrack);
-                localMediaStream.SelectTrack(localVideoTrack);
-            }
-
-            foreach (MLWebRTC.MediaStream.Track track in localMediaStream.Tracks)
-            {
-#if PLATFORM_LUMIN
-                // TODO : in case we're recycling the connection / sources, the track might already have been added.
-                connection.AddLocalTrack(track);
-#endif
-            }
-
-            localVideoSinkBehavior.VideoSink.SetStream(localMediaStream);
-            localVideoSinkBehavior.ResetFrameFit();
-
-            if (localVideoSourceDropdown.value == 1 || localVideoSourceDropdown.value == 3)
-            {
-                // Turn off the local video track behavior when in MLMRCamera ("screen share") mode.
-                localVideoSinkBehavior.gameObject.SetActive(false);
-                localStatusText.text = "Screen Sharing";
-            }
-
-        }
-
+        
         
         private void Update()
         {
@@ -692,24 +599,11 @@ namespace ml_promter
             return jsonObj.ToString();
         }
 
-        public void ToggleLocalAudio(bool on)
-        {
-#if PLATFORM_LUMIN
-            localMediaStream.ActiveAudioTrack.SetEnabled(on);
-#endif
-        }
 
         public void ToggleRemoteAudio(bool on)
         {
 #if PLATFORM_LUMIN
             remoteAudioSinkBehavior.AudioSink.Stream.ActiveAudioTrack.SetEnabled(on);
-#endif
-        }
-
-        public void ToggleLocalVideo(bool on)
-        {
-#if PLATFORM_LUMIN
-            localVideoSinkBehavior.VideoSink.Stream.ActiveVideoTrack.SetEnabled(on);
 #endif
         }
 
@@ -763,16 +657,18 @@ namespace ml_promter
             waitingForAnswer = false;
             waitingForAnswerGetRequest = false;
 
-            localMediaStream.DestroyLocal();
-            localMediaStream = null;
+            localStatus.DestroyLocalMediaStream();
 
             if (!onDestroy)
             {
                 connectionUi.ShowConnectUi();
                 
-                localVideoSinkBehavior.gameObject.SetActive(false);
+                localStatus.SetActiveLocalVideoSinkBehavior(false);
+                
                 remoteStatusText.text = "Disconnected";
-                localStatusText.text = "";
+                
+                localStatus.ClearLocalStatusText();
+                
                 remoteVideoSinkBehavior.VideoSink.SetStream(null);
                 remoteAudioSinkBehavior.gameObject.SetActive(false);
                 remoteAudioSinkBehavior.gameObject.SetActive(false);
