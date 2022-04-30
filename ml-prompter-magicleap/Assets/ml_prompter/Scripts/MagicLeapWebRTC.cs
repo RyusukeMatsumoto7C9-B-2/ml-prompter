@@ -103,7 +103,7 @@ namespace ml_promter
         /// シグナリングサーバーへのログイン、現在はPCのローカルサーバを利用.
         /// PCのIPアドレスからログインする.
         /// </summary>
-        public void Login()
+        private void Login()
         {
 #if PLATFORM_LUMIN
             HttpPost(serverURI + "/login", string.Empty, (AsyncOperation asyncOp) =>
