@@ -4,7 +4,6 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 
-
 namespace ml_promter
 {
     /// <summary>
@@ -25,14 +24,7 @@ namespace ml_promter
         [SerializeField]
         private Button disconnectButton;
 
-
-        private void Awake()
-        {
-            // サーバと接続する際のキーボード.
-            //connectionKeyboard = connectUi.GetComponentInChildren<VirtualKeyboard>();
-        }
-
-
+        
         public void RegisterOnConnectionListener(UnityAction<string> listener) => connectionKeyboard.OnKeyboardSubmit.AddListener(listener);
 
 
