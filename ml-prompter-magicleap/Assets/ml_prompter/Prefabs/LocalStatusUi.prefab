@@ -2011,7 +2011,6 @@ GameObject:
   - component: {fileID: 7887123475033518325}
   - component: {fileID: 7302526284790652735}
   - component: {fileID: 7887123475033518327}
-  - component: {fileID: 7887123475033518324}
   m_Layer: 5
   m_Name: LocalStatusUi
   m_TagString: Untagged
@@ -2035,7 +2034,6 @@ RectTransform:
   - {fileID: 7887123475639342144}
   - {fileID: 7887123475100032808}
   - {fileID: 7887123475914927770}
-  - {fileID: 1335606850047574071}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2087,7 +2085,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &7302526284790652735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2132,23 +2130,6 @@ MonoBehaviour:
   _blockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7887123475033518324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7887123475033518322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48978506fa3f40398958e51c49ca9317, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  videoSinkBehavior: {fileID: 395563323263777237}
-  localStatusText: {fileID: 7887123475445514702}
-  localVideoSourceDropdown: {fileID: 7887123474248956189}
-  toggleLocalVideo: {fileID: 7887123474780494348}
-  toggleLocalAudio: {fileID: 7887123475699828253}
 --- !u!1 &7887123475092866625
 GameObject:
   m_ObjectHideFlags: 0
@@ -4027,76 +4008,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1001 &5367967077304577462
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 7887123475033518323}
-    m_Modifications:
-    - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_RootOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -30.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6410837541537262980, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-      propertyPath: m_Name
-      value: LocalVideoSinkBehavior
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
---- !u!4 &1335606850047574071 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-  m_PrefabInstance: {fileID: 5367967077304577462}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &395563323263777237 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5693547334520296547, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
-  m_PrefabInstance: {fileID: 5367967077304577462}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f35173bd60e0f442af706a39093055e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
