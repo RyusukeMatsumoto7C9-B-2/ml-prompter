@@ -33,7 +33,6 @@ namespace ml_promter
         [SerializeField, Header("RemoteStatus")]
         private RemoteStatus remoteStatus;
 
-        // Connect周り、ConnectionUiクラスに移動予定.
         [SerializeField, Header("ConnectionUi")]
         private ConnectionUi connectionUi;
 
