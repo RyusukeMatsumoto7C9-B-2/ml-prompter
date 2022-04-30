@@ -42,10 +42,10 @@ MonoBehaviour:
       m_Enabled: 0
       m_Name: ConnectBackgroundMusicService
     - m_ApiLevel: 8
-      m_Enabled: 0
+      m_Enabled: 1
       m_Name: ConnectionAccess
     - m_ApiLevel: 1
-      m_Enabled: 0
+      m_Enabled: 1
       m_Name: ControllerPose
     - m_ApiLevel: 7
       m_Enabled: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
       m_Enabled: 0
       m_Name: SocialConnectionsSelectAccess
     - m_ApiLevel: 5
-      m_Enabled: 0
+      m_Enabled: 1
       m_Name: WifiStatusRead
     - m_ApiLevel: 1
       m_Enabled: 0
@@ -142,23 +142,23 @@ MonoBehaviour:
       m_Enabled: 1
       m_Name: AudioCaptureMic
     - m_ApiLevel: 1
-      m_Enabled: 0
+      m_Enabled: 1
       m_Name: AudioRecognizer
     - m_ApiLevel: 1
       m_Enabled: 1
       m_Name: CameraCapture
     - m_ApiLevel: 5
-      m_Enabled: 0
+      m_Enabled: 1
       m_Name: ComputerVision
     - m_ApiLevel: 8
-      m_Enabled: 0
+      m_Enabled: 1
       m_Name: ConnectionAudioCaptureStreaming
     - m_ApiLevel: 8
-      m_Enabled: 0
+      m_Enabled: 1
       m_Name: ConnectionVideoCaptureStreaming
     - m_ApiLevel: 7
-      m_Enabled: 0
+      m_Enabled: 1
       m_Name: FineLocation
     - m_ApiLevel: 1
-      m_Enabled: 0
+      m_Enabled: 1
       m_Name: VoiceInput

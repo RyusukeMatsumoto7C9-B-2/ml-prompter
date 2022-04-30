@@ -1,4 +1,17 @@
-﻿using MagicLeap;
+﻿// %BANNER_BEGIN%
+// ---------------------------------------------------------------------
+// %COPYRIGHT_BEGIN%
+//
+// Copyright (c) 2019-present, Magic Leap, Inc. All Rights Reserved.
+// Use of this file is governed by the Developer Agreement, located
+// here: https://auth.magicleap.com/terms/developer
+//
+// %COPYRIGHT_END%
+// ---------------------------------------------------------------------
+// %BANNER_END%
+
+using MagicLeap;
+using SimpleJson;
 using System;
 using System.Text;
 using System.Collections.Generic;
@@ -6,41 +19,29 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.XR.MagicLeap;
-using SimpleJson;
+using UnityEngine.Serialization;
 
 
-namespace ml_prompter.MagicLeap
+namespace ml_promter
 {
-    
-    
-    
     /// <summary>
-    /// WebRTCのMagicLeap側処理.
+    /// MagicLeap側のWebRTC処理を行う.
     /// </summary>
     public class MagicLeapWebRTC : MonoBehaviour
     {
-        public MLWebRTCVideoSinkBehavior localVideoSinkBehavior;
-        public MLWebRTCVideoSinkBehavior remoteVideoSinkBehavior;
-        public MLWebRTCAudioSinkBehavior remoteAudioSinkBehavior;
+        [SerializeField, Header("LocalStatus")]
+        private LocalStatus localStatus;
 
-        public GameObject keyboardUI;
-        public GameObject messageUI;
-        public GameObject disconnectUI;
+        [SerializeField, Header("RemoteStatus")]
+        private RemoteStatus remoteStatus;
 
-        public Text localStatusText;
-        public Text remoteStatusText;
+        [SerializeField, Header("ConnectionUi")]
+        private ConnectionUi connectionUi;
+
+        [SerializeField, Header("MessageUi")]
+        private MessageUi messageUi;
+
         public Text dataChannelText;
-
-        public Toggle localVideoToggle;
-        public Toggle remoteVideoToggle;
-
-        public Toggle localAudioToggle;
-        public Toggle remoteAudioToggle;
-
-        public Dropdown localVideoSourceDropdown;
-
-        public Slider audioCacheSizeSlider;
-        public Text audioCacheSliderValue;
 
         private bool waitingForAnswer = false;
         private bool waitingForAnswerGetRequest = false;
@@ -53,21 +54,16 @@ namespace ml_prompter.MagicLeap
         private MLWebRTC.PeerConnection connection = null;
         private MLWebRTC.DataChannel dataChannel = null;
 
-        private MLWebRTC.MediaStream localMediaStream = null;
-        private MLWebRTC.MediaStream remoteMediaStream = null;
-
-        private MLWebRTC.MediaStream.Track localVideoTrack = null;
-
         // The sample server can only handle concurrent requests. Maintain a queue to send only 1 request at a time.
         private Queue<UnityWebRequest> pendingWebRequests = new Queue<UnityWebRequest>();
         private Dictionary<UnityWebRequest, Action<AsyncOperation>> webRequestsToOnCompletedEvent = new Dictionary<UnityWebRequest, Action<AsyncOperation>>();
         private UnityWebRequest lastWebRequest = null;
         private UnityWebRequestAsyncOperation lastWebRequestAsyncOp = null;
         private bool lastWebRequestCompleted = true;
-
-        void Start()
+        
+        
+        private void Start()
         {
-#if PLATFORM_LUMIN
             MLResult result = MLPrivileges.RequestPrivileges(MLPrivileges.Id.Internet, MLPrivileges.Id.LocalAreaNetwork, MLPrivileges.Id.CameraCapture, MLPrivileges.Id.AudioCaptureMic);
 
             if (result.Result != MLResult.Code.PrivilegeGranted)
@@ -75,33 +71,46 @@ namespace ml_prompter.MagicLeap
                 Debug.LogError("MLPrivileges failed to grant all needed privileges.");
                 enabled = false;
             }
-#endif
-            disconnectUI.SetActive(false);
-            messageUI.SetActive(false);
+
+            connectionUi.HideDisconnectUi();
+            connectionUi.RegisterOnConnectionListener(Connect);
+            connectionUi.RegisterOnDisconnectListener(() => Disconnect(true));
+            messageUi.HideMessageUiButton();
+            messageUi.RegisterOnKeyboardSubmit(SendMessageOnDataChannel);
         }
 
-        // Subscribed to keyboard event within the inspector
-        public void Connect(string address)
+        
+        /// <summary>
+        /// 同期先のPCと接続.
+        /// Keyboardからイベント購読している( return キーで呼び出される. ).
+        /// Subscribed to keyboard event within the inspector
+        /// </summary>
+        /// <param name="address"></param>
+        private void Connect(string address)
         {
-#if PLATFORM_LUMIN
             serverAddress = address;
             serverURI = CreateServerURI(serverAddress);
-            remoteStatusText.text = "Creating connection...";
-            keyboardUI.SetActive(false);
+            remoteStatus.SetStatusText("Creating connection...");            
+            connectionUi.HideConnectUi();
+            messageUi.ShowMessageUiButton();
             Login();
-#endif
         }
 
-        public void Login()
+        
+        /// <summary>
+        /// シグナリングサーバーへのログイン、現在はPCのローカルサーバを利用.
+        /// PCのIPアドレスからログインする.
+        /// </summary>
+        private void Login()
         {
-#if PLATFORM_LUMIN
             HttpPost(serverURI + "/login", string.Empty, (AsyncOperation asyncOp) =>
             {
                 UnityWebRequestAsyncOperation webRequenstAsyncOp = asyncOp as UnityWebRequestAsyncOperation;
                 if (webRequenstAsyncOp.webRequest.result != UnityWebRequest.Result.Success || string.IsNullOrEmpty(webRequenstAsyncOp.webRequest.downloadHandler.text))
                 {
-                    remoteStatusText.text = "";
-                    keyboardUI.SetActive(true);
+                    remoteStatus.ClearStatusText();
+                    
+                    connectionUi.ShowConnectUi();
                     return;
                 }
 
@@ -114,97 +123,15 @@ namespace ml_prompter.MagicLeap
                     return;
                 }
 
-                disconnectUI.SetActive(true);
-
+                connectionUi.ShowDisconnectUi();
                 SubscribeToConnection(connection);
-                CreateLocalMediaStream();
+                localStatus.CreateLocalMediaStream(connection);
                 QueryOffers();
             });
-#endif
         }
-
-        private void CreateLocalMediaStream()
-        {
-            localVideoSinkBehavior.gameObject.SetActive(true);
-            localStatusText.text = "";
-
-            string id = "local";
-
-            // Use factory methods to create a new media stream.
-            if(localMediaStream == null)
-            {
-                switch (localVideoSourceDropdown.value)
-                {
-                    // MLCamera defined source.
-                    case 0:
-                    {
-#if PLATFORM_LUMIN
-                        localMediaStream = MLWebRTC.MediaStream.CreateWithAppDefinedVideoTrack(id, MLCameraVideoSource.CreateLocal(new MLCamera.CaptureSettings(), out MLResult result), MLWebRTC.MediaStream.Track.AudioType.Microphone);
-#endif
-                        break;
-                    }
-
-                    // MLMRCamera defined source.
-                    case 1:
-                    {
-                        localMediaStream = MLWebRTC.MediaStream.CreateWithAppDefinedVideoTrack(id, MLMRCameraVideoSource.CreateLocal(MLMRCamera.InputContext.Create(), out MLResult result), MLWebRTC.MediaStream.Track.AudioType.Microphone);
-                        break;
-                    }
-                }
-            }
-            else // Replace the local video track with another.
-            {
-                // Determine which local video source to use
-                switch (localVideoSourceDropdown.value)
-                {
-                    // MLCamera defined source.
-                    case 0:
-                    {
-                        if (!(localVideoTrack is MLCameraVideoSource))
-                        {
-#if PLATFORM_LUMIN
-                            localVideoTrack = MLCameraVideoSource.CreateLocal(new MLCamera.CaptureSettings(), out MLResult result);
-#endif
-                        }
-                        break;
-                    }
-
-                    // MLMRCamera defined source.
-                    case 1:
-                    {
-                        if (!(localVideoTrack is MLMRCameraVideoSource))
-                        {
-                            localVideoTrack = MLMRCameraVideoSource.CreateLocal(MLMRCamera.InputContext.Create(), out MLResult result);
-                        }
-                        break;
-                    }
-                }
-
-                localMediaStream.AddLocalTrack(localVideoTrack);
-                localMediaStream.SelectTrack(localVideoTrack);
-            }
-
-            foreach (MLWebRTC.MediaStream.Track track in localMediaStream.Tracks)
-            {
-#if PLATFORM_LUMIN
-                // TODO : in case we're recycling the connection / sources, the track might already have been added.
-                connection.AddLocalTrack(track);
-#endif
-            }
-
-            localVideoSinkBehavior.VideoSink.SetStream(localMediaStream);
-            localVideoSinkBehavior.ResetFrameFit();
-
-            if (localVideoSourceDropdown.value == 1 || localVideoSourceDropdown.value == 3)
-            {
-                // Turn off the local video track behavior when in MLMRCamera ("screen share") mode.
-                localVideoSinkBehavior.gameObject.SetActive(false);
-                localStatusText.text = "Screen Sharing";
-            }
-
-        }
-
-        void Update()
+        
+        
+        private void Update()
         {
             UpdateWebRequests();
 
@@ -220,9 +147,7 @@ namespace ml_prompter.MagicLeap
                     if (ParseAnswer(response, out remoteId, out string remoteAnswer))
                     {
                         waitingForAnswer = false;
-#if PLATFORM_LUMIN
                         connection.SetRemoteAnswer(remoteAnswer);
-#endif
                         // We've received a remoteId. Try to consume ices.
                         ConsumeIces();
                     }
@@ -236,16 +161,16 @@ namespace ml_prompter.MagicLeap
             }
         }
 
-        void OnDestroy()
+        
+        private void OnDestroy()
         {
-#if PLATFORM_LUMIN
             Disconnect(true);
-#endif
         }
+        
 
-        public void SendMessageOnDataChannel(string message)
+        private void SendMessageOnDataChannel(string message)
         {
-#if PLATFORM_LUMIN
+            Debug.Log($"message : {message}");
             MLResult? result = this.dataChannel?.SendMessage(message);
             if (result.HasValue)
             {
@@ -258,12 +183,12 @@ namespace ml_prompter.MagicLeap
                     Debug.LogError($"MLWebRTC.DataChannel.SendMessage() failed with error {result}");
                 }
             }
-#endif
         }
 
+        
+        // Binaryデータの送信、今は使ってない.
         public void SendBinaryMessageOnDataChannel()
         {
-#if PLATFORM_LUMIN
             // generate an array of 5 random integers to be sent via the data channel
             System.Random rand = new System.Random();
             int[] randomIntegers = new int[5];
@@ -284,15 +209,14 @@ namespace ml_prompter.MagicLeap
                     Debug.LogError($"MLWebRTC.DataChannel.SendMessage() failed with error {result}");
                 }
             }
-#endif
         }
 
+        
         private void QueryOffers()
         {
             // GET request to check the server for any awaiting remote offers.
             HttpGet(serverURI + "/offers", (AsyncOperation asyncOp) =>
             {
-#if PLATFORM_LUMIN
                 UnityWebRequestAsyncOperation webRequenstAsyncOp = asyncOp as UnityWebRequestAsyncOperation;
                 string offers = webRequenstAsyncOp.webRequest.downloadHandler.text;
                 if (ParseOffers(offers, out remoteId, out string sdp))
@@ -303,42 +227,47 @@ namespace ml_prompter.MagicLeap
                 }
                 else // If there are no offers available then create our own local data channel on the connection.
                 {
-                    messageUI.SetActive(true);
+                    messageUi.ShowMessageUiButton();
+                    
                     this.dataChannel = MLWebRTC.DataChannel.CreateLocal(connection, out MLResult result);
                     SubscribeToDataChannel(this.dataChannel);
                     connection.CreateOffer();
                 }
-#endif
             });
         }
 
+        
         private void OnConnectionLocalOfferCreated(MLWebRTC.PeerConnection connection, string sendSdp)
         {
-            remoteStatusText.text = "Sending offer...";
+            remoteStatus.SetStatusText("Sending offer...");
             HttpPost(serverURI + "/post_offer/" + localId, FormatSdpOffer("offer", sendSdp), (AsyncOperation ao) =>
             {
-                remoteStatusText.text = "Waiting for answer...";
+                remoteStatus.SetStatusText("Waiting for answer...");
                 waitingForAnswer = true;
             });
         }
 
+        
         private void OnConnectionLocalAnswerCreated(MLWebRTC.PeerConnection connection, string sendAnswer)
         {
-            remoteStatusText.text = "Sending answer to an offer...";
+            remoteStatus.SetStatusText("Sending answer to an offer...");
             HttpPost(serverURI + "/post_answer/" + localId + "/" + remoteId, FormatSdpOffer("answer", sendAnswer));
         }
 
+        
         private void OnConnectionLocalIceCandidateFound(MLWebRTC.PeerConnection connection, MLWebRTC.IceCandidate iceCandidate)
         {
-            remoteStatusText.text = "Sending ice candidate...";
+            remoteStatus.SetStatusText("Sending ice candidate...");
             HttpPost(serverURI + "/post_ice/" + localId, FormatIceCandidate(iceCandidate));
         }
 
+        
         private void OnConnectionIceGatheringCompleted(MLWebRTC.PeerConnection connection)
         {
-            remoteStatusText.text = "On ice gathering completed...";
+            remoteStatus.SetStatusText("On ice gathering completed...");
         }
 
+        
         private void ConsumeIces()
         {
             if (!string.IsNullOrEmpty(remoteId))
@@ -346,7 +275,6 @@ namespace ml_prompter.MagicLeap
                 // Queries for all the ices to test
                 HttpPost(serverURI + "/consume_ices/" + remoteId, "", (AsyncOperation asyncOp) =>
                 {
-
                     UnityWebRequestAsyncOperation webRequenstAsyncOp = asyncOp as UnityWebRequestAsyncOperation;
                     string iceCandidates = webRequenstAsyncOp.webRequest.downloadHandler.text;
                     // Parses all the ice candidates
@@ -359,75 +287,36 @@ namespace ml_prompter.MagicLeap
                         JsonObject jsonObj = (JsonObject)jsonArray[i];
                         MLWebRTC.IceCandidate iceCandidate = MLWebRTC.IceCandidate.Create((string)jsonObj["candidate"], (string)jsonObj["sdpMid"], Convert.ToInt32(jsonObj["sdpMLineIndex"]));
 
-#if PLATFORM_LUMIN
                         MLResult result = connection.AddRemoteIceCandidate(iceCandidate);
-#endif
-                        remoteStatusText.text = "";
+
+                        remoteStatus.ClearStatusText();
                     }
                 });
             }
         }
 
+        
         private void OnConnectionConnected(MLWebRTC.PeerConnection connection)
         {
-            remoteStatusText.text = "";
+            remoteStatus.ClearStatusText();
         }
 
+        
         private void OnConnectionTrackAdded(List<MLWebRTC.MediaStream> mediaStream, MLWebRTC.MediaStream.Track addedTrack)
         {
-            remoteStatusText.text = $"Adding {addedTrack.TrackType} track.";
-            if (remoteMediaStream == null)
-            {
-                remoteMediaStream = mediaStream[0];
-            }
-
-            switch (addedTrack.TrackType)
-            {
-                // if the incoming track is audio, set the audio sink to this track.
-                case MLWebRTC.MediaStream.Track.Type.Audio:
-                {
-                    remoteAudioSinkBehavior.AudioSink.SetStream(remoteMediaStream);
-                    remoteAudioSinkBehavior.gameObject.SetActive(true);
-                    remoteAudioSinkBehavior.AudioSink.SetCacheSize((uint)audioCacheSizeSlider.value);
-                    break;
-                }
-
-                // if the incoming track is video, set the video sink to this track.
-                case MLWebRTC.MediaStream.Track.Type.Video:
-                {
-                    remoteVideoSinkBehavior.VideoSink.SetStream(remoteMediaStream);
-                    remoteVideoSinkBehavior.ResetFrameFit();
-                    remoteVideoSinkBehavior.gameObject.SetActive(true);
-                    break;
-                }
-            }
+            remoteStatus.AddConnectionTrack(mediaStream, addedTrack);
         }
 
+        
         private void OnConnectionTrackRemoved(List<MLWebRTC.MediaStream> mediaStream, MLWebRTC.MediaStream.Track removedTrack)
         {
-            remoteStatusText.text = $"Removed {removedTrack.TrackType} track.";
-
-            switch (removedTrack.TrackType)
-            {
-                case MLWebRTC.MediaStream.Track.Type.Audio:
-                {
-                    remoteAudioSinkBehavior.AudioSink.SetStream(null);
-                    remoteAudioSinkBehavior.gameObject.SetActive(false);
-                    break;
-                }
-
-                case MLWebRTC.MediaStream.Track.Type.Video:
-                {
-                    remoteVideoSinkBehavior.VideoSink.SetStream(null);
-                    remoteVideoSinkBehavior.gameObject.SetActive(false);
-                    break;
-                }
-            }
+            remoteStatus.RemoveConnectionTrack(mediaStream, removedTrack);
         }
 
+        
         private void OnConnectionDataChannelReceived(MLWebRTC.PeerConnection connection, MLWebRTC.DataChannel dataChannel)
         {
-            messageUI.SetActive(true);
+            messageUi.ShowMessageUiButton();
 
             if (this.dataChannel != null)
             {
@@ -438,6 +327,7 @@ namespace ml_prompter.MagicLeap
             SubscribeToDataChannel(this.dataChannel);
             dataChannelText.text = "Data Channel";
         }
+        
 
         private void SubscribeToConnection(MLWebRTC.PeerConnection connection)
         {
@@ -453,6 +343,7 @@ namespace ml_prompter.MagicLeap
             connection.OnIceGatheringCompleted += OnConnectionIceGatheringCompleted;
         }
 
+        
         private void UnsubscribeFromConnection(MLWebRTC.PeerConnection connection)
         {
             connection.OnError -= OnConnectionError;
@@ -467,6 +358,7 @@ namespace ml_prompter.MagicLeap
             connection.OnIceGatheringCompleted -= OnConnectionIceGatheringCompleted;
         }
 
+        
         private void SubscribeToDataChannel(MLWebRTC.DataChannel dataChannel)
         {
             dataChannel.OnClosed += OnDataChannelClosed;
@@ -475,6 +367,7 @@ namespace ml_prompter.MagicLeap
             dataChannel.OnMessageBinary += OnDataChannelBinaryMessage;
         }
 
+        
         private void UnsubscribeFromDataChannel(MLWebRTC.DataChannel dataChannel)
         {
             dataChannel.OnClosed -= OnDataChannelClosed;
@@ -483,21 +376,25 @@ namespace ml_prompter.MagicLeap
             dataChannel.OnMessageBinary -= OnDataChannelBinaryMessage;
         }
 
+        
         private void OnDataChannelOpened(MLWebRTC.DataChannel dataChannel)
         {
             dataChannelText.text = "Data Channel";
         }
 
+        
         private void OnDataChannelClosed(MLWebRTC.DataChannel dataChannel)
         {
             dataChannelText.text = "";
             UnsubscribeFromDataChannel(dataChannel);
         }
 
+        
         private void OnDataChannelTextMessage(MLWebRTC.DataChannel dataChannel, string message)
         {
             dataChannelText.text = "Received: \n" + message;
         }
+        
 
         private void OnDataChannelBinaryMessage(MLWebRTC.DataChannel dataChannel, byte[] message)
         {
@@ -519,21 +416,25 @@ namespace ml_prompter.MagicLeap
             }
         }
 
+        
         private void OnConnectionDisconnected(MLWebRTC.PeerConnection connection)
         {
             // Don't call Disconnect() here because that attempts to destroy the connection object
             // while being inside its callback and results in a deadlock.
             shouldDisconnect = true;
         }
-
+        
+        
         private void OnConnectionError(MLWebRTC.PeerConnection connection, string errorMessage)
         {
-            remoteStatusText.text = "Error: " + errorMessage;
+            remoteStatus.SetStatusText("Error: " + errorMessage);
             dataChannelText.text = "";
-            keyboardUI.SetActive(true);
-            messageUI.SetActive(false);
+            connectionUi.ShowConnectUi();
+            
+            messageUi.HideMessageUiButton();
         }
 
+        
         private bool ParseOffers(string data, out string remoteId, out string sdp)
         {
             bool result = false;
@@ -544,7 +445,7 @@ namespace ml_prompter.MagicLeap
             {
                 return result;
             }
-            
+
             SimpleJson.SimpleJson.TryDeserializeObject(data, out object obj);
             JsonObject jsonObj = (JsonObject)obj;
             foreach (KeyValuePair<string, object> pair in jsonObj)
@@ -557,6 +458,7 @@ namespace ml_prompter.MagicLeap
 
             return result;
         }
+        
 
         private bool ParseAnswer(string data, out string remoteId, out string sdp)
         {
@@ -586,8 +488,9 @@ namespace ml_prompter.MagicLeap
 
             return result;
         }
+        
 
-        public MLWebRTC.IceServer[] CreateIceServers()
+        private MLWebRTC.IceServer[] CreateIceServers()
         {
             string stunServer1Uri = "stun:stun.l.google.com:19302";
             string stunServer2Uri = "stun:" + serverAddress + ":3478";
@@ -609,12 +512,11 @@ namespace ml_prompter.MagicLeap
             return iceServers;
         }
 
-        public string CreateServerURI(string serverAddress)
-        {
-            return "http://" + serverAddress + ":8080";
-        }
 
-        public static string FormatSdpOffer(string offer, string sdp)
+        private string CreateServerURI(string address) => "http://" + address + ":8080";
+
+        
+        private static string FormatSdpOffer(string offer, string sdp)
         {
             JsonObject jsonObj = new JsonObject();
             jsonObj["sdp"] = sdp;
@@ -622,7 +524,8 @@ namespace ml_prompter.MagicLeap
             return jsonObj.ToString();
         }
 
-        public static string FormatIceCandidate(MLWebRTC.IceCandidate iceCandidate)
+        
+        private static string FormatIceCandidate(MLWebRTC.IceCandidate iceCandidate)
         {
             JsonObject jsonObj = new JsonObject();
             jsonObj["candidate"] = iceCandidate.Candidate;
@@ -631,49 +534,8 @@ namespace ml_prompter.MagicLeap
             return jsonObj.ToString();
         }
 
-        public void ToggleLocalAudio(bool on)
-        {
-#if PLATFORM_LUMIN
-            localMediaStream.ActiveAudioTrack.SetEnabled(on);
-#endif
-        }
 
-        public void ToggleRemoteAudio(bool on)
-        {
-#if PLATFORM_LUMIN
-            remoteAudioSinkBehavior.AudioSink.Stream.ActiveAudioTrack.SetEnabled(on);
-#endif
-        }
-
-        public void ToggleLocalVideo(bool on)
-        {
-#if PLATFORM_LUMIN
-            localVideoSinkBehavior.VideoSink.Stream.ActiveVideoTrack.SetEnabled(on);
-#endif
-        }
-
-        public void ToggleRemoteVideo(bool on)
-        {
-#if PLATFORM_LUMIN
-            remoteVideoSinkBehavior.VideoSink.Stream.ActiveVideoTrack.SetEnabled(on);
-#endif
-        }
-
-
-        public void OnAudioCacheSizeSliderValueChanged()
-        {
-            if (audioCacheSliderValue != null)
-            {
-                audioCacheSliderValue.text = $"{audioCacheSizeSlider.value} ms";
-            }
-
-            if (remoteAudioSinkBehavior.AudioSink != null)
-            {
-                remoteAudioSinkBehavior.AudioSink.SetCacheSize((uint)audioCacheSizeSlider.value);
-            }
-        }
-
-        public void Disconnect(bool onDestroy = false)
+        private void Disconnect(bool onDestroy = false)
         {
             if (connection == null)
             {
@@ -696,26 +558,24 @@ namespace ml_prompter.MagicLeap
             connection.Destroy();
 #endif
             connection = null;
-
-            remoteMediaStream = null;
+            remoteStatus.DestroyMediaStream();
+            
             waitingForAnswer = false;
             waitingForAnswerGetRequest = false;
 
-            localMediaStream.DestroyLocal();
-            localMediaStream = null;
+            localStatus.DestroyLocalMediaStream();
 
             if (!onDestroy)
             {
-                keyboardUI.SetActive(true);
-                localVideoSinkBehavior.gameObject.SetActive(false);
-                remoteStatusText.text = "Disconnected";
-                localStatusText.text = "";
-                remoteVideoSinkBehavior.VideoSink.SetStream(null);
-                remoteAudioSinkBehavior.gameObject.SetActive(false);
-                remoteAudioSinkBehavior.gameObject.SetActive(false);
-                remoteVideoSinkBehavior.gameObject.SetActive(false);
-                disconnectUI.SetActive(false);
-                messageUI.SetActive(false);
+                connectionUi.ShowConnectUi();
+                localStatus.SetActiveLocalVideoSinkBehavior(false);
+                localStatus.ClearLocalStatusText();
+
+                remoteStatus.SetStatusText("Disconnected");
+                remoteStatus.DisableSinkBehavior();
+                connectionUi.HideDisconnectUi();
+                
+                messageUi.HideMessageUiButton();
                 dataChannelText.text = "";
             }
 
@@ -723,6 +583,7 @@ namespace ml_prompter.MagicLeap
             localId = "";
         }
 
+        
         private void HttpPost(string url, string data, Action<AsyncOperation> onCompleted = null)
         {
             UnityWebRequest request;
@@ -742,6 +603,7 @@ namespace ml_prompter.MagicLeap
             webRequestsToOnCompletedEvent.Add(request, onCompleted);
         }
 
+        
         private void HttpGet(string url, Action<AsyncOperation> onCompleted = null)
         {
             UnityWebRequest request = UnityWebRequest.Get(url);
@@ -749,6 +611,7 @@ namespace ml_prompter.MagicLeap
             webRequestsToOnCompletedEvent.Add(request, onCompleted);
         }
 
+        
         private void UpdateWebRequests()
         {
             // Use lastWebRequestCompleted instead of lastWebRequest.isDone because the latter can
@@ -763,9 +626,7 @@ namespace ml_prompter.MagicLeap
                     UnityWebRequestAsyncOperation webRequenstAsyncOp = asyncOp as UnityWebRequestAsyncOperation;
                     if (webRequenstAsyncOp.webRequest.result != UnityWebRequest.Result.Success)
                     {
-#if PLATFORM_LUMIN
                         MLPluginLog.ErrorFormat($"MLWebRTCExample.Http{webRequenstAsyncOp.webRequest.method}({webRequenstAsyncOp.webRequest.url}) failed, Reason : {webRequenstAsyncOp.webRequest.error}");
-#endif
                     }
                     webRequestsToOnCompletedEvent[lastWebRequest]?.Invoke(asyncOp);
                     lastWebRequestCompleted = true;

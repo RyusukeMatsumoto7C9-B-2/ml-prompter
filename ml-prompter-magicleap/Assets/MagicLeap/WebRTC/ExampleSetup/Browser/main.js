@@ -10,25 +10,6 @@ hangupButton.addEventListener('click', hangup);
 const localVideo = document.getElementById('localVideo');
 const remoteVideo = document.getElementById('remoteVideo');
 
-// 俺が追加したやつ.
-const lVideo = document.querySelector("video");
-const mediaStreamConstraints = { video: true };
-
-function gotLocalMediaStream(mediaStream)
-{
-    const localStream = mediaStream;
-    lVideo.srcObject = mediaStream;
-}
-
-function handleLocalMediaStreamError(error)
-{
-    console.log("navigator.getUserMedia error:", error);
-}
-
-
-
-//
-
 const localAudioEnabled = document.querySelector('#localAudioEnabled');
 const localVideoEnabled = document.querySelector('#localVideoEnabled');
 const remoteAudioEnabled = document.querySelector('#remoteAudioEnabled');
@@ -71,9 +52,7 @@ const offerOptions = {
 
 async function start() {
   try {
-    //const stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-    const stream = await navigator.mediaDevices.getDisplayMedia(mediaStreamConstraints);
-    
+    const stream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
     console.log('Received local stream');
     localVideo.srcObject = stream;
     localStream = stream;
