@@ -189,6 +189,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 20294507499185110, guid: 24158fb1437dc8e418d893939758764d, type: 3}
+      propertyPath: far clip plane
+      value: 30
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 24158fb1437dc8e418d893939758764d, type: 3}
 --- !u!114 &295038934 stripped
@@ -1249,42 +1253,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 269852012, guid: a9aa396425cee0043ad165dee09ac419, type: 3}
-      propertyPath: _placeOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 269852012, guid: a9aa396425cee0043ad165dee09ac419, type: 3}
-      propertyPath: _placeOnUpdate
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 269852012, guid: a9aa396425cee0043ad165dee09ac419, type: 3}
-      propertyPath: _positionSmoothTime
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 269852012, guid: a9aa396425cee0043ad165dee09ac419, type: 3}
-      propertyPath: _rotationSmoothTime
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1961923971656329079, guid: a9aa396425cee0043ad165dee09ac419, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1961923971656329079, guid: a9aa396425cee0043ad165dee09ac419, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1961923971656329079, guid: a9aa396425cee0043ad165dee09ac419, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1961923971991713751, guid: a9aa396425cee0043ad165dee09ac419, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1961923971991713751, guid: a9aa396425cee0043ad165dee09ac419, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1961923972361891978, guid: a9aa396425cee0043ad165dee09ac419, type: 3}
       propertyPath: m_Name
       value: RmoteStatus
@@ -1416,20 +1384,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 828109019, guid: 1ea6af5ae6fdd83418a0b39a46c624c6, type: 3}
-      propertyPath: _placeOnAwake
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 828109019, guid: 1ea6af5ae6fdd83418a0b39a46c624c6, type: 3}
-      propertyPath: _placeOnUpdate
+      propertyPath: _lockXRotation
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 828109019, guid: 1ea6af5ae6fdd83418a0b39a46c624c6, type: 3}
-      propertyPath: _positionSmoothTime
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 828109019, guid: 1ea6af5ae6fdd83418a0b39a46c624c6, type: 3}
-      propertyPath: _rotationSmoothTime
-      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1227366511329496103, guid: 1ea6af5ae6fdd83418a0b39a46c624c6, type: 3}
       propertyPath: m_Name
