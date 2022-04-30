@@ -28,8 +28,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7081087181566734534}
   - {fileID: 8639621909602475621}
+  - {fileID: 7081087181566734534}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -75,7 +75,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7887123475033518322, guid: b73b15ff8f2838a4bbd80904adb31d2f, type: 3}
       propertyPath: m_Name
-      value: LocalStatusUi
+      value: Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 7887123475033518322, guid: b73b15ff8f2838a4bbd80904adb31d2f, type: 3}
       propertyPath: m_IsActive
@@ -91,7 +91,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7887123475033518323, guid: b73b15ff8f2838a4bbd80904adb31d2f, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7887123475033518323, guid: b73b15ff8f2838a4bbd80904adb31d2f, type: 3}
       propertyPath: m_AnchorMax.x
@@ -262,9 +262,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -0.201
       objectReference: {fileID: 0}
+    - target: {fileID: 6410837541002332071, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410837541002332071, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410837541002332071, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
       propertyPath: m_LocalScale.x
@@ -321,6 +333,18 @@ PrefabInstance:
     - target: {fileID: 6410837541537262980, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
       propertyPath: m_Name
       value: LocalVideoSinkBehavior
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410837542178715369, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410837542178715369, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6410837542178715369, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
