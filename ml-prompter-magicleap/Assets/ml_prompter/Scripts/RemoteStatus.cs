@@ -57,21 +57,10 @@ namespace ml_promter
         }
         
         
-        private void ToggleRemoteAudio(bool on)
-        {
-#if PLATFORM_LUMIN
-            remoteAudioSinkBehavior.AudioSink.Stream.ActiveAudioTrack.SetEnabled(on);
-#endif
-        }
+        private void ToggleRemoteAudio(bool on) => remoteAudioSinkBehavior.AudioSink.Stream.ActiveAudioTrack.SetEnabled(on);
 
         
-        private void ToggleRemoteVideo(bool on)
-        {
-#if PLATFORM_LUMIN
-            remoteVideoSinkBehavior.VideoSink.Stream.ActiveVideoTrack.SetEnabled(on);
-#endif
-        }
-
+        private void ToggleRemoteVideo(bool on) => remoteVideoSinkBehavior.VideoSink.Stream.ActiveVideoTrack.SetEnabled(on);
 
 
         public void AddConnectionTrack(List<MLWebRTC.MediaStream> mediaStream, MLWebRTC.MediaStream.Track addedTrack)

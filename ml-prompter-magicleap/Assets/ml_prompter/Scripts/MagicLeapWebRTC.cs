@@ -64,7 +64,6 @@ namespace ml_promter
         
         private void Start()
         {
-#if PLATFORM_LUMIN
             MLResult result = MLPrivileges.RequestPrivileges(MLPrivileges.Id.Internet, MLPrivileges.Id.LocalAreaNetwork, MLPrivileges.Id.CameraCapture, MLPrivileges.Id.AudioCaptureMic);
 
             if (result.Result != MLResult.Code.PrivilegeGranted)
@@ -72,7 +71,6 @@ namespace ml_promter
                 Debug.LogError("MLPrivileges failed to grant all needed privileges.");
                 enabled = false;
             }
-#endif
 
             connectionUi.HideDisconnectUi();
             connectionUi.RegisterOnConnectionListener(Connect);
@@ -90,14 +88,12 @@ namespace ml_promter
         /// <param name="address"></param>
         private void Connect(string address)
         {
-#if PLATFORM_LUMIN
             serverAddress = address;
             serverURI = CreateServerURI(serverAddress);
             remoteStatus.SetStatusText("Creating connection...");            
             connectionUi.HideConnectUi();
             messageUi.ShowMessageUiButton();
             Login();
-#endif
         }
 
         
@@ -107,7 +103,6 @@ namespace ml_promter
         /// </summary>
         private void Login()
         {
-#if PLATFORM_LUMIN
             HttpPost(serverURI + "/login", string.Empty, (AsyncOperation asyncOp) =>
             {
                 UnityWebRequestAsyncOperation webRequenstAsyncOp = asyncOp as UnityWebRequestAsyncOperation;
@@ -133,7 +128,6 @@ namespace ml_promter
                 localStatus.CreateLocalMediaStream(connection);
                 QueryOffers();
             });
-#endif
         }
         
         
@@ -153,9 +147,7 @@ namespace ml_promter
                     if (ParseAnswer(response, out remoteId, out string remoteAnswer))
                     {
                         waitingForAnswer = false;
-#if PLATFORM_LUMIN
                         connection.SetRemoteAnswer(remoteAnswer);
-#endif
                         // We've received a remoteId. Try to consume ices.
                         ConsumeIces();
                     }
@@ -172,16 +164,13 @@ namespace ml_promter
         
         private void OnDestroy()
         {
-#if PLATFORM_LUMIN
             Disconnect(true);
-#endif
         }
         
 
         private void SendMessageOnDataChannel(string message)
         {
             Debug.Log($"message : {message}");
-#if PLATFORM_LUMIN
             MLResult? result = this.dataChannel?.SendMessage(message);
             if (result.HasValue)
             {
@@ -194,14 +183,12 @@ namespace ml_promter
                     Debug.LogError($"MLWebRTC.DataChannel.SendMessage() failed with error {result}");
                 }
             }
-#endif
         }
 
         
         // Binaryデータの送信、今は使ってない.
         public void SendBinaryMessageOnDataChannel()
         {
-#if PLATFORM_LUMIN
             // generate an array of 5 random integers to be sent via the data channel
             System.Random rand = new System.Random();
             int[] randomIntegers = new int[5];
@@ -222,7 +209,6 @@ namespace ml_promter
                     Debug.LogError($"MLWebRTC.DataChannel.SendMessage() failed with error {result}");
                 }
             }
-#endif
         }
 
         
@@ -231,7 +217,6 @@ namespace ml_promter
             // GET request to check the server for any awaiting remote offers.
             HttpGet(serverURI + "/offers", (AsyncOperation asyncOp) =>
             {
-#if PLATFORM_LUMIN
                 UnityWebRequestAsyncOperation webRequenstAsyncOp = asyncOp as UnityWebRequestAsyncOperation;
                 string offers = webRequenstAsyncOp.webRequest.downloadHandler.text;
                 if (ParseOffers(offers, out remoteId, out string sdp))
@@ -248,7 +233,6 @@ namespace ml_promter
                     SubscribeToDataChannel(this.dataChannel);
                     connection.CreateOffer();
                 }
-#endif
             });
         }
 
@@ -303,9 +287,8 @@ namespace ml_promter
                         JsonObject jsonObj = (JsonObject)jsonArray[i];
                         MLWebRTC.IceCandidate iceCandidate = MLWebRTC.IceCandidate.Create((string)jsonObj["candidate"], (string)jsonObj["sdpMid"], Convert.ToInt32(jsonObj["sdpMLineIndex"]));
 
-#if PLATFORM_LUMIN
                         MLResult result = connection.AddRemoteIceCandidate(iceCandidate);
-#endif
+
                         remoteStatus.ClearStatusText();
                     }
                 });
@@ -643,9 +626,7 @@ namespace ml_promter
                     UnityWebRequestAsyncOperation webRequenstAsyncOp = asyncOp as UnityWebRequestAsyncOperation;
                     if (webRequenstAsyncOp.webRequest.result != UnityWebRequest.Result.Success)
                     {
-#if PLATFORM_LUMIN
                         MLPluginLog.ErrorFormat($"MLWebRTCExample.Http{webRequenstAsyncOp.webRequest.method}({webRequenstAsyncOp.webRequest.url}) failed, Reason : {webRequenstAsyncOp.webRequest.error}");
-#endif
                     }
                     webRequestsToOnCompletedEvent[lastWebRequest]?.Invoke(asyncOp);
                     lastWebRequestCompleted = true;

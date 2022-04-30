@@ -25,13 +25,10 @@ namespace ml_promter
         
         [SerializeField]
         private Toggle toggleLocalAudio;
-
-
-
+        
         private MLWebRTC.MediaStream localMediaStream = null;
         private MLWebRTC.MediaStream.Track localVideoTrack = null;
 
-        
         
         private void Start()
         {
@@ -55,9 +52,7 @@ namespace ml_promter
                     // MLCamera defined source.
                     case 0:
                     {
-#if PLATFORM_LUMIN
                         localMediaStream = MLWebRTC.MediaStream.CreateWithAppDefinedVideoTrack(id, MLCameraVideoSource.CreateLocal(new MLCamera.CaptureSettings(), out MLResult result), MLWebRTC.MediaStream.Track.AudioType.Microphone);
-#endif
                         break;
                     }
 
@@ -78,11 +73,7 @@ namespace ml_promter
                     case 0:
                     {
                         if (!(localVideoTrack is MLCameraVideoSource))
-                        {
-#if PLATFORM_LUMIN
                             localVideoTrack = MLCameraVideoSource.CreateLocal(new MLCamera.CaptureSettings(), out MLResult result);
-#endif
-                        }
                         break;
                     }
 
@@ -90,9 +81,7 @@ namespace ml_promter
                     case 1:
                     {
                         if (!(localVideoTrack is MLMRCameraVideoSource))
-                        {
                             localVideoTrack = MLMRCameraVideoSource.CreateLocal(MLMRCamera.InputContext.Create(), out MLResult result);
-                        }
                         break;
                     }
                 }
@@ -103,10 +92,8 @@ namespace ml_promter
 
             foreach (MLWebRTC.MediaStream.Track track in localMediaStream.Tracks)
             {
-#if PLATFORM_LUMIN
                 // TODO : in case we're recycling the connection / sources, the track might already have been added.
                 connection.AddLocalTrack(track);
-#endif
             }
 
             videoSinkBehavior.VideoSink.SetStream(localMediaStream);
@@ -121,20 +108,10 @@ namespace ml_promter
         }
         
         
-        private void ToggleLocalVideo(bool value)
-        {
-#if PLATFORM_LUMIN
-            videoSinkBehavior.VideoSink.Stream.ActiveVideoTrack.SetEnabled(value);
-#endif
-        }
+        private void ToggleLocalVideo(bool value) => videoSinkBehavior.VideoSink.Stream.ActiveVideoTrack.SetEnabled(value);
 
         
-        private void ToggleLocalAudio(bool value)
-        {
-#if PLATFORM_LUMIN
-            localMediaStream.ActiveAudioTrack.SetEnabled(value);
-#endif
-        }
+        private void ToggleLocalAudio(bool value) => localMediaStream.ActiveAudioTrack.SetEnabled(value);
 
 
         public void SetActiveLocalVideoSinkBehavior(bool value) => videoSinkBehavior.gameObject.SetActive(value);
