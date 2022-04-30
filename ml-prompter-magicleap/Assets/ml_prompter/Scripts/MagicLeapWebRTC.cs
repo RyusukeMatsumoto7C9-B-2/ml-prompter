@@ -196,6 +196,7 @@ namespace ml_promter
         }
 
         
+        // Binaryデータの送信、今は使ってない.
         public void SendBinaryMessageOnDataChannel()
         {
 #if PLATFORM_LUMIN
