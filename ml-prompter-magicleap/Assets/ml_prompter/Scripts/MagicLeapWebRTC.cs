@@ -27,7 +27,7 @@ namespace ml_promter
     /// <summary>
     /// MagicLeap側のWebRTC処理を行う.
     /// </summary>
-    public class MagicLeapWebRTC : MonoBehaviour
+    public class MagicLeapWebRTC : MonoBehaviour, IWebRTCMessage
     {
         [SerializeField, Header("LocalStatus")]
         private LocalStatus localStatus;
@@ -633,6 +633,9 @@ namespace ml_promter
                 };
             }
         }
+
+
+        public void SendTextMessage(string message) => SendMessageOnDataChannel(message);
     }
 }
 
