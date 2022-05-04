@@ -245,7 +245,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 0.2
 --- !u!114 &2038021478158325784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,8 +496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea05a203896b48146ab21000fc478d4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distance: 8
-  _heightOffset: 0.015
+  _distance: 4
+  _heightOffset: -2
   _lateralOffset: 0
   _positionSmoothTime: 5
   _rotationSmoothTime: 5
@@ -505,7 +505,7 @@ MonoBehaviour:
   _placeOnAwake: 1
   _placeOnUpdate: 0
   _lockZRotation: 1
-  _lockXRotation: 1
+  _lockXRotation: 0
   _lockToXZPlane: 1
   _useThreshold: 0
   _movementThreshold: {x: 10, y: 5}
@@ -597,7 +597,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -606,7 +606,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 0.2
 --- !u!114 &2038021478623252670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1854,15 +1854,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 224388232608286382, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.004
+      value: 0.002
       objectReference: {fileID: 0}
     - target: {fileID: 224388232608286382, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.004
+      value: 0.002
       objectReference: {fileID: 0}
     - target: {fileID: 224388232608286382, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.004
+      value: 0.002
       objectReference: {fileID: 0}
     - target: {fileID: 224388232608286382, guid: 62aab9b992d81974e98b870ecda06bc2, type: 3}
       propertyPath: m_LocalPosition.x
