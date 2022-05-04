@@ -176,7 +176,7 @@ namespace ml_promter
             {
                 if (result.Value.IsOk)
                 {
-                    dataChannelText.text = "Sent: " + message;
+                    //dataChannelText.text = "Sent: " + message;
                 }
                 else
                 {
