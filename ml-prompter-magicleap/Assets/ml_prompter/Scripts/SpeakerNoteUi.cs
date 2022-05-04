@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-using MagicLeap;
 using UnityEngine.XR.MagicLeap;
 
 
@@ -24,9 +23,6 @@ namespace ml_promter
 
         [SerializeField]
         private Button prevSlideButton;
-
-        [SerializeField]
-        private Slider noteAlphaSlider;
 
         [SerializeField]
         private Image noteBackground;
@@ -65,9 +61,6 @@ namespace ml_promter
             });
             
             MLInput.OnControllerTouchpadGestureStart += OnTouchpadGestureStart;
-
-            noteAlphaSlider.wholeNumbers = false;
-            noteAlphaSlider.onValueChanged.AddListener(OnNoteBackgroundAlphaValueChange);
         }
 
 
