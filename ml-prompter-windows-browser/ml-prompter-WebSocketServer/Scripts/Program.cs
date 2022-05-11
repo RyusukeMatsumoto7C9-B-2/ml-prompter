@@ -6,30 +6,23 @@ using System.Net.WebSockets;
 using System.Threading;
 
 
-
 namespace ml_prompter_WebSocketServer
 {
-    
     class Program
     {
         static void Main(string[] args)
         {
-            
             // シグナリングサーバーとブラウザを起動.
             var executeFilePathManager = new ExecuteFilePathManager();
             System.Diagnostics.Process.Start(executeFilePathManager.SignalingServerPath);
             System.Diagnostics.Process.Start(executeFilePathManager.BrowserPath);
             
-            /*
-            Console.WriteLine("5秒後にキーボードシミュレートします.");
-            Thread.Sleep(5000);
-            Win32Api.KeyBoardEvent(Win32Api.VK_1);
+            // ここでローカルにテキストファイルがあるか否かを判定する.
+            var speakerNote = new SpeakerNote();
+            speakerNote.Load();
+            speakerNote.DumpAllPageText();
 
-            Console.WriteLine("キーシミュレートしました、何かキーを入力してください.");
-            Console.ReadLine();
-            */
-
-            Task task = RunWebSocketServer();
+            Task task = RunWebSocketServer(speakerNote);
             while (!task.IsCompleted)
             {
             }
@@ -50,10 +43,10 @@ namespace ml_prompter_WebSocketServer
         /// WebSocketサーバーを立ち上げ.
         /// </summary>
         /// <returns></returns>
-        static async Task RunWebSocketServer()
+        static async Task RunWebSocketServer(SpeakerNote speakerNote)
         {
             Console.WriteLine("非同期処理Run()");
-
+            
             //Httpリスナーを立ち上げ、クライアントからの接続を待つ
             Console.WriteLine("Httpリスナー立ち上げ、クライアントからの接続を待つ");
             HttpListener s = new HttpListener();
@@ -75,7 +68,16 @@ namespace ml_prompter_WebSocketServer
             Console.WriteLine("WebSocketでレスポンスを返却.");
             var wsc = await hc.AcceptWebSocketAsync(null);
             var ws = wsc.WebSocket;
+            
+            // ロードしたSpeakerNoteを送信.
+            //文字列をByte型に変換
+            var sendBuffer = Encoding.UTF8.GetBytes(speakerNote.Text);
+            var sendSegment = new ArraySegment<byte>(sendBuffer);
 
+            //クライアント側に文字列を送信
+            await ws.SendAsync(sendSegment, WebSocketMessageType.Text,
+                true, CancellationToken.None);
+            Console.WriteLine("SpeakerNoteを送信");
 
             var messageProcessor = new ReceiveMessageProcessor();
             var buffer = new byte[1024];

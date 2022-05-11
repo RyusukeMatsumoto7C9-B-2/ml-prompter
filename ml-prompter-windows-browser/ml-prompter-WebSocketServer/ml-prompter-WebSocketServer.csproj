@@ -11,6 +11,7 @@
     <AssemblyName>ml_prompter_WebSocketServer</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,6 +43,7 @@
     <Compile Include="Scripts\ExecuteFilePathManager.cs" />
     <Compile Include="Scripts\ReceiveMessageProcessor.cs" />
     <Compile Include="Scripts\Program.cs" />
+    <Compile Include="Scripts\SpeakerNote.cs" />
     <Compile Include="Scripts\Win32Api.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
