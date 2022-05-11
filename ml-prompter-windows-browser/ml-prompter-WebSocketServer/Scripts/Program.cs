@@ -29,7 +29,6 @@ namespace ml_prompter_WebSocketServer
             Console.ReadLine();
             */
 
-            // TODO : 現在自動起動の部分のテストのためここから下をいったん止めてる.
             Task task = RunWebSocketServer();
             while (!task.IsCompleted)
             {
@@ -78,6 +77,7 @@ namespace ml_prompter_WebSocketServer
             var ws = wsc.WebSocket;
 
 
+            var messageProcessor = new ReceiveMessageProcessor();
             var buffer = new byte[1024];
             while (true)
             {
@@ -114,20 +114,17 @@ namespace ml_prompter_WebSocketServer
                 //メッセージを取得
                 var message = Encoding.UTF8.GetString(buffer, 0, count);
                 Console.WriteLine("> " + message);
+                messageProcessor.Handle(message);
                 if (message == "close")
                 {
                     Console.WriteLine("接続を閉じる");
                     await ws.CloseAsync(WebSocketCloseStatus.NormalClosure,
                         "Done", CancellationToken.None);
                 }
-
-                if (message == "l")
-                {
-                    Console.WriteLine("前のスライドに戻る.");
-                }
             }
 
 
+            // TODO : 今後サーバー側からMagicLeapに何か飛ばすかもしれないのでそのサンプルとしてこのコードは残しておく.
             //１０回のレスポンスを返却
             /*
             Console.WriteLine("10回のレスポンスを返却.");
@@ -155,5 +152,6 @@ namespace ml_prompter_WebSocketServer
                 "Done", CancellationToken.None);
             */
         }
+        
     }
 }

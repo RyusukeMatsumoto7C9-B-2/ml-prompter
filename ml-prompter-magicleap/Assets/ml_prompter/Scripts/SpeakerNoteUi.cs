@@ -1,5 +1,8 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+
+using UnityEngine.XR.MagicLeap;
 
 
 namespace ml_promter
@@ -21,9 +24,16 @@ namespace ml_promter
         [SerializeField]
         private Button prevSlideButton;
 
+        [SerializeField]
+        private Image noteBackground;
 
-        private void Start()
+
+        private IEnumerator Start()
         {
+            Debug.Log("SpeakerNoteUI Start()");
+            yield return new WaitUntil(() => MLInput.IsStarted);
+            Debug.Log("MLInputが起動しました.");
+            
             nextPageButton.onClick.AddListener(() =>
             {
                 webRtc.SendTextMessage("NextButton");
@@ -48,12 +58,28 @@ namespace ml_promter
                 webRtc.SendTextMessage("PrevSlide");
                 Debug.Log("prevSlide押下したよ"); 
                 
-            });        
+            });
+            
+            MLInput.OnControllerTouchpadGestureStart += OnTouchpadGestureStart;
         }
 
-        private void Update()
+
+        private void OnDestroy()
         {
+            MLInput.OnControllerTouchpadGestureStart -= OnTouchpadGestureStart;
+        }
         
+        
+        private void OnTouchpadGestureStart(byte id, MLInput.Controller.TouchpadGesture gesture)
+        {
+            float alphaAddValue = Mathf.Clamp(gesture.Speed, -0.1f, 0.1f);
+            noteBackground.color = new Color(0f, 0f, 0f, Mathf.Clamp(noteBackground.color.a + alphaAddValue, 0f, 1f));
+        }
+
+
+        private void OnNoteBackgroundAlphaValueChange(float value)
+        {
+            noteBackground.color = new Color(0f, 0f, 0f, value);
         }
     }
 }

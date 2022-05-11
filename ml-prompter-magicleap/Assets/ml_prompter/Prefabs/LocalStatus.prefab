@@ -131,7 +131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7887123475033518322, guid: b73b15ff8f2838a4bbd80904adb31d2f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7887123475033518323, guid: b73b15ff8f2838a4bbd80904adb31d2f, type: 3}
       propertyPath: m_Pivot.x
@@ -368,15 +368,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 6410837541537262977, guid: 408cb526e9d71fa4393121f9252a1964, type: 3}
       propertyPath: m_LocalPosition.x
