@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 
 
 namespace ml_prompter_WebSocketServer
@@ -13,7 +12,6 @@ namespace ml_prompter_WebSocketServer
         private const string FILE_NAME = "SpeakerNote.txt";
 
         public string Text { get; private set; } = string.Empty;
-        private List<string> pageTexts = new List<string>();
         
 
         public SpeakerNote() { }
@@ -36,28 +34,17 @@ namespace ml_prompter_WebSocketServer
                 Console.WriteLine(Text);
             }
 
-            Molding();
             return true;
         }
 
 
         public void DumpAllPageText()
         {
-            Console.WriteLine($"Dump ... Lines > {pageTexts.Count}");
-            foreach (var text in pageTexts)
-            {
-                Console.WriteLine("/===============================================/");
-                Console.WriteLine(text);
-                Console.WriteLine("/===============================================/");
-            }
+            Console.WriteLine($"Dump ... size {Text.Length}");
+            Console.WriteLine($"{Text}");
         }
 
 
-        private void Molding()
-        {
-            string[] split = new[] {"---"};
-            pageTexts = new List<string>(Text.Split(split, StringSplitOptions.None));
-        }
 
     }
 }
