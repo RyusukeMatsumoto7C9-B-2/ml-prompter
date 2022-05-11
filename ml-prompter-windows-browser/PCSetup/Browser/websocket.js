@@ -28,7 +28,7 @@ function connectingWebSocket() {
     console.log("メッセージ受信");
     console.log(event.data);
     speakerNote = event.data;
-  };
+};
 
   // WebSocketと切断.
   connection.onclose = function() {
