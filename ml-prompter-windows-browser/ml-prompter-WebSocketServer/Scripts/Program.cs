@@ -70,14 +70,16 @@ namespace ml_prompter_WebSocketServer
             var ws = wsc.WebSocket;
             
             // ロードしたSpeakerNoteを送信.
-            //文字列をByte型に変換
-            var sendBuffer = Encoding.UTF8.GetBytes(speakerNote.Text);
-            var sendSegment = new ArraySegment<byte>(sendBuffer);
+            foreach (var text in speakerNote.Texts)
+            {
+                // 文字列をByte型配列に変換.
+                var sendBuffer = Encoding.UTF8.GetBytes(text);
+                var sendSegment = new ArraySegment<byte>(sendBuffer);
 
-            //クライアント側に文字列を送信
-            await ws.SendAsync(sendSegment, WebSocketMessageType.Text,
-                true, CancellationToken.None);
-            Console.WriteLine("SpeakerNoteを送信");
+                //クライアント側に文字列を送信.
+                await ws.SendAsync(sendSegment, WebSocketMessageType.Text, true, CancellationToken.None);
+                Console.WriteLine("SpeakerNoteを送信");
+            }
 
             var messageProcessor = new ReceiveMessageProcessor();
             var buffer = new byte[1024];
