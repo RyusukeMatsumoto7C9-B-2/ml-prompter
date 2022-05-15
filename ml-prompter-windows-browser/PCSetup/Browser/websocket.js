@@ -1,3 +1,7 @@
+// WebSocketサーバーと接続するボタン( 現在ブラウザを起動したときに自動で接続するが一応残している ).
+const connectingWebSocketButton = document.getElementById('connectingWebSocketButton');
+
+connectingWebSocketButton.addEventListener('click', connectingWebSocket);
 
 
 // WebSocketサーバと接続した情報.

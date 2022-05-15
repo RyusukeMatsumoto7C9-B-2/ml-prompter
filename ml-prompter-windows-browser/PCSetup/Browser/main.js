@@ -8,14 +8,11 @@ const startButton = document.getElementById('startButton');
 // ブラウザ上では Disconnect ボタン.
 const hangupButton = document.getElementById('hangupButton');
 
-// WebSocketサーバーと接続するボタン( 現在ブラウザを起動したときに自動で接続するが一応残している ).
-const connectingWebSocketButton = document.getElementById('connectingWebSocketButton');
 
 
 hangupButton.disabled = true;
 startButton.addEventListener('click', start);
 hangupButton.addEventListener('click', hangup);
-connectingWebSocketButton.addEventListener('click', connectingWebSocket);
 
 
 const localVideo = document.getElementById('localVideo');
