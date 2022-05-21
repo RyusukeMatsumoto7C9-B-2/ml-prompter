@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEngine.XR.MagicLeap;
+using UnityEngine;
 
 namespace ml_promter.SpeakerNote
 {
@@ -10,24 +10,16 @@ namespace ml_promter.SpeakerNote
         public int Index
         {
             get => index;
-
-            set
-            {
-                index = value;
-                if (pages?.Count <= index) index = pages.Count - 1;
-                if (index < 0) index = 0;
-            }
+            private set => index = Mathf.Clamp(value, 0, pages.Count);
         }
+
+        public int PageCount => pages.Count;
+
 
         private List<SpeakerNotePage> pages = new List<SpeakerNotePage>();
 
-        public SpeakerNote(string[] pageTexts)
-        {
-            foreach (string pageText in pageTexts)
-            {
-                pages.Add(new SpeakerNotePage(pageText));
-            }
-        }
+        
+        public SpeakerNote() { }
 
 
         public void AddPage(SpeakerNotePage page)
@@ -39,15 +31,12 @@ namespace ml_promter.SpeakerNote
         }
 
 
-        public void RemoveAll()
-        {
-            pages?.Clear();
-        }
+        public void RemoveAll() => pages?.Clear();
 
 
-        public SpeakerNotePage CurrentPage() => pages[Index];
+        public SpeakerNotePage CurrentPage() => pages.Count != 0 ? pages[Index] : new SpeakerNotePage("");
 
-        
+
         public void Next() => Index++;
 
 
