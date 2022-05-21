@@ -1,6 +1,7 @@
 using ml_promter.SpeakerNote;
 using NUnit.Framework;
 
+
 public class SpeakerNoteTests
 {
     
