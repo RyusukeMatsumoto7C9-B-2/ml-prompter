@@ -13,8 +13,11 @@ public class SpeakerNotePageTests
     [Test]
     public void SpeakerNotePageIsInvalidTest()
     {
-        var page = new SpeakerNotePage("");
-        Assert.IsFalse(page.IsValidPage);
+        var emptyPage = new SpeakerNotePage("");
+        Assert.IsFalse(emptyPage.IsValidPage);
+        
+        var nullPage = new SpeakerNotePage(null);
+        Assert.IsFalse(emptyPage.IsValidPage);
     }
 
 
