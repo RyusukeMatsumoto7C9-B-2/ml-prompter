@@ -5,12 +5,15 @@ using UnityEngine.UI;
 using UnityEngine.XR.MagicLeap;
 
 
-namespace ml_promter
+namespace ml_promter.SpeakerNote
 {
-    public class SpeakerNoteUi : MonoBehaviour
+    public class SpeakerNoteUi : MonoBehaviour, ISpeakerNoteUi
     {
         [SerializeField]
         private MagicLeapWebRTC webRtc;
+
+        [SerializeField] 
+        private Text speakerText;
 
         [SerializeField]
         private Button nextPageButton;
@@ -80,6 +83,12 @@ namespace ml_promter
         private void OnNoteBackgroundAlphaValueChange(float value)
         {
             noteBackground.color = new Color(0f, 0f, 0f, value);
+        }
+
+        
+        public void AddPage(string text)
+        {
+            
         }
     }
 }
