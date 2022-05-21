@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 1349112499394116663}
   - component: {fileID: 1349112499394116660}
   m_Layer: 5
-  m_Name: Text
+  m_Name: SpeakerText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -939,11 +939,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   webRtc: {fileID: 0}
+  speakerText: {fileID: 1349112499394116660}
   nextPageButton: {fileID: 1349112499606526392}
   nextSlideButton: {fileID: 1349112499815959714}
   prevPageButton: {fileID: 1349112498999900226}
   prevSlideButton: {fileID: 1349112500584447047}
-  noteAlphaSlider: {fileID: 0}
   noteBackground: {fileID: 1349112500209809833}
 --- !u!1 &1349112500053876752
 GameObject:
