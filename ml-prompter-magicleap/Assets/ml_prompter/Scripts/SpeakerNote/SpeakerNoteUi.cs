@@ -6,7 +6,7 @@ using UnityEngine.XR.MagicLeap;
 
 namespace ml_promter.SpeakerNote
 {
-    public class SpeakerNoteUi : MonoBehaviour, SpeakerNote
+    public class SpeakerNoteUi : MonoBehaviour, ISpeakerNoteUi
     {
         // TODO : 後で参照周りを是正する.
         //[SerializeField]
@@ -30,12 +30,12 @@ namespace ml_promter.SpeakerNote
         [SerializeField]
         private Image noteBackground;
         
-        private Note speakerNote;
+        private SpeakerNote speakerNote;
 
 
         private void Start()
         {
-            speakerNote = new Note();
+            speakerNote = new SpeakerNote();
 
             // テストとしてダミーのページを登録.
             {

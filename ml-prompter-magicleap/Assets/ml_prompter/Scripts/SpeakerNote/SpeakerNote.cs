@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ml_promter.SpeakerNote
 {
-    public class Note
+    public class SpeakerNote
     {
 
         private int index = 0;
@@ -19,7 +19,7 @@ namespace ml_promter.SpeakerNote
         private List<SpeakerNotePage> pages = new List<SpeakerNotePage>();
 
         
-        public Note() { }
+        public SpeakerNote() { }
 
 
         public void AddPage(SpeakerNotePage page)
