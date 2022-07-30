@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-
 using UnityEngine.XR.MagicLeap;
 
 
@@ -9,8 +8,9 @@ namespace ml_promter.SpeakerNote
 {
     public class SpeakerNoteUi : MonoBehaviour, ISpeakerNoteUi
     {
-        [SerializeField]
-        private MagicLeapWebRTC webRtc;
+        // TODO : 後で参照周りを是正する.
+        //[SerializeField]
+        //private MagicLeapWebRTC webRtc;
 
         [SerializeField] 
         private Text speakerText;
@@ -33,7 +33,7 @@ namespace ml_promter.SpeakerNote
         private SpeakerNote speakerNote;
 
 
-        private IEnumerator Start()
+        private void Start()
         {
             speakerNote = new SpeakerNote();
 
@@ -46,7 +46,7 @@ namespace ml_promter.SpeakerNote
             }
 
             Debug.Log("SpeakerNoteUI Start()");
-            yield return new WaitUntil(() => MLInput.IsStarted);
+            //yield return new WaitUntil(() => MLInput.IsStarted);
             Debug.Log("MLInputが起動しました.");
 
             nextPageButton.onClick.AddListener(OnNextPage);
@@ -54,21 +54,26 @@ namespace ml_promter.SpeakerNote
             prevPageButton.onClick.AddListener(OnPreviousPage);
             prevSlideButton.onClick.AddListener(OnPreviousSlide);
             
-            MLInput.OnControllerTouchpadGestureStart += OnTouchpadGestureStart;
+            // TODO : 後で参照周りを是正する.
+            //MLInput.OnControllerTouchpadGestureStart += OnTouchpadGestureStart;
         }
 
 
         private void OnDestroy()
         {
-            MLInput.OnControllerTouchpadGestureStart -= OnTouchpadGestureStart;
+            // TODO : 後で参照周りを是正する.
+            //MLInput.OnControllerTouchpadGestureStart -= OnTouchpadGestureStart;
         }
         
         
+        /*
         private void OnTouchpadGestureStart(byte id, MLInput.Controller.TouchpadGesture gesture)
         {
+            // TODO : 後で参照周りを是正する.
             float alphaAddValue = Mathf.Clamp(gesture.Speed, -0.1f, 0.1f);
             noteBackground.color = new Color(0f, 0f, 0f, Mathf.Clamp(noteBackground.color.a + alphaAddValue, 0f, 1f));
         }
+        */
 
 
         private void OnNoteBackgroundAlphaValueChange(float value)
@@ -91,7 +96,9 @@ namespace ml_promter.SpeakerNote
             speakerText.text = speakerNote.CurrentPage().Value;
             
             // スライド遷移のメッセージ送信.
-            webRtc.SendTextMessage("NextSlide");
+            // TODO : 後で参照周りを是正する.
+            //webRtc.SendTextMessage("NextSlide");
+            
             Debug.Log("nextSlideButton押下したよ"); 
         }
 
@@ -110,7 +117,8 @@ namespace ml_promter.SpeakerNote
             speakerText.text = speakerNote.CurrentPage().Value;
             
             // スライド遷移のメッセージ送信.
-            webRtc.SendTextMessage("PrevSlide");
+            // TODO : 後で参照周りを是正する.
+            //webRtc.SendTextMessage("PrevSlide");
             Debug.Log("prevSlide押下したよ"); 
                 
         }

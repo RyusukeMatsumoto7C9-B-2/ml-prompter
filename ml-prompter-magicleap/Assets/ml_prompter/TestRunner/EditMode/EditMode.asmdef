@@ -4,7 +4,8 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "ml_prompter"
+        "ml_prompter",
+        "ml_prompter.SpeakerNote"
     ],
     "includePlatforms": [
         "Editor"

@@ -1,16 +1,13 @@
 {
-    "name": "ml_prompter",
+    "name": "ml_prompter.SpeakerNote",
     "rootNamespace": "",
     "references": [
-        "MagicLeap",
-        "UnityEngine.XR.MagicLeap",
-        "LuminUnity",
-        "ml_prompter.SpeakerNote"
+        "GUID:4c1db69fd2709f84fa7a234dea0086ea"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": true,
+    "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
