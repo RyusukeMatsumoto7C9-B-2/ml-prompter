@@ -3,7 +3,7 @@
     /// <summary>
     /// SpeakerNoteUIへのインターフェース.
     /// </summary>
-    public interface ISpeakerNoteUi
+    public interface ISpeakerNote
     {
         void AddPage(string str);
     }
