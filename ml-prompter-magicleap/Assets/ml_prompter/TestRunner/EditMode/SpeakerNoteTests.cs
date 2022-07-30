@@ -9,7 +9,7 @@ public class SpeakerNoteTests
     [Test]
     public void AddPageTest()
     {
-        var speakerNote = new SpeakerNote();
+        var speakerNote = new Note();
 
         // まずは0.
         Assert.Zero(speakerNote.PageCount);
@@ -23,7 +23,7 @@ public class SpeakerNoteTests
     [Test]
     public void CanNotAddInvalidPageTest()
     {
-        var speakerNote = new SpeakerNote();
+        var speakerNote = new Note();
 
         // 1ページ空文字ページで追加,ページは追加されない.
         speakerNote.AddPage(new SpeakerNotePage(""));
@@ -45,7 +45,7 @@ public class SpeakerNoteTests
         const string PAGE_1 = "Hoge";
         const string PAGE_2 = "Fuga";
         
-        var speakerNote = new SpeakerNote();
+        var speakerNote = new Note();
         speakerNote.AddPage(new SpeakerNotePage(PAGE_1));
         speakerNote.AddPage(new SpeakerNotePage(PAGE_2));
 
@@ -66,7 +66,7 @@ public class SpeakerNoteTests
     {
         const string PAGE_1 = "Hoge";
         
-        var speakerNote = new SpeakerNote();
+        var speakerNote = new Note();
         speakerNote.AddPage(new SpeakerNotePage(PAGE_1));
 
         // 1ページのみのノートでひたすらNextを行ってもインデックスは範囲内に収まる.
@@ -93,7 +93,7 @@ public class SpeakerNoteTests
         const string PAGE_2 = "Fuga";
         const string PAGE_3 = "Jeje";
 
-        var speakerNote = new SpeakerNote();
+        var speakerNote = new Note();
         speakerNote.AddPage(new SpeakerNotePage(PAGE_1));
         speakerNote.AddPage(new SpeakerNotePage(PAGE_2));
         speakerNote.AddPage(new SpeakerNotePage(PAGE_3));
@@ -107,7 +107,7 @@ public class SpeakerNoteTests
     [Test]
     public void NonRegisteredPageReturnToInvalidPage()
     {
-        var speakerNote = new SpeakerNote();
+        var speakerNote = new Note();
         Assert.IsNotNull(speakerNote.CurrentPage());
         Assert.IsFalse(speakerNote.CurrentPage().IsValidPage);
     }
