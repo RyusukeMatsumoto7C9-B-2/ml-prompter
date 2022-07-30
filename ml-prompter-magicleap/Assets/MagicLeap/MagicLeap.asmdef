@@ -1,0 +1,17 @@
+{
+    "name": "MagicLeap",
+    "rootNamespace": "",
+    "references": [
+        "LuminUnity",
+        "UnityEngine.XR.MagicLeap"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
